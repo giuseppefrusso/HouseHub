@@ -67,7 +67,7 @@ public class LoginInterface extends javax.swing.JFrame {
         panel.add(passwordField);
 
         roleComboBox.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Cliente" }));
+        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Utente" }));
         roleComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 roleComboBoxActionPerformed(evt);
@@ -129,7 +129,7 @@ public class LoginInterface extends javax.swing.JFrame {
         String user = (String) userField.getSelectedItem();
         if (passwordField.getText().equals("admin")) {
             EventQueue.invokeLater(() -> {
-                new AdminInterface(user).setVisible(true);
+                new UserInterface(user).setVisible(true);
                 dispose();
             });
         } else {
@@ -139,7 +139,7 @@ public class LoginInterface extends javax.swing.JFrame {
 
     private void loginAsClient() {
         EventQueue.invokeLater(() -> {
-            new ClientInterface().setVisible(true);
+            new UserInterface().setVisible(true);
             dispose();
         });
     }
