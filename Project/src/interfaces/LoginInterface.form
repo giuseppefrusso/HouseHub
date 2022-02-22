@@ -51,12 +51,18 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="userLabel">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Comic Sans MS" size="11" style="0"/>
+            </Property>
             <Property name="horizontalAlignment" type="int" value="11"/>
             <Property name="text" type="java.lang.String" value="Nome utente"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="userField">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Comic Sans MS" size="11" style="0"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">
                 <StringItem index="0" value="Antonio"/>
@@ -70,6 +76,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="passwordLabel">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Comic Sans MS" size="11" style="0"/>
+            </Property>
             <Property name="horizontalAlignment" type="int" value="11"/>
             <Property name="text" type="java.lang.String" value="Password"/>
           </Properties>
@@ -81,6 +90,9 @@
         </Component>
         <Component class="javax.swing.JComboBox" name="roleComboBox">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Comic Sans MS" size="11" style="0"/>
+            </Property>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="2">
                 <StringItem index="0" value="Admin"/>
@@ -97,6 +109,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="loginButton">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Comic Sans MS" size="11" style="0"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Login"/>
           </Properties>
           <Events>
