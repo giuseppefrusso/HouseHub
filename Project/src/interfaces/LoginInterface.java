@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import java.awt.EventQueue;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,7 +32,7 @@ public class LoginInterface extends javax.swing.JFrame {
 
         panel = new javax.swing.JPanel();
         userLabel = new javax.swing.JLabel();
-        userField = new javax.swing.JTextField();
+        userField = new javax.swing.JComboBox<>();
         passwordLabel = new javax.swing.JLabel();
         passwordField = new javax.swing.JPasswordField();
         roleComboBox = new javax.swing.JComboBox<>();
@@ -48,7 +49,7 @@ public class LoginInterface extends javax.swing.JFrame {
         userLabel.setText("Nome utente");
         panel.add(userLabel);
 
-        userField.setColumns(2);
+        userField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Antonio", "Emanuele" }));
         panel.add(userField);
 
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -91,10 +92,10 @@ public class LoginInterface extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String role = (String) roleComboBox.getSelectedItem();
-        
+
         if (role.equals("Admin")) {
             loginAsAdmin();
         } else {
@@ -108,12 +109,11 @@ public class LoginInterface extends javax.swing.JFrame {
 
     private void roleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleComboBoxActionPerformed
         String role = (String) roleComboBox.getSelectedItem();
-        
+
         if (role.equals("Admin")) {
             userField.setEnabled(true);
             passwordField.setEnabled(true);
         } else {
-            userField.setText("");
             userField.setEnabled(false);
             passwordField.setText("");
             passwordField.setEnabled(false);
@@ -121,23 +121,24 @@ public class LoginInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_roleComboBoxActionPerformed
 
     private void loginAsAdmin() {
-        if(userField.getText().equalsIgnoreCase("emanuele") || userField.getText().equalsIgnoreCase("antonio")) {
-            if(passwordField.getText().equals("admin")) {
-                System.out.println("Passa a schermata successiva per l'admin");
-            }
-            else {
-                JOptionPane.showMessageDialog(this, "Password errata", "Avviso", JOptionPane.WARNING_MESSAGE);
-            }
-        }
-        else {
-            JOptionPane.showMessageDialog(this, "Nome utente errato", "Avviso", JOptionPane.WARNING_MESSAGE);
+        String user = (String) userField.getSelectedItem();
+        if (passwordField.getText().equals("admin")) {
+            EventQueue.invokeLater(() -> {
+                new AdminInterface(user).setVisible(true);
+                dispose();
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "Password errata", "Avviso", JOptionPane.WARNING_MESSAGE);
         }
     }
-    
+
     private void loginAsClient() {
-        System.out.println("Passa a schermata successiva per il cliente");
+        EventQueue.invokeLater(() -> {
+            new ClientInterface().setVisible(true);
+            dispose();
+        });
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -179,7 +180,7 @@ public class LoginInterface extends javax.swing.JFrame {
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JComboBox<String> roleComboBox;
-    private javax.swing.JTextField userField;
+    private javax.swing.JComboBox<String> userField;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
 }
