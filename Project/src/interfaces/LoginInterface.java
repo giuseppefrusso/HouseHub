@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Pepito
@@ -36,7 +38,8 @@ public class LoginInterface extends javax.swing.JFrame {
         loginButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("HouseHub - Login");
+        setTitle("HouseHub");
+        setResizable(false);
 
         panel.setBackground(new java.awt.Color(240, 245, 58));
         panel.setLayout(new java.awt.GridLayout(3, 2, 10, 10));
@@ -51,12 +54,28 @@ public class LoginInterface extends javax.swing.JFrame {
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         passwordLabel.setText("Password");
         panel.add(passwordLabel);
+
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordFieldActionPerformed(evt);
+            }
+        });
         panel.add(passwordField);
 
-        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Utente" }));
+        roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Cliente" }));
+        roleComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                roleComboBoxActionPerformed(evt);
+            }
+        });
         panel.add(roleComboBox);
 
         loginButton.setText("Login");
+        loginButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loginButtonActionPerformed(evt);
+            }
+        });
         panel.add(loginButton);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -72,7 +91,53 @@ public class LoginInterface extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
+        String role = (String) roleComboBox.getSelectedItem();
+        
+        if (role.equals("Admin")) {
+            loginAsAdmin();
+        } else {
+            loginAsClient();
+        }
+    }//GEN-LAST:event_loginButtonActionPerformed
 
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        loginAsAdmin();
+    }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void roleComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roleComboBoxActionPerformed
+        String role = (String) roleComboBox.getSelectedItem();
+        
+        if (role.equals("Admin")) {
+            userField.setEnabled(true);
+            passwordField.setEnabled(true);
+        } else {
+            userField.setText("");
+            userField.setEnabled(false);
+            passwordField.setText("");
+            passwordField.setEnabled(false);
+        }
+    }//GEN-LAST:event_roleComboBoxActionPerformed
+
+    private void loginAsAdmin() {
+        if(userField.getText().equalsIgnoreCase("emanuele") || userField.getText().equalsIgnoreCase("antonio")) {
+            if(passwordField.getText().equals("admin")) {
+                System.out.println("Passa a schermata successiva per l'admin");
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Password errata", "Avviso", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "Nome utente errato", "Avviso", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+    
+    private void loginAsClient() {
+        System.out.println("Passa a schermata successiva per il cliente");
+    }
+    
     /**
      * @param args the command line arguments
      */
