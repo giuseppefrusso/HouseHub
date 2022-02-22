@@ -1,1 +1,4 @@
 /Project/nbproject/private/
+*.xml
+*.mf
+*.properties
