@@ -5,7 +5,6 @@
  */
 package models;
 
-import java.util.List;
 import java.util.LinkedList;
 
 /**
@@ -14,13 +13,26 @@ import java.util.LinkedList;
  */
 public class Capitolato {
     
-    private List<Voce> capitolatoClienti, capitolatoSubappaltatori;
+    private LinkedList<Voce> capitolatoClienti, capitolatoSubappaltatori;
     
     public Capitolato() {
         capitolatoClienti = new LinkedList<>();
         capitolatoSubappaltatori = new LinkedList<>();
     }
     
+    public void addVoceCliente(Voce voce) {
+        capitolatoClienti.add(voce);
+    }
     
-    
+    public void addVoceSubappaltori(Voce voce) {
+        capitolatoSubappaltatori.add(voce);
+    }
+
+    public LinkedList<Voce> getCapitolatoClienti() {
+        return capitolatoClienti;
+    }
+
+    public LinkedList<Voce> getCapitolatoSubappaltatori() {
+        return capitolatoSubappaltatori;
+    }
 }
