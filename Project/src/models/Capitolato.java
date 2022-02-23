@@ -6,6 +6,7 @@
 package models;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.LinkedList;
 import utils.Pickle;
 
@@ -15,34 +16,42 @@ import utils.Pickle;
  */
 public class Capitolato implements Serializable{
     
-    private LinkedList<Voce> capitolatoClienti, capitolatoSubappaltatori;
+    private HashMap<String, Voce> capitolatoClienti, capitolatoSubappaltatori;
     
     public Capitolato() {
-        capitolatoClienti = new LinkedList<>();
-        capitolatoSubappaltatori = new LinkedList<>();
+        capitolatoClienti = new HashMap<>();
+        capitolatoSubappaltatori = new HashMap<>();
     }
     
     public void addVoceCliente(Voce voce) {
-        capitolatoClienti.add(voce);
+        capitolatoClienti.put(voce.getCodice(), voce);
     }
     
     public void addVoceSubappaltori(Voce voce) {
-        capitolatoSubappaltatori.add(voce);
+        capitolatoSubappaltatori.put(voce.getCodice(), voce);
     }
 
-    public LinkedList<Voce> getCapitolatoClienti() {
+    public HashMap<String, Voce> getCapitolatoClienti() {
         return capitolatoClienti;
     }
 
-    public LinkedList<Voce> getCapitolatoSubappaltatori() {
+    public HashMap<String, Voce> getCapitolatoSubappaltatori() {
         return capitolatoSubappaltatori;
     }
     
-    public boolean salvaProgetto(String path) {
+    public Voce getVoceCliente(String codice) {
+        return capitolatoClienti.get(codice);
+    }
+    
+    public Voce getVoceSubappaltatore(String codice) {
+        return capitolatoSubappaltatori.get(codice);
+    }
+    
+    public boolean salvaCapitolato(String path) {
         return Pickle.save(path, this);
     }
     
-    public static Progetto caricaProgetto(String path) {
-        return (Progetto) Pickle.load(path);
+    public static Capitolato caricaCapitolato(String path) {
+        return (Capitolato) Pickle.load(path);
     }
 }

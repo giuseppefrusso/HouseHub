@@ -24,6 +24,10 @@ public class Voce implements Serializable{
         this.prezzoUnitario = prezzoUnitario;
     }
 
+    public String getCodice() {
+        return codice;
+    }
+    
     public String getDescrizione() {
         return descrizione;
     }
