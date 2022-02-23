@@ -9,27 +9,17 @@ package interfaces;
  *
  * @author Pepito
  */
-public class UserInterface extends javax.swing.JFrame {
+public class CapitolatoInterface extends javax.swing.JFrame {
 
     private final String user;
-    private final int CAPITOLATOINDEX = 0, PROGETTOINDEX = 1, COMPUTOINDEX = 2;
     
     /**
      * Creates new form UserInterface
      * @param user
      */
-    public UserInterface(String user) {
+    public CapitolatoInterface(String user) {
         this.user = user;
         initComponents();
-        tabbedPane.setEnabledAt(COMPUTOINDEX, false);
-    }
-    
-    public UserInterface() {
-        this.user = "NON_ADMIN";
-        initComponents();
-        tabbedPane.setSelectedIndex(PROGETTOINDEX);
-        tabbedPane.setEnabledAt(CAPITOLATOINDEX, false);
-        tabbedPane.setEnabledAt(COMPUTOINDEX, false);
     }
 
     /**
@@ -42,7 +32,6 @@ public class UserInterface extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        tabbedPane = new javax.swing.JTabbedPane();
         capitolatoPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -53,38 +42,36 @@ public class UserInterface extends javax.swing.JFrame {
         addVoceButton = new javax.swing.JButton();
         deleteVoceButton = new javax.swing.JButton();
         modifyVoceButton = new javax.swing.JButton();
-        progettoPanel = new javax.swing.JPanel();
+        progettoButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        openProgettoButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        createProgettoButton = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        computoPanel = new javax.swing.JPanel();
-        computoComboBox = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        createComputoButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HouseHub");
 
         capitolatoPanel.setBackground(new java.awt.Color(240, 245, 58));
-        capitolatoPanel.setLayout(new java.awt.GridLayout(4, 2));
+        capitolatoPanel.setLayout(new java.awt.GridBagLayout());
 
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 1, 11)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("CAPITOLATO CLIENTI");
         jLabel5.setMaximumSize(new java.awt.Dimension(100, 17));
-        capitolatoPanel.add(jLabel5);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        capitolatoPanel.add(jLabel5, gridBagConstraints);
 
         jLabel6.setFont(new java.awt.Font("Comic Sans MS", 1, 11)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("CAPITOLATO SUB-APPALTATORI");
         jLabel6.setPreferredSize(new java.awt.Dimension(150, 17));
-        capitolatoPanel.add(jLabel6);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        capitolatoPanel.add(jLabel6, gridBagConstraints);
 
         jTable1.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -112,7 +99,11 @@ public class UserInterface extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        capitolatoPanel.add(jScrollPane1);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        capitolatoPanel.add(jScrollPane1, gridBagConstraints);
 
         jTable2.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -140,7 +131,11 @@ public class UserInterface extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable2);
 
-        capitolatoPanel.add(jScrollPane2);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        capitolatoPanel.add(jScrollPane2, gridBagConstraints);
 
         addVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         addVoceButton.setText("Aggiungi nuova voce");
@@ -149,7 +144,10 @@ public class UserInterface extends javax.swing.JFrame {
                 addVoceButtonActionPerformed(evt);
             }
         });
-        capitolatoPanel.add(addVoceButton);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        capitolatoPanel.add(addVoceButton, gridBagConstraints);
 
         deleteVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         deleteVoceButton.setText("Elimina voce");
@@ -158,7 +156,10 @@ public class UserInterface extends javax.swing.JFrame {
                 deleteVoceButtonActionPerformed(evt);
             }
         });
-        capitolatoPanel.add(deleteVoceButton);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        capitolatoPanel.add(deleteVoceButton, gridBagConstraints);
 
         modifyVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         modifyVoceButton.setText("Apporta modifiche");
@@ -167,97 +168,44 @@ public class UserInterface extends javax.swing.JFrame {
                 modifyVoceButtonActionPerformed(evt);
             }
         });
-        capitolatoPanel.add(modifyVoceButton);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        capitolatoPanel.add(modifyVoceButton, gridBagConstraints);
 
-        tabbedPane.addTab("Capitolato", capitolatoPanel);
+        progettoButton.setText("Progetti");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 3;
+        capitolatoPanel.add(progettoButton, gridBagConstraints);
 
-        progettoPanel.setBackground(new java.awt.Color(240, 245, 58));
-        progettoPanel.setLayout(new java.awt.GridLayout(2, 3, 50, 50));
-        progettoPanel.add(jLabel1);
-
-        openProgettoButton.setText("Apri progetto");
-        openProgettoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openProgettoButtonActionPerformed(evt);
-            }
-        });
-        progettoPanel.add(openProgettoButton);
-        progettoPanel.add(jLabel2);
-        progettoPanel.add(jLabel4);
-
-        createProgettoButton.setText("Crea progetto");
-        createProgettoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createProgettoButtonActionPerformed(evt);
-            }
-        });
-        progettoPanel.add(createProgettoButton);
-        progettoPanel.add(jLabel8);
-
-        tabbedPane.addTab("Progetto", progettoPanel);
-
-        computoPanel.setBackground(new java.awt.Color(240, 245, 58));
-        computoPanel.setLayout(new java.awt.GridLayout(2, 2, 50, 50));
-
-        computoPanel.add(computoComboBox);
-
-        jButton2.setText("Visualizza");
-        computoPanel.add(jButton2);
-        computoPanel.add(jLabel3);
-
-        createComputoButton.setText("Crea nuovo computo");
-        createComputoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createComputoButtonActionPerformed(evt);
-            }
-        });
-        computoPanel.add(createComputoButton);
-
-        tabbedPane.addTab("Computo", computoPanel);
-
-        jPanel1.setLayout(new java.awt.GridBagLayout());
-
-        jButton3.setText("jButton3");
+        jLabel1.setText("Capitolato");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 4;
-        gridBagConstraints.insets = new java.awt.Insets(14, 0, 14, 0);
-        jPanel1.add(jButton3, gridBagConstraints);
-
-        tabbedPane.addTab("tab4", jPanel1);
+        gridBagConstraints.gridwidth = 4;
+        capitolatoPanel.add(jLabel1, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 2, Short.MAX_VALUE)
+                .addComponent(capitolatoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 929, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 3, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1555, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 15, Short.MAX_VALUE)
+                .addComponent(capitolatoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 15, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void createComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createComputoButtonActionPerformed
-        //Seleziona le voci disponibili del capitolato in un'altra finestra
-
-        //Recupera il controllo e visualizza il computo corrente
-    }//GEN-LAST:event_createComputoButtonActionPerformed
-
-    private void createProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createProgettoButtonActionPerformed
-        //Apri finestra per inserire dati dell'utente
-
-        //Recupera il controllo e visualizza il progetto corrente nella scheda Computo
-    }//GEN-LAST:event_createProgettoButtonActionPerformed
-
-    private void openProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProgettoButtonActionPerformed
-        //Scegli cartella da aprire
-
-        //visualizza il progetto corrente nella scheda Computo
-    }//GEN-LAST:event_openProgettoButtonActionPerformed
 
     private void modifyVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyVoceButtonActionPerformed
         // Salva su file con path e nome predefiniti
@@ -290,21 +238,23 @@ public class UserInterface extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(UserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CapitolatoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(UserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CapitolatoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(UserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CapitolatoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(UserInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CapitolatoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UserInterface().setVisible(true);
+                new CapitolatoInterface("Emanuele").setVisible(true);
             }
         });
     }
@@ -312,28 +262,15 @@ public class UserInterface extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addVoceButton;
     private javax.swing.JPanel capitolatoPanel;
-    private javax.swing.JComboBox<String> computoComboBox;
-    private javax.swing.JPanel computoPanel;
-    private javax.swing.JButton createComputoButton;
-    private javax.swing.JButton createProgettoButton;
     private javax.swing.JButton deleteVoceButton;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JButton modifyVoceButton;
-    private javax.swing.JButton openProgettoButton;
-    private javax.swing.JPanel progettoPanel;
-    private javax.swing.JTabbedPane tabbedPane;
+    private javax.swing.JButton progettoButton;
     // End of variables declaration//GEN-END:variables
 }

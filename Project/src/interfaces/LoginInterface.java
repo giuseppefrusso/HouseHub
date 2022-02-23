@@ -129,7 +129,7 @@ public class LoginInterface extends javax.swing.JFrame {
         String user = (String) userField.getSelectedItem();
         if (passwordField.getText().equals("admin")) {
             EventQueue.invokeLater(() -> {
-                new UserInterface(user).setVisible(true);
+                new CapitolatoInterface(user).setVisible(true);
                 dispose();
             });
         } else {
@@ -139,7 +139,7 @@ public class LoginInterface extends javax.swing.JFrame {
 
     private void loginAsClient() {
         EventQueue.invokeLater(() -> {
-            new UserInterface().setVisible(true);
+            new ProgettoInterface().setVisible(true);
             dispose();
         });
     }
