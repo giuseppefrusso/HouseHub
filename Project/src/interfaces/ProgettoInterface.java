@@ -242,10 +242,10 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         int returnValue = jfc.showSaveDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            if (jfc.getSelectedFile().isFile()) {
-                fileProgetto = jfc.getSelectedFile().toString();
-                System.out.println("You selected the file: " + fileProgetto);
-            } else return;
+            fileProgetto = jfc.getSelectedFile().toString();
+            if(!fileProgetto.endsWith(".hh"))
+                fileProgetto = fileProgetto.concat(".hh");
+            System.out.println("You selected the file: " + fileProgetto);
         } else return;
 
         //Apri finestra per inserire dati dell'utente
@@ -316,7 +316,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProgettoInterface("Emanuele").setVisible(true);
+                new ProgettoInterface("Emanuele Sellitto").setVisible(true);
             }
         });
     }
