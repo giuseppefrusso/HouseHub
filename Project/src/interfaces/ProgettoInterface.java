@@ -265,7 +265,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         Computo computo = new Computo(computoName);
        
         EventQueue.invokeLater(() -> {
-            new ComputoInterface(computo).setVisible(true);
+            new ComputoInterface(user, computo).setVisible(true);
             dispose();
         });
 
