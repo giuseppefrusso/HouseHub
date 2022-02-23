@@ -6,6 +6,7 @@
 package models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 /**
@@ -14,18 +15,23 @@ import java.util.LinkedList;
  */
 public class Computo implements Serializable{
     
-    private final String nome;
+    private final String nome, data;
     private double totale;
     private LinkedList<VoceComputo> listaVoci;
     
     public Computo(String nome) {
         this.nome = nome;
+        this.data = LocalDate.now().toString();
         totale = 0.0;
         listaVoci = new LinkedList<>();
     }
 
     public String getNome() {
         return nome;
+    }
+    
+    public String getData() {
+        return data;
     }
 
     public double getTotale() {
@@ -46,4 +52,8 @@ public class Computo implements Serializable{
         return listaVoci;
     }
     
+    @Override
+    public String toString() {
+        return nome;
+    }
 }
