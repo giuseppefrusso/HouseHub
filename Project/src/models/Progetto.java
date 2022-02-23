@@ -33,7 +33,7 @@ public class Progetto {
         listaComputi.add(computo);
     }
 
-    public void rimuoviVoce(Computo computo) {
+    public void rimuoviComputo(Computo computo) {
         listaComputi.remove(computo);
     }
 }

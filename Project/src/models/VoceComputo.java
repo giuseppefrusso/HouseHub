@@ -15,14 +15,22 @@ public class VoceComputo {
     private Voce voceBase;
     private double[] dimensioni;
     private double prezzoComplessivo;
+    private double quantita;
 
     public VoceComputo(int numeroProgressivo, Voce voceBase, double[] dimensioni, double prezzoComplessivo) {
         this.numeroProgressivo = numeroProgressivo;
         this.voceBase = voceBase;
         this.dimensioni = dimensioni;
-        this.prezzoComplessivo = prezzoComplessivo;
+        this.quantita = calcolaQuantita(voceBase.getUnitaDiMisura(), dimensioni);
+        this.prezzoComplessivo = this.quantita * voceBase.getPrezzoUnitario();
     }
 
+    public double calcolaQuantita(String unitaDiMisura, double dimensioni[]) {
+        if(unitaDiMisura.equals("m")) {
+            
+        }
+    }
+    
     public int getNumeroProgressivo() {
         return numeroProgressivo;
     }
@@ -51,8 +59,8 @@ public class VoceComputo {
         return prezzoComplessivo;
     }
 
-    public void setPrezzoComplessivo(double prezzoComplessivo) {
-        this.prezzoComplessivo = prezzoComplessivo;
+    public double getQuantita() {
+        return quantita;
     }
     
 }

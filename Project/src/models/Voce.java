@@ -13,13 +13,13 @@ public class Voce {
     
     private final String codice;
     private String descrizione, unitaDiMisura;
-    private double prezzo;
+    private double prezzoUnitario;
 
-    public Voce(String codice, String descrizione, String unitaDiMisura, double prezzo) {
+    public Voce(String codice, String descrizione, String unitaDiMisura, double prezzoUnitario) {
         this.codice = codice;
         this.descrizione = descrizione;
         this.unitaDiMisura = unitaDiMisura;
-        this.prezzo = prezzo;
+        this.prezzoUnitario = prezzoUnitario;
     }
 
     public String getDescrizione() {
@@ -38,11 +38,11 @@ public class Voce {
         this.unitaDiMisura = unitaDiMisura;
     }
 
-    public double getPrezzo() {
-        return prezzo;
+    public double getPrezzoUnitario() {
+        return prezzoUnitario;
     }
 
-    public void setPrezzo(double prezzo) {
-        this.prezzo = prezzo;
+    public void setPrezzo(double prezzoUnitario) {
+        this.prezzoUnitario = prezzoUnitario;
     }       
 }
