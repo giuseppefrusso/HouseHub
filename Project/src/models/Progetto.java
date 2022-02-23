@@ -5,20 +5,30 @@
  */
 package models;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author Pepito
  */
 public class Progetto {
-    private Cliente utente;
-    private Computo computo;
+    private Cliente cliente;
+    private LinkedList<Computo> computo;
 
-    public Progetto(Cliente utente, Computo computo) {
-        this.utente = utente;
+    public Progetto(Cliente cliente, LinkedList<Computo> computo) {
+        this.cliente = cliente;
         this.computo = computo;
     }
-    public Progetto(){
-        
+    public Progetto(Cliente cliente){
+        this.cliente = cliente;
+    }
+
+    public Cliente getUtente() {
+        return cliente;
+    }
+
+    public LinkedList<Computo> getComputo() {
+        return computo;
     }
     
 }
