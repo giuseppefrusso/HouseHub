@@ -78,7 +78,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ComputoInterface().setVisible(true);
+                new ComputoInterface(new Computo("computo")).setVisible(true);
             }
         });
     }
