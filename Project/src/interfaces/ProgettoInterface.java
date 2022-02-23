@@ -6,9 +6,19 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,6 +27,7 @@ import java.io.File;
 public class ProgettoInterface extends javax.swing.JFrame {
 
     private final String user;
+    private File progettoDirectory;
 
     /**
      * Creates new form ProgettoInterface
@@ -40,15 +51,19 @@ public class ProgettoInterface extends javax.swing.JFrame {
         visualizzaComputoButton.setEnabled(false);
         createComputoButton.setEnabled(false);
     }
-    
+
     public ProgettoInterface(String user, File progettoDirectory) {
         this.user = user;
+        this.progettoDirectory = progettoDirectory;
         initComponents();
-        computoComboBox.setEnabled(true);
+        schermataProgetto();
         computoLabel.setText("");
+    }
+
+    private void schermataProgetto() {
+        computoComboBox.setEnabled(true);
         visualizzaComputoButton.setEnabled(true);
         createComputoButton.setEnabled(true);
-        
     }
 
     /**
@@ -74,6 +89,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HouseHub");
+        setResizable(false);
 
         panel.setBackground(new java.awt.Color(240, 245, 58));
         panel.setLayout(new java.awt.GridBagLayout());
@@ -188,14 +204,27 @@ public class ProgettoInterface extends javax.swing.JFrame {
         jfc.setDialogTitle("Apri la cartella del progetto: ");
         jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
+
         int returnValue = jfc.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             if (jfc.getSelectedFile().isDirectory()) {
-                System.out.println("You selected the directory: " + jfc.getSelectedFile());
+                progettoDirectory = jfc.getSelectedFile();
+                System.out.println("You selected the directory: " + progettoDirectory);
+            } else {
+                JOptionPane.showMessageDialog(this, "Non hai selezionato una cartella", "Avviso", JOptionPane.WARNING_MESSAGE);
+                return;
             }
+        } else {
+            return;
         }
 
         //visualizza il progetto corrente nella scheda Computo
+        schermataProgetto();
+        for (File entry : progettoDirectory.listFiles((File dir, String name) -> {
+            return name.startsWith("computo") && name.endsWith(".csv");
+        })) {
+            computoComboBox.addItem(entry.toString());
+        }
     }//GEN-LAST:event_openProgettoButtonActionPerformed
 
     private void createProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createProgettoButtonActionPerformed
@@ -203,11 +232,31 @@ public class ProgettoInterface extends javax.swing.JFrame {
         jfc.setDialogTitle("Scegli la cartella dove salvare il progetto: ");
         jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
+        File createdProgettoDirectory;
+
         int returnValue = jfc.showSaveDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             if (jfc.getSelectedFile().isDirectory()) {
-                System.out.println("You selected the directory: " + jfc.getSelectedFile());
+                createdProgettoDirectory = jfc.getSelectedFile();
+                System.out.println("You selected the directory: " + createdProgettoDirectory);
+            } else {
+                JOptionPane.showMessageDialog(this, "Non hai selezionato una cartella", "Avviso", JOptionPane.WARNING_MESSAGE);
+                return;
             }
+        } else {
+            return;
+        }
+
+        File recapFile = new File(createdProgettoDirectory.toString() + "/recap.csv");
+        try {
+            if (!recapFile.createNewFile()) {
+                JOptionPane.showMessageDialog(this, "Questa cartella contiene già un progetto", "Avviso",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ProgettoInterface.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
 
         //Apri finestra per inserire dati dell'utente
@@ -218,9 +267,37 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         //Recupera il controllo e visualizza il progetto corrente nella scheda Computo
     }//GEN-LAST:event_createProgettoButtonActionPerformed
-
+    
     private void createComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createComputoButtonActionPerformed
-        //Seleziona le voci disponibili del capitolato in un'altra finestra
+        String computoName = JOptionPane.showInputDialog(this, "Scegli il nome del computo (il nome del file sarà computo_***.csv)");
+        
+        //Creazione del nuovo file di computo e controllo che non esista già un computo col nome scelto
+        File computoFile = new File(progettoDirectory.toString() + "/computo_"+computoName+".csv");
+        try {
+            if (!computoFile.createNewFile()) {
+                JOptionPane.showMessageDialog(this, "Questo computo esiste già", "Avviso",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore",
+                        JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        //Scrittura del nuovo computo su file di recap (senza totale)
+        try {
+            BufferedWriter csvWriter = new BufferedWriter(new FileWriter(progettoDirectory.toString() + "/recap.csv"));
+            csvWriter.append(computoFile.getName()+","+LocalDate.now()+","+0.0);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+        EventQueue.invokeLater(() -> {
+            new ComputoInterface().setVisible(true);
+            dispose();
+        });
 
         //Recupera il controllo e visualizza il computo corrente
     }//GEN-LAST:event_createComputoButtonActionPerformed
@@ -233,7 +310,20 @@ public class ProgettoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_capitolatoButtonActionPerformed
 
     private void computoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computoComboBoxActionPerformed
-        // TODO add your handling code here:
+        String selectedComputo = (String) computoComboBox.getSelectedItem();
+
+        try {
+            BufferedReader csvReader = new BufferedReader(new FileReader(progettoDirectory.toString() + "/recap.csv"));
+            String row;
+            while ((row = csvReader.readLine()) != null) {
+                String[] data = row.split(",");
+                if (data[0].equals(selectedComputo)) {
+                    computoLabel.setText("DATA: " + data[1] + ", TOTALE: " + data[2]);
+                }
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_computoComboBoxActionPerformed
 
     /**
