@@ -5,15 +5,17 @@
  */
 package models;
 
+import java.io.Serializable;
 import java.util.LinkedList;
+import utils.Pickle;
 
 /**
  *
  * @author Pepito
  */
-public class Progetto {
+public class Progetto implements Serializable{
 
-    private Cliente cliente;
+    private final Cliente cliente;
     private LinkedList<Computo> listaComputi;
 
     public Progetto(Cliente cliente) {
@@ -35,5 +37,13 @@ public class Progetto {
 
     public void rimuoviComputo(Computo computo) {
         listaComputi.remove(computo);
+    }
+    
+    public boolean salvaProgetto(String path) {
+        return Pickle.save(path, this);
+    }
+    
+    public static Progetto caricaProgetto(String path) {
+        return (Progetto) Pickle.load(path);
     }
 }

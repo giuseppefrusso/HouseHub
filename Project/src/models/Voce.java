@@ -5,11 +5,13 @@
  */
 package models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Pepito
  */
-public class Voce {
+public class Voce implements Serializable{
     
     private final String codice;
     private String descrizione, unitaDiMisura;

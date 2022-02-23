@@ -5,13 +5,15 @@
  */
 package models;
 
+import java.io.Serializable;
 import java.util.LinkedList;
+import utils.Pickle;
 
 /**
  *
  * @author Pepito
  */
-public class Capitolato {
+public class Capitolato implements Serializable{
     
     private LinkedList<Voce> capitolatoClienti, capitolatoSubappaltatori;
     
@@ -34,5 +36,13 @@ public class Capitolato {
 
     public LinkedList<Voce> getCapitolatoSubappaltatori() {
         return capitolatoSubappaltatori;
+    }
+    
+    public boolean salvaProgetto(String path) {
+        return Pickle.save(path, this);
+    }
+    
+    public static Progetto caricaProgetto(String path) {
+        return (Progetto) Pickle.load(path);
     }
 }

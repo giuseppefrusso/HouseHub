@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class Pickle {
 
-    public boolean save(String path, Serializable obj) {
+    public static boolean save(String path, Serializable obj) {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path))) {
             objectOutputStream.writeObject(obj);
             objectOutputStream.flush();
@@ -31,7 +31,7 @@ public class Pickle {
         }
     }
 
-    public Serializable load(String path) {
+    public static Serializable load(String path) {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path))) {
             return (Serializable) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException ex) {

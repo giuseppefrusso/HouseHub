@@ -5,11 +5,13 @@
  */
 package models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Pepito
  */
-public class VoceComputo {
+public class VoceComputo implements Serializable{
     
     private int numeroProgressivo;
     private Voce voceBase;
@@ -25,7 +27,7 @@ public class VoceComputo {
         this.prezzoComplessivo = this.quantita * voceBase.getPrezzoUnitario();
     }
 
-    public double calcolaQuantita(String unitaDiMisura, double dimensioni[]) {
+    private double calcolaQuantita(String unitaDiMisura, double dimensioni[]) {
         double partiUguali = dimensioni[0];
         double lunghezza = dimensioni[1];
         double larghezza = dimensioni[2];
@@ -58,6 +60,7 @@ public class VoceComputo {
     public void setVoceBase(Voce voceBase) {
         this.voceBase = voceBase;
         this.quantita = calcolaQuantita(voceBase.getUnitaDiMisura(), this.dimensioni);
+        this.prezzoComplessivo = this.quantita * voceBase.getPrezzoUnitario();
     }
 
     public double[] getDimensioni() {
@@ -67,6 +70,7 @@ public class VoceComputo {
     public void setDimensioni(double[] dimensioni) {
         this.dimensioni = dimensioni;
         this.quantita = calcolaQuantita(this.voceBase.getUnitaDiMisura(), dimensioni);
+        this.prezzoComplessivo = this.quantita * voceBase.getPrezzoUnitario();
     }
 
     public double getPrezzoComplessivo() {
