@@ -15,14 +15,18 @@ import javax.swing.filechooser.FileSystemView;
 public class UtentePerProgettoInterface extends javax.swing.JFrame {
 
     private final File progettoDirectory;
+    private final String user;
     
     /**
      * Creates new form UtentePerProgettoInterface
      * @param progettoDirectory
      */
     public UtentePerProgettoInterface(String user, File progettoDirectory) {
+        this.user = user;
         this.progettoDirectory = progettoDirectory;
         initComponents();
+        tecnicoTextField.setText(user);
+        tecnicoTextField.setEditable(false);
     }
 
     /**
@@ -33,18 +37,120 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        nomeTextField = new javax.swing.JTextField();
+        cognomeTextField = new javax.swing.JTextField();
+        telefonoTextField = new javax.swing.JTextField();
+        cantiereTextField = new javax.swing.JTextField();
+        mailTextField = new javax.swing.JTextField();
+        tecnicoTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(240, 245, 58));
+
+        jPanel1.setBackground(new java.awt.Color(240, 245, 58));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        jLabel4.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        jLabel4.setText("Area Cliente");
+        jLabel4.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(5, 6, 19, 6);
+        jPanel1.add(jLabel4, gridBagConstraints);
+
+        jLabel1.setText("Nome");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 0);
+        jPanel1.add(jLabel1, gridBagConstraints);
+
+        jLabel2.setText("Cognome");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 14, 0);
+        jPanel1.add(jLabel2, gridBagConstraints);
+
+        jLabel3.setText("Telefono");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 14, 0);
+        jPanel1.add(jLabel3, gridBagConstraints);
+
+        jLabel5.setText("Indirizzo Cantiere");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 3);
+        jPanel1.add(jLabel5, gridBagConstraints);
+
+        jLabel6.setText("Mail ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 11, 0);
+        jPanel1.add(jLabel6, gridBagConstraints);
+
+        jLabel7.setText("Tecnico incaricato");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 2, 0);
+        jPanel1.add(jLabel7, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 6, 0);
+        jPanel1.add(nomeTextField, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
+        jPanel1.add(cognomeTextField, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 6, 0);
+        jPanel1.add(telefonoTextField, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
+        jPanel1.add(cantiereTextField, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
+        jPanel1.add(mailTextField, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 1, 0);
+        jPanel1.add(tecnicoTextField, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, Short.MAX_VALUE)
         );
 
         pack();
@@ -87,5 +193,19 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField cantiereTextField;
+    private javax.swing.JTextField cognomeTextField;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField mailTextField;
+    private javax.swing.JTextField nomeTextField;
+    private javax.swing.JTextField tecnicoTextField;
+    private javax.swing.JTextField telefonoTextField;
     // End of variables declaration//GEN-END:variables
 }
