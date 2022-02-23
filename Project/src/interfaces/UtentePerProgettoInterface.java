@@ -20,7 +20,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
      * Creates new form UtentePerProgettoInterface
      * @param progettoDirectory
      */
-    public UtentePerProgettoInterface(File progettoDirectory) {
+    public UtentePerProgettoInterface(String user, File progettoDirectory) {
         this.progettoDirectory = progettoDirectory;
         initComponents();
     }
@@ -81,7 +81,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UtentePerProgettoInterface(FileSystemView.getFileSystemView().getHomeDirectory()).setVisible(true);
+                new UtentePerProgettoInterface("Emanuele Sellitto", FileSystemView.getFileSystemView().getHomeDirectory()).setVisible(true);
             }
         });
     }
