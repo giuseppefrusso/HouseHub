@@ -17,7 +17,7 @@ public class Computo implements Serializable{
     
     private final String nome;
     private double totale;
-    private List<VoceComputo> listaVoci;
+    private LinkedList<VoceComputo> listaVoci;
     
     public Computo(String nome) {
         this.nome = nome;
@@ -41,6 +41,10 @@ public class Computo implements Serializable{
     public void rimuoviVoce(VoceComputo voce) {
         listaVoci.remove(voce);
         totale -= voce.getPrezzoComplessivo();
+    }
+    
+    public LinkedList<VoceComputo> getVociComputo() {
+        return listaVoci;
     }
     
 }
