@@ -40,6 +40,7 @@ public class UserInterface extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         tabbedPane = new javax.swing.JTabbedPane();
         capitolatoPanel = new javax.swing.JPanel();
@@ -64,6 +65,8 @@ public class UserInterface extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         createComputoButton = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HouseHub");
@@ -71,14 +74,19 @@ public class UserInterface extends javax.swing.JFrame {
         capitolatoPanel.setBackground(new java.awt.Color(240, 245, 58));
         capitolatoPanel.setLayout(new java.awt.GridLayout(4, 2));
 
+        jLabel5.setFont(new java.awt.Font("Comic Sans MS", 1, 11)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Capitolato clienti");
+        jLabel5.setText("CAPITOLATO CLIENTI");
+        jLabel5.setMaximumSize(new java.awt.Dimension(100, 17));
         capitolatoPanel.add(jLabel5);
 
+        jLabel6.setFont(new java.awt.Font("Comic Sans MS", 1, 11)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("Capitolato sub-appaltatori");
+        jLabel6.setText("CAPITOLATO SUB-APPALTATORI");
+        jLabel6.setPreferredSize(new java.awt.Dimension(150, 17));
         capitolatoPanel.add(jLabel6);
 
+        jTable1.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -106,6 +114,7 @@ public class UserInterface extends javax.swing.JFrame {
 
         capitolatoPanel.add(jScrollPane1);
 
+        jTable2.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -133,6 +142,7 @@ public class UserInterface extends javax.swing.JFrame {
 
         capitolatoPanel.add(jScrollPane2);
 
+        addVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         addVoceButton.setText("Aggiungi nuova voce");
         addVoceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,6 +151,7 @@ public class UserInterface extends javax.swing.JFrame {
         });
         capitolatoPanel.add(addVoceButton);
 
+        deleteVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         deleteVoceButton.setText("Elimina voce");
         deleteVoceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,6 +160,7 @@ public class UserInterface extends javax.swing.JFrame {
         });
         capitolatoPanel.add(deleteVoceButton);
 
+        modifyVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         modifyVoceButton.setText("Apporta modifiche");
         modifyVoceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,6 +215,18 @@ public class UserInterface extends javax.swing.JFrame {
 
         tabbedPane.addTab("Computo", computoPanel);
 
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        jButton3.setText("jButton3");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 4;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 14, 0);
+        jPanel1.add(jButton3, gridBagConstraints);
+
+        tabbedPane.addTab("tab4", jPanel1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -211,15 +235,21 @@ public class UserInterface extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(tabbedPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1555, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void createComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createComputoButtonActionPerformed
+        //Seleziona le voci disponibili del capitolato in un'altra finestra
+
+        //Recupera il controllo e visualizza il computo corrente
+    }//GEN-LAST:event_createComputoButtonActionPerformed
+
     private void createProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createProgettoButtonActionPerformed
         //Apri finestra per inserire dati dell'utente
-        
+
         //Recupera il controllo e visualizza il progetto corrente nella scheda Computo
     }//GEN-LAST:event_createProgettoButtonActionPerformed
 
@@ -229,25 +259,19 @@ public class UserInterface extends javax.swing.JFrame {
         //visualizza il progetto corrente nella scheda Computo
     }//GEN-LAST:event_openProgettoButtonActionPerformed
 
-    private void createComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createComputoButtonActionPerformed
-        //Seleziona le voci disponibili del capitolato in un'altra finestra
-        
-        //Recupera il controllo e visualizza il computo corrente
-    }//GEN-LAST:event_createComputoButtonActionPerformed
-
-    private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
-        //Nuova interfaccia per inserire la nuova voce
-        
-        //Recupera il controllo e visualizza le voci
-    }//GEN-LAST:event_addVoceButtonActionPerformed
+    private void modifyVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyVoceButtonActionPerformed
+        // Salva su file con path e nome predefiniti
+    }//GEN-LAST:event_modifyVoceButtonActionPerformed
 
     private void deleteVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVoceButtonActionPerformed
         //Bisogna prima aver selezionato la voce
     }//GEN-LAST:event_deleteVoceButtonActionPerformed
 
-    private void modifyVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyVoceButtonActionPerformed
-        // Salva su file con path e nome predefiniti
-    }//GEN-LAST:event_modifyVoceButtonActionPerformed
+    private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
+        //Nuova interfaccia per inserire la nuova voce
+
+        //Recupera il controllo e visualizza le voci
+    }//GEN-LAST:event_addVoceButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,6 +318,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JButton createProgettoButton;
     private javax.swing.JButton deleteVoceButton;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -301,6 +326,7 @@ public class UserInterface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
