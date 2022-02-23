@@ -15,12 +15,9 @@ public class Progetto {
     private Cliente cliente;
     private LinkedList<Computo> computo;
 
-    public Progetto(Cliente cliente, LinkedList<Computo> computo) {
-        this.cliente = cliente;
-        this.computo = computo;
-    }
     public Progetto(Cliente cliente){
         this.cliente = cliente;
+        this.computo = new LinkedList<>();
     }
 
     public Cliente getUtente() {
