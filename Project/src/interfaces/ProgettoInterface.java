@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 public class ProgettoInterface extends javax.swing.JFrame {
 
     private final String user;
-    private File progettoDirectory;
+    private String fileProgetto;
 
     /**
      * Creates new form ProgettoInterface
@@ -52,9 +52,9 @@ public class ProgettoInterface extends javax.swing.JFrame {
         createComputoButton.setEnabled(false);
     }
 
-    public ProgettoInterface(String user, File progettoDirectory) {
+    public ProgettoInterface(String user, String fileProgetto) {
         this.user = user;
-        this.progettoDirectory = progettoDirectory;
+        this.fileProgetto = fileProgetto;
         initComponents();
         schermataProgetto();
         computoLabel.setText("");
@@ -201,15 +201,15 @@ public class ProgettoInterface extends javax.swing.JFrame {
     private void openProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProgettoButtonActionPerformed
         //Scegli cartella da aprire
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-        jfc.setDialogTitle("Apri la cartella del progetto: ");
-        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        jfc.setDialogTitle("Apri il file del progetto: ");
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
 
         int returnValue = jfc.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            if (jfc.getSelectedFile().isDirectory()) {
-                progettoDirectory = jfc.getSelectedFile();
-                System.out.println("You selected the directory: " + progettoDirectory);
+            if (jfc.getSelectedFile().isFile()) {
+                fileProgetto = jfc.getSelectedFile().toString();
+                System.out.println("You selected the file: " + fileProgetto);
             } else {
                 JOptionPane.showMessageDialog(this, "Non hai selezionato una cartella", "Avviso", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -220,7 +220,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         //visualizza il progetto corrente nella scheda Computo
         schermataProgetto();
-        for (File entry : progettoDirectory.listFiles((File dir, String name) -> {
+        for (File entry : fileProgetto.listFiles((File dir, String name) -> {
             return name.startsWith("computo") && name.endsWith(".csv");
         })) {
             computoComboBox.addItem(entry.toString());
@@ -261,7 +261,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         //Apri finestra per inserire dati dell'utente
         EventQueue.invokeLater(() -> {
-            new UtentePerProgettoInterface(user, jfc.getSelectedFile()).setVisible(true);
+            new UtentePerProgettoInterface(user, fileProgetto).setVisible(true);
             dispose();
         });
 
@@ -272,7 +272,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         String computoName = JOptionPane.showInputDialog(this, "Scegli il nome del computo (il nome del file sarà computo_***.csv)");
         
         //Creazione del nuovo file di computo e controllo che non esista già un computo col nome scelto
-        File computoFile = new File(progettoDirectory.toString() + "/computo_"+computoName+".csv");
+        File computoFile = new File(fileProgetto.toString() + "/computo_"+computoName+".csv");
         try {
             if (!computoFile.createNewFile()) {
                 JOptionPane.showMessageDialog(this, "Questo computo esiste già", "Avviso",
@@ -287,7 +287,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         
         //Scrittura del nuovo computo su file di recap (senza totale)
         try {
-            BufferedWriter csvWriter = new BufferedWriter(new FileWriter(progettoDirectory.toString() + "/recap.csv"));
+            BufferedWriter csvWriter = new BufferedWriter(new FileWriter(fileProgetto.toString() + "/recap.csv"));
             csvWriter.append(computoFile.getName()+","+LocalDate.now()+","+0.0);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
@@ -313,7 +313,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         String selectedComputo = (String) computoComboBox.getSelectedItem();
 
         try {
-            BufferedReader csvReader = new BufferedReader(new FileReader(progettoDirectory.toString() + "/recap.csv"));
+            BufferedReader csvReader = new BufferedReader(new FileReader(fileProgetto.toString() + "/recap.csv"));
             String row;
             while ((row = csvReader.readLine()) != null) {
                 String[] data = row.split(",");
