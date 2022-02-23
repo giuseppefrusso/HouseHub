@@ -5,16 +5,23 @@
  */
 package interfaces;
 
+import java.io.File;
+import javax.swing.filechooser.FileSystemView;
+
 /**
  *
  * @author Pepito
  */
 public class UtentePerProgettoInterface extends javax.swing.JFrame {
 
+    private final File progettoDirectory;
+    
     /**
-     * Creates new form UtenteInterface
+     * Creates new form UtentePerProgettoInterface
+     * @param progettoDirectory
      */
-    public UtentePerProgettoInterface() {
+    public UtentePerProgettoInterface(File progettoDirectory) {
+        this.progettoDirectory = progettoDirectory;
         initComponents();
     }
 
@@ -74,7 +81,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UtentePerProgettoInterface().setVisible(true);
+                new UtentePerProgettoInterface(FileSystemView.getFileSystemView().getHomeDirectory()).setVisible(true);
             }
         });
     }

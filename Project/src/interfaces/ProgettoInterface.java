@@ -6,6 +6,9 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
 
 /**
  *
@@ -14,7 +17,7 @@ import java.awt.EventQueue;
 public class ProgettoInterface extends javax.swing.JFrame {
 
     private final String user;
-    
+
     /**
      * Creates new form ProgettoInterface
      */
@@ -30,7 +33,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         initComponents();
         schermataIniziale();
     }
-    
+
     private void schermataIniziale() {
         computoComboBox.setEnabled(false);
         computoLabel.setText("");
@@ -38,6 +41,16 @@ public class ProgettoInterface extends javax.swing.JFrame {
         createComputoButton.setEnabled(false);
     }
     
+    public ProgettoInterface(String user, File progettoDirectory) {
+        this.user = user;
+        initComponents();
+        computoComboBox.setEnabled(true);
+        computoLabel.setText("");
+        visualizzaComputoButton.setEnabled(true);
+        createComputoButton.setEnabled(true);
+        
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -77,6 +90,11 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panel.add(openProgettoButton, gridBagConstraints);
 
+        computoComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computoComboBoxActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -166,12 +184,37 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
     private void openProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProgettoButtonActionPerformed
         //Scegli cartella da aprire
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc.setDialogTitle("Apri la cartella del progetto: ");
+        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int returnValue = jfc.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            if (jfc.getSelectedFile().isDirectory()) {
+                System.out.println("You selected the directory: " + jfc.getSelectedFile());
+            }
+        }
 
         //visualizza il progetto corrente nella scheda Computo
     }//GEN-LAST:event_openProgettoButtonActionPerformed
 
     private void createProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createProgettoButtonActionPerformed
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc.setDialogTitle("Scegli la cartella dove salvare il progetto: ");
+        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int returnValue = jfc.showSaveDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            if (jfc.getSelectedFile().isDirectory()) {
+                System.out.println("You selected the directory: " + jfc.getSelectedFile());
+            }
+        }
+
         //Apri finestra per inserire dati dell'utente
+        EventQueue.invokeLater(() -> {
+            new UtentePerProgettoInterface(jfc.getSelectedFile()).setVisible(true);
+            dispose();
+        });
 
         //Recupera il controllo e visualizza il progetto corrente nella scheda Computo
     }//GEN-LAST:event_createProgettoButtonActionPerformed
@@ -188,6 +231,10 @@ public class ProgettoInterface extends javax.swing.JFrame {
             dispose();
         });
     }//GEN-LAST:event_capitolatoButtonActionPerformed
+
+    private void computoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computoComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_computoComboBoxActionPerformed
 
     /**
      * @param args the command line arguments

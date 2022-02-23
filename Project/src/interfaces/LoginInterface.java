@@ -51,7 +51,7 @@ public class LoginInterface extends javax.swing.JFrame {
         panel.add(userLabel);
 
         userField.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        userField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Antonio", "Emanuele" }));
+        userField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Antonio Pannullo", "Emanuele Sellitto" }));
         panel.add(userField);
 
         passwordLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
