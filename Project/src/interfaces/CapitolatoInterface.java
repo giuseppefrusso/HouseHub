@@ -5,6 +5,8 @@
  */
 package interfaces;
 
+import java.awt.EventQueue;
+
 /**
  *
  * @author Pepito
@@ -175,6 +177,11 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         capitolatoPanel.add(modifyVoceButton, gridBagConstraints);
 
         progettoButton.setText("Progetti");
+        progettoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                progettoButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 3;
@@ -220,6 +227,13 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         //Recupera il controllo e visualizza le voci
     }//GEN-LAST:event_addVoceButtonActionPerformed
+
+    private void progettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_progettoButtonActionPerformed
+        EventQueue.invokeLater(() -> {
+            new ProgettoInterface(user).setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_progettoButtonActionPerformed
 
     /**
      * @param args the command line arguments

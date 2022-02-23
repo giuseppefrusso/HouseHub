@@ -5,19 +5,39 @@
  */
 package interfaces;
 
+import java.awt.EventQueue;
+
 /**
  *
  * @author Pepito
  */
 public class ProgettoInterface extends javax.swing.JFrame {
 
+    private final String user;
+    
     /**
      * Creates new form ProgettoInterface
      */
     public ProgettoInterface() {
+        this.user = "NON_ADMIN";
         initComponents();
+        capitolatoButton.setEnabled(false);
+        schermataIniziale();
     }
 
+    public ProgettoInterface(String user) {
+        this.user = user;
+        initComponents();
+        schermataIniziale();
+    }
+    
+    private void schermataIniziale() {
+        computoComboBox.setEnabled(false);
+        computoLabel.setText("");
+        visualizzaComputoButton.setEnabled(false);
+        createComputoButton.setEnabled(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,7 +54,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         computoComboBox1 = new javax.swing.JComboBox<>();
         computoLabel = new javax.swing.JLabel();
         createProgettoButton = new javax.swing.JButton();
-        visualizeComputo = new javax.swing.JButton();
+        visualizzaComputoButton = new javax.swing.JButton();
         createComputoButton = new javax.swing.JButton();
         capitolatoButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -69,7 +89,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panel.add(computoComboBox1, gridBagConstraints);
 
-        computoLabel.setText("INFO");
+        computoLabel.setText("DATA E TOTALE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -89,12 +109,12 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panel.add(createProgettoButton, gridBagConstraints);
 
-        visualizeComputo.setText("Visualizza");
+        visualizzaComputoButton.setText("Visualizza");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        panel.add(visualizeComputo, gridBagConstraints);
+        panel.add(visualizzaComputoButton, gridBagConstraints);
 
         createComputoButton.setText("Crea nuovo computo");
         createComputoButton.addActionListener(new java.awt.event.ActionListener() {
@@ -109,6 +129,11 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         capitolatoButton.setBackground(new java.awt.Color(255, 51, 51));
         capitolatoButton.setText("Capitolato");
+        capitolatoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                capitolatoButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 5;
@@ -157,6 +182,13 @@ public class ProgettoInterface extends javax.swing.JFrame {
         //Recupera il controllo e visualizza il computo corrente
     }//GEN-LAST:event_createComputoButtonActionPerformed
 
+    private void capitolatoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_capitolatoButtonActionPerformed
+        EventQueue.invokeLater(() -> {
+            new CapitolatoInterface(user).setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_capitolatoButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -187,7 +219,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProgettoInterface().setVisible(true);
+                new ProgettoInterface("Emanuele").setVisible(true);
             }
         });
     }
@@ -202,6 +234,6 @@ public class ProgettoInterface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton openProgettoButton;
     private javax.swing.JPanel panel;
-    private javax.swing.JButton visualizeComputo;
+    private javax.swing.JButton visualizzaComputoButton;
     // End of variables declaration//GEN-END:variables
 }

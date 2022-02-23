@@ -129,7 +129,7 @@ public class LoginInterface extends javax.swing.JFrame {
         String user = (String) userField.getSelectedItem();
         if (passwordField.getText().equals("admin")) {
             EventQueue.invokeLater(() -> {
-                new CapitolatoInterface(user).setVisible(true);
+                new ProgettoInterface(user).setVisible(true);
                 dispose();
             });
         } else {
