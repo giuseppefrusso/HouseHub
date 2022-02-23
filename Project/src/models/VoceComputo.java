@@ -26,9 +26,21 @@ public class VoceComputo {
     }
 
     public double calcolaQuantita(String unitaDiMisura, double dimensioni[]) {
-        if(unitaDiMisura.equals("m")) {
-            
-        }
+        double partiUguali = dimensioni[0];
+        double lunghezza = dimensioni[1];
+        double larghezza = dimensioni[2];
+        double altezza_peso = dimensioni[3];
+        
+        if(unitaDiMisura.equalsIgnoreCase("A corpo") || unitaDiMisura.equalsIgnoreCase("Cadauno"))
+            return partiUguali;
+        else if(unitaDiMisura.equals("m"))
+            return lunghezza * partiUguali;
+        else if(unitaDiMisura.equals("m2"))
+            return lunghezza * larghezza * partiUguali;
+        else if(unitaDiMisura.equals("m3")) 
+            return lunghezza * larghezza * altezza_peso * partiUguali;
+        else
+            return altezza_peso * partiUguali;
     }
     
     public int getNumeroProgressivo() {
@@ -45,6 +57,7 @@ public class VoceComputo {
 
     public void setVoceBase(Voce voceBase) {
         this.voceBase = voceBase;
+        this.quantita = calcolaQuantita(voceBase.getUnitaDiMisura(), this.dimensioni);
     }
 
     public double[] getDimensioni() {
@@ -53,6 +66,7 @@ public class VoceComputo {
 
     public void setDimensioni(double[] dimensioni) {
         this.dimensioni = dimensioni;
+        this.quantita = calcolaQuantita(this.voceBase.getUnitaDiMisura(), dimensioni);
     }
 
     public double getPrezzoComplessivo() {
@@ -62,5 +76,4 @@ public class VoceComputo {
     public double getQuantita() {
         return quantita;
     }
-    
 }
