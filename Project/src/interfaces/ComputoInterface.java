@@ -5,16 +5,21 @@
  */
 package interfaces;
 
+import models.Computo;
+
 /**
  *
  * @author Pepito
  */
 public class ComputoInterface extends javax.swing.JFrame {
 
+    private final Computo computo;
+    
     /**
      * Creates new form ComputoInterface
      */
-    public ComputoInterface() {
+    public ComputoInterface(Computo computo) {
+        this.computo = computo;
         initComponents();
     }
 

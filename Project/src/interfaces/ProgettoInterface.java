@@ -258,16 +258,14 @@ public class ProgettoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_createProgettoButtonActionPerformed
     
     private void createComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createComputoButtonActionPerformed
-        String computoName = JOptionPane.showInputDialog(this, "Scegli il nome del computo (il nome del file sarà computo_***.csv)");
+        String computoName = JOptionPane.showInputDialog(this, "Scegli il nome del computo");
+        if(computoName == null) 
+            return;
         
-        //Creazione del nuovo file di computo e controllo che non esista già un computo col nome scelto
-        
-        
-        //Scrittura del nuovo computo su file di recap (senza totale)
-        
+        Computo computo = new Computo(computoName);
        
         EventQueue.invokeLater(() -> {
-            new ComputoInterface().setVisible(true);
+            new ComputoInterface(computo).setVisible(true);
             dispose();
         });
 
