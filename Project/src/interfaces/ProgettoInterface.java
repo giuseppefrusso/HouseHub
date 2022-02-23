@@ -212,7 +212,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         //Apri finestra per inserire dati dell'utente
         EventQueue.invokeLater(() -> {
-            new UtentePerProgettoInterface(jfc.getSelectedFile()).setVisible(true);
+            new UtentePerProgettoInterface(user, jfc.getSelectedFile()).setVisible(true);
             dispose();
         });
 
