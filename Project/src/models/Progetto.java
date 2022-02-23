@@ -10,5 +10,15 @@ package models;
  * @author Pepito
  */
 public class Progetto {
+    private Cliente utente;
+    private Computo computo;
+
+    public Progetto(Cliente utente, Computo computo) {
+        this.utente = utente;
+        this.computo = computo;
+    }
+    public Progetto(){
+        
+    }
     
 }
