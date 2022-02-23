@@ -32,22 +32,29 @@ import models.Progetto;
 public class ProgettoInterface extends javax.swing.JFrame {
 
     private final String user;
-    private String fileProgetto;
+    private static String fileProgetto;
 
     /**
      * Creates new form ProgettoInterface
+     * @param toEnable
      */
-    public ProgettoInterface() {
+    public ProgettoInterface(boolean toEnable) {
         this.user = "NON_ADMIN";
         initComponents();
         capitolatoButton.setEnabled(false);
-        schermataIniziale();
+        if(toEnable)
+            schermataProgetto();
+        else
+            schermataIniziale();
     }
 
-    public ProgettoInterface(String user) {
+    public ProgettoInterface(String user, boolean toEnable) {
         this.user = user;
         initComponents();
-        schermataIniziale();
+        if(toEnable)
+            schermataProgetto();
+        else
+            schermataIniziale();
     }
 
     private void schermataIniziale() {
@@ -57,20 +64,23 @@ public class ProgettoInterface extends javax.swing.JFrame {
         createComputoButton.setEnabled(false);
     }
 
-    public ProgettoInterface(String user, String fileProgetto) {
-        this.user = user;
-        this.fileProgetto = fileProgetto;
-        initComponents();
-        schermataProgetto();
-        computoLabel.setText("");
-    }
-
     private void schermataProgetto() {
         computoComboBox.setEnabled(true);
         visualizzaComputoButton.setEnabled(true);
         createComputoButton.setEnabled(true);
+        
+        setComputoLabel();
     }
 
+    private void setComputoLabel() {
+        Computo selectedComputo = (Computo) computoComboBox.getSelectedItem();
+        if(selectedComputo == null) {
+            computoLabel.setText("");
+        } else {
+            computoLabel.setText("Data: "+selectedComputo.getData()+", totale: "+selectedComputo.getTotale());
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -208,7 +218,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         jfc.setDialogTitle("Apri il file del progetto");
         jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        FileFilter filter = new FileNameExtensionFilter("File HouseHub", "hh");
+        FileFilter filter = new FileNameExtensionFilter("Progetto HouseHub", "hhp");
         jfc.setFileFilter(filter);
 
         int returnValue = jfc.showOpenDialog(this);
@@ -228,8 +238,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
             computoComboBox.addItem(c);
         }
         
-        //cosa scrivere nella label? vedere cosa sara selezionato
-        computoLabel.setText("Data: ..., Prezzo: ...");
+        setComputoLabel();
     }//GEN-LAST:event_openProgettoButtonActionPerformed
 
     private void createProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createProgettoButtonActionPerformed
@@ -237,14 +246,19 @@ public class ProgettoInterface extends javax.swing.JFrame {
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
         jfc.setDialogTitle("Salva il file del progetto");
         jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        FileFilter filter = new FileNameExtensionFilter("File HouseHub", "hh");
+        FileFilter filter = new FileNameExtensionFilter("File HouseHub", "hhp");
         jfc.setFileFilter(filter);
 
         int returnValue = jfc.showSaveDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
+            if(jfc.getSelectedFile().isFile()) {
+                int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler sovrascrivere il file?");
+                if(choice != JOptionPane.YES_OPTION)
+                    return;
+            }
             fileProgetto = jfc.getSelectedFile().toString();
-            if(!fileProgetto.endsWith(".hh"))
-                fileProgetto = fileProgetto.concat(".hh");
+            if(!fileProgetto.endsWith(".hhp"))
+                fileProgetto = fileProgetto.concat(".hhp");
             System.out.println("You selected the file: " + fileProgetto);
         } else return;
 
@@ -280,8 +294,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_capitolatoButtonActionPerformed
 
     private void computoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computoComboBoxActionPerformed
-        Computo selectedComputo = (Computo) computoComboBox.getSelectedItem();
-        computoLabel.setText("Data: "+selectedComputo.getData()+", totale: "+selectedComputo.getTotale());
+        setComputoLabel();
     }//GEN-LAST:event_computoComboBoxActionPerformed
 
     /**

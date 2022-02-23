@@ -200,7 +200,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         Progetto progetto = new Progetto(cliente);
         progetto.salvaProgetto(fileProgetto);
         EventQueue.invokeLater(() -> {
-            new ProgettoInterface(user, "filepath.hh").setVisible(true);
+            new ProgettoInterface(user, fileProgetto).setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -237,7 +237,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UtentePerProgettoInterface("Emanuele Sellitto", "filepath.hh").setVisible(true);
+                new UtentePerProgettoInterface("Emanuele Sellitto", "filepath.hhp").setVisible(true);
             }
         });
     }
