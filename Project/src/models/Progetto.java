@@ -12,20 +12,28 @@ import java.util.LinkedList;
  * @author Pepito
  */
 public class Progetto {
-    private Cliente cliente;
-    private LinkedList<Computo> computo;
 
-    public Progetto(Cliente cliente){
+    private Cliente cliente;
+    private LinkedList<Computo> listaComputi;
+
+    public Progetto(Cliente cliente) {
         this.cliente = cliente;
-        this.computo = new LinkedList<>();
+        this.listaComputi = new LinkedList<>();
     }
 
     public Cliente getUtente() {
         return cliente;
     }
 
-    public LinkedList<Computo> getComputo() {
-        return computo;
+    public LinkedList<Computo> getListaComputi() {
+        return listaComputi;
     }
-    
+
+    public void aggiungiComputo(Computo computo) {
+        listaComputi.add(computo);
+    }
+
+    public void rimuoviVoce(Computo computo) {
+        listaComputi.remove(computo);
+    }
 }
