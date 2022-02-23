@@ -31,7 +31,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         this.fileProgetto = fileProgetto;
         initComponents();
         tecnicoTextField.setText(user);
-        tecnicoTextField.setEditable(false);
+        //tecnicoTextField.setEditable(false);
     }
 
     /**
