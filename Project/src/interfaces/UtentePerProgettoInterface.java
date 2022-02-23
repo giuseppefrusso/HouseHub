@@ -5,6 +5,9 @@
  */
 package interfaces;
 
+import java.awt.EventQueue;
+import models.*;
+
 import java.io.File;
 import javax.swing.filechooser.FileSystemView;
 
@@ -14,16 +17,18 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class UtentePerProgettoInterface extends javax.swing.JFrame {
 
-    private final File progettoDirectory;
+    //private final File progettoDirectory;
     private final String user;
-    
+    private String fileProgetto;
+
     /**
      * Creates new form UtentePerProgettoInterface
-     * @param progettoDirectory
+     *
+     * @param
      */
-    public UtentePerProgettoInterface(String user, File progettoDirectory) {
+    public UtentePerProgettoInterface(String user, String fileProgetto) {
         this.user = user;
-        this.progettoDirectory = progettoDirectory;
+        this.fileProgetto = fileProgetto;
         initComponents();
         tecnicoTextField.setText(user);
         tecnicoTextField.setEditable(false);
@@ -53,8 +58,10 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         cantiereTextField = new javax.swing.JTextField();
         mailTextField = new javax.swing.JTextField();
         tecnicoTextField = new javax.swing.JTextField();
+        saveButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("House Hub");
         setBackground(new java.awt.Color(240, 245, 58));
 
         jPanel1.setBackground(new java.awt.Color(240, 245, 58));
@@ -70,13 +77,15 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 6, 19, 6);
         jPanel1.add(jLabel4, gridBagConstraints);
 
+        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel1.setText("Nome");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 0);
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 15, 0);
         jPanel1.add(jLabel1, gridBagConstraints);
 
+        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel2.setText("Cognome");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -84,6 +93,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 14, 0);
         jPanel1.add(jLabel2, gridBagConstraints);
 
+        jLabel3.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel3.setText("Telefono");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -91,13 +101,15 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 14, 0);
         jPanel1.add(jLabel3, gridBagConstraints);
 
+        jLabel5.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel5.setText("Indirizzo Cantiere");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 15, 3);
+        gridBagConstraints.insets = new java.awt.Insets(2, 0, 15, 3);
         jPanel1.add(jLabel5, gridBagConstraints);
 
+        jLabel6.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel6.setText("Mail ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -105,6 +117,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 11, 0);
         jPanel1.add(jLabel6, gridBagConstraints);
 
+        jLabel7.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         jLabel7.setText("Tecnico incaricato");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -114,51 +127,88 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 6, 0);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 6, 0);
         jPanel1.add(nomeTextField, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 8, 0);
         jPanel1.add(cognomeTextField, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 6, 0);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 6, 0);
         jPanel1.add(telefonoTextField, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 7;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 7, 0);
         jPanel1.add(cantiereTextField, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 9;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 8, 0);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 8, 0);
         jPanel1.add(mailTextField, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 11;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 1, 0);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(0, 2, 1, 0);
         jPanel1.add(tecnicoTextField, gridBagConstraints);
+
+        saveButton.setText("Salva");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 12;
+        gridBagConstraints.insets = new java.awt.Insets(14, 22, 0, 0);
+        jPanel1.add(saveButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+        Cliente cliente = new Cliente(nomeTextField.getText(), cognomeTextField.getText(), telefonoTextField.getText(),
+                cantiereTextField.getText(), mailTextField.getText(), tecnicoTextField.getText());
+        Progetto progetto = new Progetto(cliente);
+        progetto.salvaProgetto(fileProgetto);
+        EventQueue.invokeLater(() -> {
+            new ProgettoInterface(user, "filepath.hh").setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_saveButtonActionPerformed
+
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -187,7 +237,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new UtentePerProgettoInterface("Emanuele Sellitto", FileSystemView.getFileSystemView().getHomeDirectory()).setVisible(true);
+                new UtentePerProgettoInterface("Emanuele Sellitto", "filepath.hh").setVisible(true);
             }
         });
     }
@@ -205,6 +255,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField mailTextField;
     private javax.swing.JTextField nomeTextField;
+    private javax.swing.JButton saveButton;
     private javax.swing.JTextField tecnicoTextField;
     private javax.swing.JTextField telefonoTextField;
     // End of variables declaration//GEN-END:variables
