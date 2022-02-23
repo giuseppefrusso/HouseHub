@@ -6,19 +6,9 @@
 package interfaces;
 
 import java.awt.EventQueue;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -275,11 +265,9 @@ public class ProgettoInterface extends javax.swing.JFrame {
         String computoName = JOptionPane.showInputDialog(this, "Scegli il nome del computo");
         if(computoName == null) 
             return;
-        
-        Computo computo = new Computo(computoName);
        
         EventQueue.invokeLater(() -> {
-            new ComputoInterface(user, computo).setVisible(true);
+            new ComputoInterface(computoName, fileProgetto).setVisible(true);
             dispose();
         });
 
@@ -327,7 +315,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ProgettoInterface("Emanuele Sellitto").setVisible(true);
+                new ProgettoInterface("Emanuele Sellitto", false).setVisible(true);
             }
         });
     }
