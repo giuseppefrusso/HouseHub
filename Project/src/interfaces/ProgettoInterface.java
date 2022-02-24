@@ -6,9 +6,9 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import java.util.HashSet;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
-import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -235,7 +235,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         //visualizza il progetto corrente nella scheda Computo
         schermataProgetto();
         Progetto progetto = Progetto.caricaProgetto(fileProgetto);
-        LinkedList<Computo> computi = progetto.getListaComputi();
+        HashSet<Computo> computi = progetto.getListaComputi();
         for(Computo c : computi) {
             computoComboBox.addItem(c);
         }
