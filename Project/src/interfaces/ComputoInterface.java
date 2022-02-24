@@ -53,7 +53,6 @@ public class ComputoInterface extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -66,7 +65,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel2.setBackground(new java.awt.Color(240, 245, 58));
-        jPanel2.setLayout(new java.awt.GridBagLayout());
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -81,10 +80,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        jPanel2.add(jScrollPane2, gridBagConstraints);
+        jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         aggiungiButton.setText("Aggiungi nuova voce");
         aggiungiButton.addActionListener(new java.awt.event.ActionListener() {
@@ -92,11 +88,7 @@ public class ComputoInterface extends javax.swing.JFrame {
                 aggiungiButtonActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
-        jPanel2.add(aggiungiButton, gridBagConstraints);
+        jPanel2.add(aggiungiButton, java.awt.BorderLayout.PAGE_END);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
