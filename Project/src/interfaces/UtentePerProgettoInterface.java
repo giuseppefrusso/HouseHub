@@ -6,6 +6,10 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import models.*;
 
 
@@ -190,11 +194,15 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:
         Cliente cliente = new Cliente(nomeTextField.getText(), cognomeTextField.getText(), telefonoTextField.getText(),
                 cantiereTextField.getText(), mailTextField.getText(), tecnicoTextField.getText());
         Progetto progetto = new Progetto(cliente);
-        progetto.salvaProgetto(fileProgetto);
+        try {
+            progetto.salvaProgetto(fileProgetto);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         EventQueue.invokeLater(() -> {
             new ProgettoInterface(true).setVisible(true);
             dispose();

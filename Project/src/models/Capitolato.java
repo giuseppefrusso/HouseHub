@@ -24,14 +24,22 @@ public class Capitolato implements Serializable{
         capitolatoSubappaltatori = new HashMap<>();
     }
     
-    public void addVoceCliente(Voce voce) {
-        capitolatoClienti.put(voce.getCodice(), voce);
+    public Voce addVoceCliente(Voce voce) {
+        return capitolatoClienti.put(voce.getCodice(), voce);
     }
     
-    public void addVoceSubappaltori(Voce voce) {
-        capitolatoSubappaltatori.put(voce.getCodice(), voce);
+    public Voce addVoceSubappaltori(Voce voce) {
+        return capitolatoSubappaltatori.put(voce.getCodice(), voce);
     }
 
+    public Voce removeVoceCliente(String codice) {
+        return capitolatoClienti.remove(codice);
+    }
+    
+    public Voce removeVoceSubappaltatori(String codice) {
+        return capitolatoSubappaltatori.remove(codice);
+    }
+    
     public HashMap<String, Voce> getCapitolatoClienti() {
         return capitolatoClienti;
     }
