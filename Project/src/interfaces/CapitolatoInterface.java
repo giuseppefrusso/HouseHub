@@ -36,6 +36,8 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     public CapitolatoInterface(Voce voceCliente, Voce voceSubappaltatore) {
         initCapitolati();
+        clientiModel = initTableModel();
+        subModel = initTableModel();
         capitolato.addVoceCliente(voceCliente);
         capitolato.addVoceSubappaltori(voceSubappaltatore);
         initComponents();
@@ -242,12 +244,13 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         }
 
         capitolato.removeVoceCliente(selectedCodice);
+        capitolato.removeVoceSubappaltatori(selectedCodice);
     }//GEN-LAST:event_deleteVoceButtonActionPerformed
 
     private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
         //Nuova interfaccia per inserire la nuova voce
         EventQueue.invokeLater(() -> {
-            new NuovaVoceInterface().setVisible(true);
+            new NuovaVoceInCapitolatoInterface().setVisible(true);
             dispose();
         });
 
