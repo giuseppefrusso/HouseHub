@@ -60,16 +60,16 @@ public class LoginInterface extends javax.swing.JFrame {
         panel.setBackground(new java.awt.Color(240, 245, 58));
         panel.setLayout(new java.awt.GridLayout(3, 2, 10, 10));
 
-        userLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        userLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         userLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         userLabel.setText("Nome utente");
         panel.add(userLabel);
 
-        userField.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        userField.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         userField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Antonio Pannullo", "Emanuele Sellitto" }));
         panel.add(userField);
 
-        passwordLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        passwordLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         passwordLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         passwordLabel.setText("Password");
         panel.add(passwordLabel);
@@ -81,7 +81,7 @@ public class LoginInterface extends javax.swing.JFrame {
         });
         panel.add(passwordField);
 
-        roleComboBox.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        roleComboBox.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
         roleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Utente" }));
         roleComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
