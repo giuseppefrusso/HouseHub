@@ -21,12 +21,13 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     protected DefaultTableModel clientiModel, subModel;
     private Capitolato capitolato;
     private final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
-    private static boolean saved = true;
+    private boolean saved;
 
     /**
      * Creates new form UserInterface
      */
     public CapitolatoInterface() {
+        saved = true;
         clientiModel = initTableModel();
         subModel = initTableModel();
         initCapitolati();
@@ -35,6 +36,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     }
 
     public CapitolatoInterface(Voce voceCliente, Voce voceSubappaltatore) {
+        saved = false;
         clientiModel = initTableModel();
         subModel = initTableModel();
         initCapitolati();
