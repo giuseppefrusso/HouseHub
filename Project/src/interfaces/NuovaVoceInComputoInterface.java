@@ -6,7 +6,6 @@
 package interfaces;
 
 import java.awt.EventQueue;
-import javax.swing.table.DefaultTableModel;
 import models.Computo;
 
 /**
@@ -16,47 +15,13 @@ import models.Computo;
 public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
     private Computo computo;
-    private DefaultTableModel model;
-
+    
     /**
      * Creates new form NuovaVoceInComputoInterface
      */
     public NuovaVoceInComputoInterface(Computo computo) {
         this.computo = computo;
-        this.model = initTableModel();
         initComponents();
-    }
-
-    private DefaultTableModel initTableModel() {
-        DefaultTableModel tm = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                if (column == 4) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            @Override
-            public Class getColumnClass(int columnIndex) {
-                switch (columnIndex) {
-                    case 3:
-                        return Double.class;
-                    case 4:
-                        return Boolean.class;
-                    default:
-                        return String.class;
-                }
-            }
-        };
-        tm.addColumn("Codice");
-        tm.addColumn("Descrizione");
-        tm.addColumn("Unità di misura");
-        tm.addColumn("Prezzo unitario");
-        tm.addColumn("Scegli");
-
-        return tm;
     }
 
     /**
@@ -115,7 +80,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
         //Aggiungi voci selezionate a LinkedList
-
+        
         EventQueue.invokeLater(() -> {
             new ComputoInterface().setVisible(true);
             dispose();
