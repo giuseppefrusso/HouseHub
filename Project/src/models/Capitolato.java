@@ -5,6 +5,8 @@
  */
 package models;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import utils.Pickle;
@@ -46,11 +48,11 @@ public class Capitolato implements Serializable{
         return capitolatoSubappaltatori.get(codice);
     }
     
-    public boolean salvaCapitolato(String path) {
-        return Pickle.save(path, this);
+    public void salvaCapitolato(String path) throws FileNotFoundException, IOException {
+        Pickle.save(path, this);
     }
     
-    public static Capitolato caricaCapitolato(String path) {
+    public static Capitolato caricaCapitolato(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
         return (Capitolato) Pickle.load(path);
     }
 }

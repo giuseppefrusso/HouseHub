@@ -6,19 +6,71 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import models.Capitolato;
+import models.Voce;
 
 /**
  *
  * @author Pepito
  */
 public class CapitolatoInterface extends javax.swing.JFrame {
-    
+
+    protected DefaultTableModel clientiModel, subModel;
+    private Capitolato capitolato;
+    private final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
+
     /**
      * Creates new form UserInterface
-     * @param user
      */
-    public CapitolatoInterface(String user) {
+    public CapitolatoInterface() {
+        initCapitolati();
+        clientiModel = initTableModel();
+        subModel = initTableModel();
         initComponents();
+    }
+
+    public CapitolatoInterface(Voce voceCliente, Voce voceSubappaltatore) {
+        initCapitolati();
+        capitolato.addVoceCliente(voceCliente);
+        capitolato.addVoceSubappaltori(voceSubappaltatore);
+        initComponents();
+    }
+
+    private void initCapitolati() {
+        try {
+            capitolato = Capitolato.caricaCapitolato(FILEPATH);
+            return;
+        } catch (IOException ex) {
+            capitolato = new Capitolato();
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            capitolato.salvaCapitolato(FILEPATH);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private DefaultTableModel initTableModel() {
+        DefaultTableModel tm = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tm.addColumn("Codice");
+        tm.addColumn("Descrizione");
+        tm.addColumn("Unità di misura");
+        tm.addColumn("Prezzo unitario");
+
+        return tm;
     }
 
     /**
@@ -35,12 +87,12 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        clientiTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        subTable = new javax.swing.JTable();
         addVoceButton = new javax.swing.JButton();
         deleteVoceButton = new javax.swing.JButton();
-        modifyVoceButton = new javax.swing.JButton();
+        salvaCapitolatoButton = new javax.swing.JButton();
         progettoButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -72,31 +124,9 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         capitolatoPanel.add(jLabel6, gridBagConstraints);
 
-        jTable1.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Codice", "Descrizione", "Unità di misura", "Prezzo"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
+        clientiTable.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        clientiTable.setModel(clientiModel);
+        jScrollPane1.setViewportView(clientiTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -104,31 +134,9 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 2;
         capitolatoPanel.add(jScrollPane1, gridBagConstraints);
 
-        jTable2.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Codice", "Descrizione", "Unità di misura", "Prezzo"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Double.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(jTable2);
+        subTable.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        subTable.setModel(subModel);
+        jScrollPane2.setViewportView(subTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -160,19 +168,20 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridy = 3;
         capitolatoPanel.add(deleteVoceButton, gridBagConstraints);
 
-        modifyVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        modifyVoceButton.setText("Apporta modifiche");
-        modifyVoceButton.addActionListener(new java.awt.event.ActionListener() {
+        salvaCapitolatoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
+        salvaCapitolatoButton.setText("Apporta modifiche");
+        salvaCapitolatoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                modifyVoceButtonActionPerformed(evt);
+                salvaCapitolatoButtonActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        capitolatoPanel.add(modifyVoceButton, gridBagConstraints);
+        capitolatoPanel.add(salvaCapitolatoButton, gridBagConstraints);
 
+        progettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         progettoButton.setText("Progetti");
         progettoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,12 +215,31 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void modifyVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyVoceButtonActionPerformed
-        // Salva su file con path e nome predefiniti
-    }//GEN-LAST:event_modifyVoceButtonActionPerformed
+    private void salvaCapitolatoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvaCapitolatoButtonActionPerformed
+        try {
+            capitolato.salvaCapitolato(FILEPATH);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_salvaCapitolatoButtonActionPerformed
 
     private void deleteVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVoceButtonActionPerformed
         //Bisogna prima aver selezionato la voce
+        int selectedRow = clientiTable.getSelectedRow();
+        if (selectedRow == -1) {
+            selectedRow = subTable.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Nessuna voce selezionata", "Avviso", JOptionPane.WARNING_MESSAGE);
+                return;
+            } else {
+                //Seleziona da subTable
+            }
+        } else {
+            //Seleziona da clientiTable
+            
+        }
+
+
     }//GEN-LAST:event_deleteVoceButtonActionPerformed
 
     private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
@@ -264,7 +292,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CapitolatoInterface("Emanuele").setVisible(true);
+                new CapitolatoInterface().setVisible(true);
             }
         });
     }
@@ -272,15 +300,15 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addVoceButton;
     private javax.swing.JPanel capitolatoPanel;
+    private javax.swing.JTable clientiTable;
     private javax.swing.JButton deleteVoceButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JButton modifyVoceButton;
     private javax.swing.JButton progettoButton;
+    private javax.swing.JButton salvaCapitolatoButton;
+    private javax.swing.JTable subTable;
     // End of variables declaration//GEN-END:variables
 }
