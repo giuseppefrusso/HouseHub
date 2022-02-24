@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -41,6 +42,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     public ComputoInterface() {
         initComponents();
+        this.setBackground(Color.yellow);
     }
 
     /**
@@ -53,17 +55,20 @@ public class ComputoInterface extends javax.swing.JFrame {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         aggiungiButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("House Hub");
+        setBackground(new java.awt.Color(255, 255, 0));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jPanel1.setBackground(new java.awt.Color(240, 245, 58));
-        jPanel1.setLayout(new java.awt.GridBagLayout());
+        jPanel2.setBackground(new java.awt.Color(240, 245, 58));
+        jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -74,13 +79,12 @@ public class ComputoInterface extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane2.setViewportView(jTable2);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 4, 0);
-        jPanel1.add(jScrollPane1, gridBagConstraints);
+        jPanel2.add(jScrollPane2, gridBagConstraints);
 
         aggiungiButton.setText("Aggiungi nuova voce");
         aggiungiButton.addActionListener(new java.awt.event.ActionListener() {
@@ -91,22 +95,18 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
-        jPanel1.add(aggiungiButton, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(4, 0, 0, 0);
+        jPanel2.add(aggiungiButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 507, Short.MAX_VALUE)
         );
 
         pack();
@@ -149,14 +149,14 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ComputoInterface(new Computo("computo"), "progetto.hhp").setVisible(true);
+            new ComputoInterface(new Computo("computo"), "C:\\Users\\gerar\\Desktop\\progetto.hhp").setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aggiungiButton;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }
