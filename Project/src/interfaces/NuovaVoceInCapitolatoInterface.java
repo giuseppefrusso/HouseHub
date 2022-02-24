@@ -173,18 +173,37 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
+        Double prezzo;
+        if (codiceTextField.getText().equals("") || descrizioneTextArea.getText().equals("") || misuraTextField.getText().equals("")
+                || prezzoTextField.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Non hai riempito tutti i campi", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            prezzo = Double.parseDouble(prezzoTextField.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Il prezzo non è corretto", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         if (flag == false) {
             int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler inserire la voce in capitolato clienti?");
-            if (choice != JOptionPane.YES_OPTION) {
+            if (choice == JOptionPane.YES_OPTION) {
+
                 voceCliente = new Voce(codiceTextField.getText(), descrizioneTextArea.getText(), misuraTextField.getText(),
-                        Double.parseDouble(prezzoTextField.getText()));
+                        prezzo);
                 flag = true;
+                codiceTextField.setEditable(false);
+                misuraTextField.setEditable(false);
+
             }
+
         } else {
+
             int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler inserire la voce in capitolato sub-appaltatori?");
-            if (choice != JOptionPane.YES_OPTION) {
+            if (choice == JOptionPane.YES_OPTION) {
                 voceSubAppaltatori = new Voce(codiceTextField.getText(), descrizioneTextArea.getText(), misuraTextField.getText(),
-                        Double.parseDouble(prezzoTextField.getText()));
+                        prezzo);
                 EventQueue.invokeLater(() -> {
                     new CapitolatoInterface(voceCliente, voceSubAppaltatori).setVisible(true);
                     dispose();
