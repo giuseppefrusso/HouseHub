@@ -53,6 +53,10 @@ public class Computo implements Serializable{
         return result;
     }
     
+    public void svuotaVociComputo() {
+        listaVoci.clear();
+    }
+    
     public HashSet<VoceComputo> getVociComputo() {
         return listaVoci;
     }

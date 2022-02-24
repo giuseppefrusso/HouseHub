@@ -20,7 +20,7 @@ public class VoceComputo implements Serializable{
     private double prezzoComplessivo;
     private double quantita;
 
-    public VoceComputo(int numeroProgressivo, Voce voceBase, double[] dimensioni, double prezzoComplessivo) {
+    public VoceComputo(int numeroProgressivo, Voce voceBase, double[] dimensioni) {
         this.numeroProgressivo = numeroProgressivo;
         this.voceBase = voceBase;
         this.dimensioni = dimensioni;
