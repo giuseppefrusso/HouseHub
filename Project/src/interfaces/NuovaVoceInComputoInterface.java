@@ -77,8 +77,10 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new NuovaVoceInComputoInterface(new Computo("computo")).setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new NuovaVoceInComputoInterface(new Computo("computo")).setVisible(true);
+            }
         });
     }
 
