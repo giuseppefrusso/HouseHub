@@ -14,17 +14,17 @@ import models.Progetto;
  */
 public class ComputoInterface extends javax.swing.JFrame {
 
-    private final Computo computo;
-    private final Progetto progetto;
+    private static Computo computo;
+    private static Progetto progetto;
     
     /**
      * Creates new form ComputoInterface
-     * @param computoName
+     * @param computo
      * @param fileProgetto
      */
-    public ComputoInterface(String computoName, String fileProgetto) {
-        this.computo = new Computo(computoName);
-        this.progetto = Progetto.caricaProgetto(fileProgetto);
+    public ComputoInterface(Computo computo, String fileProgetto) {
+        ComputoInterface.computo = computo;
+        ComputoInterface.progetto = Progetto.caricaProgetto(fileProgetto);
         initComponents();
     }
 
@@ -81,10 +81,8 @@ public class ComputoInterface extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ComputoInterface("computo","progetto.hhp").setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ComputoInterface(new Computo("computo"),"progetto.hhp").setVisible(true);
         });
     }
 

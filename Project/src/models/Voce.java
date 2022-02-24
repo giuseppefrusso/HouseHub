@@ -6,6 +6,7 @@
 package models;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -51,4 +52,25 @@ public class Voce implements Serializable{
     public void setPrezzo(double prezzoUnitario) {
         this.prezzoUnitario = prezzoUnitario;
     }       
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Voce other = (Voce) obj;
+        return Objects.equals(this.codice, other.codice);
+    }
 }

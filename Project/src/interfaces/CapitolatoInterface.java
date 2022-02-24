@@ -12,15 +12,12 @@ import java.awt.EventQueue;
  * @author Pepito
  */
 public class CapitolatoInterface extends javax.swing.JFrame {
-
-    private final String user;
     
     /**
      * Creates new form UserInterface
      * @param user
      */
     public CapitolatoInterface(String user) {
-        this.user = user;
         initComponents();
     }
 
@@ -219,13 +216,17 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
         //Nuova interfaccia per inserire la nuova voce
+        EventQueue.invokeLater(() -> {
+            new NuovaVoceInterface().setVisible(true);
+            dispose();
+        });
 
         //Recupera il controllo e visualizza le voci
     }//GEN-LAST:event_addVoceButtonActionPerformed
 
     private void progettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_progettoButtonActionPerformed
         EventQueue.invokeLater(() -> {
-            new ProgettoInterface(user).setVisible(true);
+            new ProgettoInterface(false).setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_progettoButtonActionPerformed

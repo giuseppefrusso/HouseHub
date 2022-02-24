@@ -7,7 +7,8 @@ package models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.Objects;
 
 /**
  *
@@ -17,13 +18,13 @@ public class Computo implements Serializable{
     
     private final String nome, data;
     private double totale;
-    private LinkedList<VoceComputo> listaVoci;
+    private HashSet<VoceComputo> listaVoci;
     
     public Computo(String nome) {
         this.nome = nome;
         this.data = LocalDate.now().toString();
         totale = 0.0;
-        listaVoci = new LinkedList<>();
+        listaVoci = new HashSet<>();
     }
 
     public String getNome() {
@@ -38,22 +39,47 @@ public class Computo implements Serializable{
         return totale;
     }
     
-    public void aggiungiVoce(VoceComputo voce) {
-        listaVoci.add(voce);
-        totale += voce.getPrezzoComplessivo();
+    public boolean aggiungiVoce(VoceComputo voce) {
+        boolean result = listaVoci.add(voce);
+        if(result)
+            totale += voce.getPrezzoComplessivo();
+        return result;
     }
     
-    public void rimuoviVoce(VoceComputo voce) {
-        listaVoci.remove(voce);
-        totale -= voce.getPrezzoComplessivo();
+    public boolean rimuoviVoce(VoceComputo voce) {
+        boolean result = listaVoci.remove(voce);
+        if(result)
+            totale -= voce.getPrezzoComplessivo();
+        return result;
     }
     
-    public LinkedList<VoceComputo> getVociComputo() {
+    public HashSet<VoceComputo> getVociComputo() {
         return listaVoci;
     }
     
     @Override
     public String toString() {
         return nome;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Computo other = (Computo) obj;
+        return Objects.equals(this.nome, other.nome);
     }
 }

@@ -21,7 +21,7 @@ import models.Progetto;
  */
 public class ProgettoInterface extends javax.swing.JFrame {
 
-    private final String user;
+    private static String user;
     private static String fileProgetto;
 
     /**
@@ -29,9 +29,8 @@ public class ProgettoInterface extends javax.swing.JFrame {
      * @param toEnable
      */
     public ProgettoInterface(boolean toEnable) {
-        this.user = "NON_ADMIN";
         initComponents();
-        capitolatoButton.setEnabled(false);
+        controlloUtente();
         if(toEnable)
             schermataProgetto();
         else
@@ -39,14 +38,22 @@ public class ProgettoInterface extends javax.swing.JFrame {
     }
 
     public ProgettoInterface(String user, boolean toEnable) {
-        this.user = user;
+        ProgettoInterface.user = user;
         initComponents();
+        controlloUtente();
         if(toEnable)
             schermataProgetto();
         else
             schermataIniziale();
     }
 
+    private void controlloUtente() {
+        if(ProgettoInterface.user.equals("NON_ADMIN"))
+            capitolatoButton.setEnabled(false);
+        else
+            capitolatoButton.setEnabled(true);
+    }
+    
     private void schermataIniziale() {
         computoComboBox.setEnabled(false);
         computoLabel.setText("");
@@ -149,6 +156,11 @@ public class ProgettoInterface extends javax.swing.JFrame {
         panel.add(createProgettoButton, gridBagConstraints);
 
         visualizzaComputoButton.setText("Visualizza");
+        visualizzaComputoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                visualizzaComputoButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -266,8 +278,10 @@ public class ProgettoInterface extends javax.swing.JFrame {
         if(computoName == null) 
             return;
        
+        Computo computo = new Computo(computoName);
+        
         EventQueue.invokeLater(() -> {
-            new ComputoInterface(computoName, fileProgetto).setVisible(true);
+            new ComputoInterface(computo, fileProgetto).setVisible(true);
             dispose();
         });
 
@@ -284,6 +298,15 @@ public class ProgettoInterface extends javax.swing.JFrame {
     private void computoComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computoComboBoxActionPerformed
         setComputoLabel();
     }//GEN-LAST:event_computoComboBoxActionPerformed
+
+    private void visualizzaComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizzaComputoButtonActionPerformed
+        Computo computo = (Computo) computoComboBox.getSelectedItem();
+        
+        EventQueue.invokeLater(() -> {
+            new ComputoInterface(computo, fileProgetto).setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_visualizzaComputoButtonActionPerformed
 
     /**
      * @param args the command line arguments

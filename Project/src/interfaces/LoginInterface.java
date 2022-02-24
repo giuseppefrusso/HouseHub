@@ -129,7 +129,7 @@ public class LoginInterface extends javax.swing.JFrame {
         String user = (String) userField.getSelectedItem();
         if (passwordField.getText().equals("admin")) {
             EventQueue.invokeLater(() -> {
-                new ProgettoInterface(user).setVisible(true);
+                new ProgettoInterface(user, false).setVisible(true);
                 dispose();
             });
         } else {
@@ -139,7 +139,7 @@ public class LoginInterface extends javax.swing.JFrame {
 
     private void loginAsClient() {
         EventQueue.invokeLater(() -> {
-            new ProgettoInterface().setVisible(true);
+            new ProgettoInterface("NON_ADMIN", false).setVisible(true);
             dispose();
         });
     }

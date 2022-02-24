@@ -8,8 +8,6 @@ package interfaces;
 import java.awt.EventQueue;
 import models.*;
 
-import java.io.File;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  *
@@ -17,17 +15,15 @@ import javax.swing.filechooser.FileSystemView;
  */
 public class UtentePerProgettoInterface extends javax.swing.JFrame {
 
-    //private final File progettoDirectory;
-    private final String user;
-    private String fileProgetto;
+    private final String fileProgetto;
 
     /**
      * Creates new form UtentePerProgettoInterface
      *
-     * @param
+     * @param user
+     * @param fileProgetto 
      */
     public UtentePerProgettoInterface(String user, String fileProgetto) {
-        this.user = user;
         this.fileProgetto = fileProgetto;
         initComponents();
         tecnicoTextField.setText(user);
@@ -200,7 +196,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         Progetto progetto = new Progetto(cliente);
         progetto.salvaProgetto(fileProgetto);
         EventQueue.invokeLater(() -> {
-            new ProgettoInterface(user, fileProgetto).setVisible(true);
+            new ProgettoInterface(true).setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_saveButtonActionPerformed

@@ -6,7 +6,7 @@
 package models;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.HashSet;
 import utils.Pickle;
 
 /**
@@ -16,27 +16,27 @@ import utils.Pickle;
 public class Progetto implements Serializable{
 
     private final Cliente cliente;
-    private LinkedList<Computo> listaComputi;
+    private HashSet<Computo> listaComputi;
 
     public Progetto(Cliente cliente) {
         this.cliente = cliente;
-        this.listaComputi = new LinkedList<>();
+        this.listaComputi = new HashSet<>();
     }
 
     public Cliente getUtente() {
         return cliente;
     }
 
-    public LinkedList<Computo> getListaComputi() {
+    public HashSet<Computo> getListaComputi() {
         return listaComputi;
     }
 
-    public void aggiungiComputo(Computo computo) {
-        listaComputi.add(computo);
+    public boolean aggiungiComputo(Computo computo) {
+        return listaComputi.add(computo);
     }
 
-    public void rimuoviComputo(Computo computo) {
-        listaComputi.remove(computo);
+    public boolean rimuoviComputo(Computo computo) {
+        return listaComputi.remove(computo);
     }
     
     public boolean salvaProgetto(String path) {

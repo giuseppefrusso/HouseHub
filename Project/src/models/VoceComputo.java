@@ -6,6 +6,7 @@
 package models;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -79,5 +80,28 @@ public class VoceComputo implements Serializable{
 
     public double getQuantita() {
         return quantita;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.voceBase);
+        return hash;
+    }
+
+    //togliere se si vuole permettere di avere più vociComputo con lo stesso id nello stesso computo
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final VoceComputo other = (VoceComputo) obj;
+        return Objects.equals(this.voceBase, other.voceBase);
     }
 }
