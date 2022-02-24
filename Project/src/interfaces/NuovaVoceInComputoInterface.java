@@ -6,6 +6,7 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import javax.swing.table.DefaultTableModel;
 import models.Computo;
 
 /**
@@ -15,14 +16,50 @@ import models.Computo;
 public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
     private Computo computo;
-    
+    private DefaultTableModel model;
+
     /**
      * Creates new form NuovaVoceInComputoInterface
      */
     public NuovaVoceInComputoInterface(Computo computo) {
         this.computo = computo;
+        this.model = initTableModel();
         initComponents();
     }
+
+    private DefaultTableModel initTableModel() {
+        DefaultTableModel tm = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                if (column == 4) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                switch (columnIndex) {
+                    case 3:
+                        return Double.class;
+                    case 4:
+                        return Boolean.class;
+                    default:
+                        return String.class;
+                }
+            }
+        };
+        tm.addColumn("Codice");
+        tm.addColumn("Descrizione");
+        tm.addColumn("Unità di misura");
+        tm.addColumn("Prezzo unitario");
+        tm.addColumn("Scegli");
+
+        return tm;
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,60 +69,51 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel1 = new javax.swing.JPanel();
-        confermaButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(240, 245, 58));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 0));
+        jPanel2.setLayout(new java.awt.BorderLayout());
 
-        confermaButton.setText("Conferma");
-        confermaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confermaButtonActionPerformed(evt);
-            }
-        });
+        jTable1.setModel(model);
+        jScrollPane1.setViewportView(jTable1);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(172, Short.MAX_VALUE)
-                .addComponent(confermaButton)
-                .addGap(139, 139, 139))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(153, Short.MAX_VALUE)
-                .addComponent(confermaButton)
-                .addGap(122, 122, 122))
-        );
+        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 0));
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        jButton1.setText("Conferma");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        jPanel3.add(jButton1, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
-        //Aggiungi voci selezionate a LinkedList
-        
-        EventQueue.invokeLater(() -> {
-            new ComputoInterface().setVisible(true);
-            dispose();
-        });
-    }//GEN-LAST:event_confermaButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -124,7 +152,10 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton confermaButton;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
