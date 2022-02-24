@@ -7,8 +7,6 @@ package interfaces;
 
 import java.awt.EventQueue;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Capitolato;
@@ -23,26 +21,46 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     protected DefaultTableModel clientiModel, subModel;
     private Capitolato capitolato;
     private final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
+    private static boolean saved = true;
 
     /**
      * Creates new form UserInterface
      */
     public CapitolatoInterface() {
-        initCapitolati();
         clientiModel = initTableModel();
         subModel = initTableModel();
+        initCapitolati();
+        refreshTables();
         initComponents();
     }
 
     public CapitolatoInterface(Voce voceCliente, Voce voceSubappaltatore) {
-        initCapitolati();
         clientiModel = initTableModel();
         subModel = initTableModel();
+        initCapitolati();
         capitolato.addVoceCliente(voceCliente);
         capitolato.addVoceSubappaltori(voceSubappaltatore);
+        refreshTables();
         initComponents();
     }
 
+    private void refreshTables() {
+        clientiModel.setRowCount(0);
+        subModel.setRowCount(0);
+        
+        for(String codice : capitolato.getCapitolatoClienti().keySet()) {
+            Voce voce = capitolato.getVoceCliente(codice);
+            Object[] row = {codice, voce.getDescrizione(), voce.getUnitaDiMisura(), voce.getPrezzoUnitario()};
+            clientiModel.addRow(row);
+        }
+        
+        for(String codice : capitolato.getCapitolatoSubappaltatori().keySet()) {
+            Voce voce = capitolato.getVoceSubappaltatore(codice);
+            Object[] row = {codice, voce.getDescrizione(), voce.getUnitaDiMisura(), voce.getPrezzoUnitario()};
+            subModel.addRow(row);
+        }
+    }
+    
     private void initCapitolati() {
         try {
             capitolato = Capitolato.caricaCapitolato(FILEPATH);
@@ -98,8 +116,13 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         progettoButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("HouseHub");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         capitolatoPanel.setBackground(new java.awt.Color(240, 245, 58));
         capitolatoPanel.setLayout(new java.awt.GridBagLayout());
@@ -128,6 +151,11 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         clientiTable.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         clientiTable.setModel(clientiModel);
+        clientiTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clientiTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(clientiTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -138,6 +166,11 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         subTable.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         subTable.setModel(subModel);
+        subTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                subTableMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(subTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -171,7 +204,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         capitolatoPanel.add(deleteVoceButton, gridBagConstraints);
 
         salvaCapitolatoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        salvaCapitolatoButton.setText("Apporta modifiche");
+        salvaCapitolatoButton.setText("Salva");
         salvaCapitolatoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 salvaCapitolatoButtonActionPerformed(evt);
@@ -218,13 +251,19 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void salvaCapitolatoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvaCapitolatoButtonActionPerformed
-        try {
-            capitolato.salvaCapitolato(FILEPATH);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
+        salva();
     }//GEN-LAST:event_salvaCapitolatoButtonActionPerformed
 
+    private void salva() {
+        try {
+            capitolato.salvaCapitolato(FILEPATH);
+            saved = true;
+            capitolato = Capitolato.caricaCapitolato(FILEPATH);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     private void deleteVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVoceButtonActionPerformed
         //Bisogna prima aver selezionato la voce
         String selectedCodice;
@@ -245,10 +284,13 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         capitolato.removeVoceCliente(selectedCodice);
         capitolato.removeVoceSubappaltatori(selectedCodice);
+        saved = false;
+        refreshTables();
     }//GEN-LAST:event_deleteVoceButtonActionPerformed
 
     private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
         //Nuova interfaccia per inserire la nuova voce
+        saved = false;
         EventQueue.invokeLater(() -> {
             new NuovaVoceInCapitolatoInterface().setVisible(true);
             dispose();
@@ -258,11 +300,38 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_addVoceButtonActionPerformed
 
     private void progettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_progettoButtonActionPerformed
+        if(saved == false) {
+            int choice = JOptionPane.showConfirmDialog(this, "Vuoi salvare prima di passare ai progetti?");
+            if(choice == JOptionPane.YES_OPTION)
+                salva();
+            else if(choice == JOptionPane.CANCEL_OPTION) 
+                return;
+        }   
+        
         EventQueue.invokeLater(() -> {
             new ProgettoInterface(false).setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_progettoButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if(saved == false) {
+            int choice = JOptionPane.showConfirmDialog(this, "Vuoi salvare prima di chiudere?");
+            if(choice == JOptionPane.YES_OPTION)
+                salva();
+            else if(choice == JOptionPane.CANCEL_OPTION) 
+                return;
+        }
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void clientiTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clientiTableMouseClicked
+        subTable.clearSelection();
+    }//GEN-LAST:event_clientiTableMouseClicked
+
+    private void subTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subTableMouseClicked
+        clientiTable.clearSelection();
+    }//GEN-LAST:event_subTableMouseClicked
 
     /**
      * @param args the command line arguments
