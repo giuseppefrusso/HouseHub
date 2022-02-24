@@ -6,6 +6,7 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -29,34 +30,38 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
     /**
      * Creates new form ProgettoInterface
+     *
      * @param toEnable
      */
     public ProgettoInterface(boolean toEnable) {
         initComponents();
         controlloUtente();
-        if(toEnable)
+        if (toEnable) {
             schermataProgetto();
-        else
+        } else {
             schermataIniziale();
+        }
     }
 
     public ProgettoInterface(String user, boolean toEnable) {
         ProgettoInterface.user = user;
         initComponents();
         controlloUtente();
-        if(toEnable)
+        if (toEnable) {
             schermataProgetto();
-        else
+        } else {
             schermataIniziale();
+        }
     }
 
     private void controlloUtente() {
-        if(ProgettoInterface.user.equals("NON_ADMIN"))
+        if (ProgettoInterface.user.equals("NON_ADMIN")) {
             capitolatoButton.setEnabled(false);
-        else
+        } else {
             capitolatoButton.setEnabled(true);
+        }
     }
-    
+
     private void schermataIniziale() {
         computoComboBox.setEnabled(false);
         computoLabel.setText("");
@@ -68,19 +73,19 @@ public class ProgettoInterface extends javax.swing.JFrame {
         computoComboBox.setEnabled(true);
         visualizzaComputoButton.setEnabled(true);
         createComputoButton.setEnabled(true);
-        
+
         setComputoLabel();
     }
 
     private void setComputoLabel() {
         Computo selectedComputo = (Computo) computoComboBox.getSelectedItem();
-        if(selectedComputo == null) {
+        if (selectedComputo == null) {
             computoLabel.setText("");
         } else {
-            computoLabel.setText("Data: "+selectedComputo.getData()+", totale: "+selectedComputo.getTotale());
+            computoLabel.setText("Data: " + selectedComputo.getData() + ", totale: " + selectedComputo.getTotale());
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -231,28 +236,30 @@ public class ProgettoInterface extends javax.swing.JFrame {
             if (jfc.getSelectedFile().isFile()) {
                 fileProgetto = jfc.getSelectedFile().toString();
                 System.out.println("You selected the file: " + fileProgetto);
-            } else return;           
-        } else return;
-        
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
 
         //visualizza il progetto corrente nella scheda Computo
-        schermataProgetto();
-        Progetto progetto;
         try {
-            progetto = Progetto.caricaProgetto(fileProgetto);
-        } catch (IOException ex) {
+            Progetto progetto = Progetto.caricaProgetto(fileProgetto);
+            schermataProgetto();
+            HashSet<Computo> computi = progetto.getListaComputi();
+            for (Computo c : computi) {
+                computoComboBox.addItem(c);
+            }
+            
+            setComputoLabel();
+        } catch(FileNotFoundException ex) {
             JOptionPane.showMessageDialog(this, "Progetto non trovato", "Avviso", JOptionPane.WARNING_MESSAGE);
-            return;
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Il file del progetto è corrotto", "Avviso", JOptionPane.WARNING_MESSAGE);
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        HashSet<Computo> computi = progetto.getListaComputi();
-        for(Computo c : computi) {
-            computoComboBox.addItem(c);
-        }
-        
-        setComputoLabel();
+        }   
     }//GEN-LAST:event_openProgettoButtonActionPerformed
 
     private void createProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createProgettoButtonActionPerformed
@@ -265,16 +272,20 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         int returnValue = jfc.showSaveDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            if(jfc.getSelectedFile().isFile()) {
+            if (jfc.getSelectedFile().isFile()) {
                 int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler sovrascrivere il file?");
-                if(choice != JOptionPane.YES_OPTION)
+                if (choice != JOptionPane.YES_OPTION) {
                     return;
+                }
             }
             fileProgetto = jfc.getSelectedFile().toString();
-            if(!fileProgetto.endsWith(".hhp"))
+            if (!fileProgetto.endsWith(".hhp")) {
                 fileProgetto = fileProgetto.concat(".hhp");
+            }
             System.out.println("You selected the file: " + fileProgetto);
-        } else return;
+        } else {
+            return;
+        }
 
         //Apri finestra per inserire dati dell'utente
         EventQueue.invokeLater(() -> {
@@ -284,14 +295,15 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         //Recupera il controllo e visualizza il progetto corrente nella scheda Computo
     }//GEN-LAST:event_createProgettoButtonActionPerformed
-    
+
     private void createComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createComputoButtonActionPerformed
         String computoName = JOptionPane.showInputDialog(this, "Scegli il nome del computo");
-        if(computoName == null) 
+        if (computoName == null) {
             return;
-       
+        }
+
         Computo computo = new Computo(computoName);
-        
+
         EventQueue.invokeLater(() -> {
             new ComputoInterface(computo, fileProgetto).setVisible(true);
             dispose();
@@ -313,7 +325,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
     private void visualizzaComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizzaComputoButtonActionPerformed
         Computo computo = (Computo) computoComboBox.getSelectedItem();
-        
+
         EventQueue.invokeLater(() -> {
             new ComputoInterface(computo, fileProgetto).setVisible(true);
             dispose();
