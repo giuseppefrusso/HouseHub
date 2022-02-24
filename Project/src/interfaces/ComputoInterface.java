@@ -5,6 +5,10 @@
  */
 package interfaces;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import models.Computo;
 import models.Progetto;
 
@@ -24,7 +28,12 @@ public class ComputoInterface extends javax.swing.JFrame {
      */
     public ComputoInterface(Computo computo, String fileProgetto) {
         ComputoInterface.computo = computo;
-        ComputoInterface.progetto = Progetto.caricaProgetto(fileProgetto);
+        try {
+            ComputoInterface.progetto = Progetto.caricaProgetto(fileProgetto);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         initComponents();
     }
 

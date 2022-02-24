@@ -241,7 +241,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             selectedCodice = (String) clientiModel.getValueAt(selectedRow, 0);
         }
 
-        
+        capitolato.removeVoceCliente(selectedCodice);
     }//GEN-LAST:event_deleteVoceButtonActionPerformed
 
     private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
