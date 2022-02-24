@@ -42,7 +42,6 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     public ComputoInterface() {
         model = initTableModel();
-        refreshTable();
         initComponents();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
@@ -52,16 +51,27 @@ public class ComputoInterface extends javax.swing.JFrame {
             @Override
             public boolean isCellEditable(int row, int column) {
                 switch (column) {
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                switch (columnIndex) {
                     case 0:
+                        return Integer.class;
                     case 1:
                     case 2:
                     case 3:
-                    case 8:
-                    case 9:
-                    case 10:
-                        return false;
-                    default: //4, 5, 6, 7
-                        return true;
+                        return String.class;
+                    default:
+                        return Double.class;
                 }
             }
         };
@@ -109,12 +119,12 @@ public class ComputoInterface extends javax.swing.JFrame {
             double quant = (Double) model.getValueAt(i, 8);
             double prezzoU = (Double) model.getValueAt(i, 9);
             double prezzoC = (Double) model.getValueAt(i, 10);
-            
+
             double[] dimensioni = {pu, lung, larg, h};
 
             computo.aggiungiVoce(new VoceComputo(numProg, new Voce(codice, desc, unita, prezzoU), dimensioni));
         }
-        
+
         Progetto p;
         try {
             p = Progetto.caricaProgetto(fileProgetto);
@@ -122,9 +132,9 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         refreshTable();
-        
+
         //sicuro che basti questo a salvare tutto sul file progetto?
         p.rimuoviComputo(computo);
         p.aggiungiComputo(computo);

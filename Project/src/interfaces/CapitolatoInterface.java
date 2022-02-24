@@ -86,6 +86,16 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
+            
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                switch (columnIndex) {
+                    case 3:
+                        return Double.class;
+                    default:
+                        return String.class;
+                }
+            }
         };
         tm.addColumn("Codice");
         tm.addColumn("Descrizione");
