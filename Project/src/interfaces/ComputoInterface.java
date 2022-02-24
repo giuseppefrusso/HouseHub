@@ -5,14 +5,15 @@
  */
 package interfaces;
 
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import models.Computo;
 import models.Progetto;
+import models.Voce;
+import models.VoceComputo;
 
 /**
  *
@@ -21,7 +22,8 @@ import models.Progetto;
 public class ComputoInterface extends javax.swing.JFrame {
 
     private static Computo computo;
-    private static Progetto progetto;
+    private static String fileProgetto;
+    protected DefaultTableModel model;
 
     /**
      * Creates new form ComputoInterface
@@ -31,18 +33,107 @@ public class ComputoInterface extends javax.swing.JFrame {
      */
     public ComputoInterface(Computo computo, String fileProgetto) {
         ComputoInterface.computo = computo;
+        model = initTableModel();
+        refreshTable();
+        ComputoInterface.fileProgetto = fileProgetto;
+        initComponents();
+        titleLabel.setText("Computo metrico: " + computo.getNome());
+    }
+
+    public ComputoInterface() {
+        model = initTableModel();
+        refreshTable();
+        initComponents();
+        titleLabel.setText("Computo metrico: " + computo.getNome());
+    }
+
+    private DefaultTableModel initTableModel() {
+        DefaultTableModel tm = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                switch (column) {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 8:
+                    case 9:
+                    case 10:
+                        return false;
+                    default: //4, 5, 6, 7
+                        return true;
+                }
+            }
+        };
+        tm.addColumn("N.");
+        tm.addColumn("Codice");
+        tm.addColumn("Descrizione");
+        tm.addColumn("Unità di misura");
+        tm.addColumn("Parti uguali");
+        tm.addColumn("Lunghezza");
+        tm.addColumn("Larghezza");
+        tm.addColumn("Altezza/peso");
+        tm.addColumn("Quantità");
+        tm.addColumn("Prezzo unitario");
+        tm.addColumn("Prezzo complessivo");
+
+        return tm;
+    }
+
+    private void refreshTable() {
+        model.setRowCount(0);
+
+        for (VoceComputo voce : computo.getVociComputo()) {
+            double pu = voce.getDimensioni()[0], lung = voce.getDimensioni()[1],
+                    larg = voce.getDimensioni()[2], h = voce.getDimensioni()[3];
+
+            Object[] row = {voce.getNumeroProgressivo(), voce.getVoceBase().getCodice(), voce.getVoceBase().getDescrizione(),
+                voce.getVoceBase().getUnitaDiMisura(), pu, lung, larg, h, voce.getQuantita(),
+                voce.getVoceBase().getPrezzoUnitario(), voce.getPrezzoComplessivo()};
+
+            model.addRow(row);
+        }
+    }
+
+    private void save() {
+        computo.svuotaVociComputo();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            int numProg = (int) model.getValueAt(i, 0);
+            String codice = (String) model.getValueAt(i, 1);
+            String desc = (String) model.getValueAt(i, 2);
+            String unita = (String) model.getValueAt(i, 3);
+            double pu = (Double) model.getValueAt(i, 4);
+            double lung = (Double) model.getValueAt(i, 5);
+            double larg = (Double) model.getValueAt(i, 6);
+            double h = (Double) model.getValueAt(i, 7);
+            double quant = (Double) model.getValueAt(i, 8);
+            double prezzoU = (Double) model.getValueAt(i, 9);
+            double prezzoC = (Double) model.getValueAt(i, 10);
+            
+            double[] dimensioni = {pu, lung, larg, h};
+
+            computo.aggiungiVoce(new VoceComputo(numProg, new Voce(codice, desc, unita, prezzoU), dimensioni));
+        }
+        
+        Progetto p;
         try {
-            ComputoInterface.progetto = Progetto.caricaProgetto(fileProgetto);
+            p = Progetto.caricaProgetto(fileProgetto);
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        initComponents();
-    }
-
-    public ComputoInterface() {
-        initComponents();
-        this.setBackground(Color.yellow);
+        
+        refreshTable();
+        
+        //sicuro che basti questo a salvare tutto sul file progetto?
+        p.rimuoviComputo(computo);
+        p.aggiungiComputo(computo);
+        try {
+            p.salvaProgetto(fileProgetto);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+        //
     }
 
     /**
@@ -58,7 +149,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         aggiungiButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        titleLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("House Hub");
@@ -68,21 +159,13 @@ public class ComputoInterface extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(240, 245, 58));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        jTable2.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        jTable2.setModel(model);
         jScrollPane2.setViewportView(jTable2);
 
         jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
+        aggiungiButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         aggiungiButton.setText("Aggiungi nuova voce");
         aggiungiButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,10 +174,10 @@ public class ComputoInterface extends javax.swing.JFrame {
         });
         jPanel2.add(aggiungiButton, java.awt.BorderLayout.PAGE_END);
 
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Computo metrico");
-        jPanel2.add(jLabel1, java.awt.BorderLayout.PAGE_START);
+        titleLabel.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleLabel.setText("Computo metrico");
+        jPanel2.add(titleLabel, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -153,9 +236,9 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aggiungiButton;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
+    private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
