@@ -225,6 +225,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     private void deleteVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVoceButtonActionPerformed
         //Bisogna prima aver selezionato la voce
+        String selectedCodice;
         int selectedRow = clientiTable.getSelectedRow();
         if (selectedRow == -1) {
             selectedRow = subTable.getSelectedRow();
@@ -233,13 +234,14 @@ public class CapitolatoInterface extends javax.swing.JFrame {
                 return;
             } else {
                 //Seleziona da subTable
+                selectedCodice = (String) subModel.getValueAt(selectedRow, 0);
             }
         } else {
             //Seleziona da clientiTable
-            
+            selectedCodice = (String) clientiModel.getValueAt(selectedRow, 0);
         }
 
-
+        
     }//GEN-LAST:event_deleteVoceButtonActionPerformed
 
     private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed

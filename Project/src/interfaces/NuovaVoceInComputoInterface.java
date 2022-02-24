@@ -5,7 +5,10 @@
  */
 package interfaces;
 
+import java.awt.EventQueue;
+import javax.swing.JOptionPane;
 import models.Computo;
+import models.Voce;
 
 /**
  *
@@ -14,9 +17,13 @@ import models.Computo;
 public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
     private Computo computo;
-    
+    private boolean flag = false;
+    private Voce voceCliente;
+    private Voce voceSubAppaltatori;
+
     /**
      * Creates new form NuovaVoceInComputoInterface
+     *
      * @param computo
      */
     public NuovaVoceInComputoInterface(Computo computo) {
@@ -42,11 +49,11 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        codiceTextField = new javax.swing.JTextField();
+        misuraTextField = new javax.swing.JTextField();
+        prezzoTextField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        descrizioneTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("House Hub");
@@ -120,24 +127,24 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        jPanel1.add(jTextField1, gridBagConstraints);
+        jPanel1.add(codiceTextField, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 7, 0);
-        jPanel1.add(jTextField3, gridBagConstraints);
+        jPanel1.add(misuraTextField, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 5, 0);
-        jPanel1.add(jTextField4, gridBagConstraints);
+        jPanel1.add(prezzoTextField, gridBagConstraints);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        descrizioneTextArea.setColumns(20);
+        descrizioneTextArea.setLineWrap(true);
+        descrizioneTextArea.setRows(5);
+        jScrollPane1.setViewportView(descrizioneTextArea);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -164,7 +171,27 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
-        // TODO add your handling code here:
+        if (flag == false) {
+            int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler inserire la voce in capitolato clienti?");
+            if (choice != JOptionPane.YES_OPTION) {
+                return;
+            }
+            voceCliente = new Voce(codiceTextField.getText(), descrizioneTextArea.getText(), misuraTextField.getText(),
+                    Double.parseDouble(prezzoTextField.getText()));
+            flag = true;
+
+        } else {
+            int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler inserire la voce in capitolato sub-appaltatori?");
+            if (choice != JOptionPane.YES_OPTION) {
+                return;
+            }
+            voceSubAppaltatori = new Voce(codiceTextField.getText(), descrizioneTextArea.getText(), misuraTextField.getText(),
+                    Double.parseDouble(prezzoTextField.getText()));
+        }
+        EventQueue.invokeLater(() -> {
+            new CapitolatoInterface(voceCliente, voceSubAppaltatori).setVisible(true);
+            dispose();
+        });
     }//GEN-LAST:event_confermaButtonActionPerformed
 
     /**
@@ -203,7 +230,9 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField codiceTextField;
     private javax.swing.JButton confermaButton;
+    private javax.swing.JTextArea descrizioneTextArea;
     private javax.swing.JButton indietroButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -211,10 +240,8 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField misuraTextField;
     private javax.swing.JLabel nuovaVoceLabel;
+    private javax.swing.JTextField prezzoTextField;
     // End of variables declaration//GEN-END:variables
 }
