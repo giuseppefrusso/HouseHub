@@ -6,6 +6,7 @@
 package utils;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -20,23 +21,16 @@ import java.util.logging.Logger;
  */
 public class Pickle {
 
-    public static boolean save(String path, Serializable obj) {
+    public static void save(String path, Serializable obj) throws FileNotFoundException, IOException {
         try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(path))) {
             objectOutputStream.writeObject(obj);
             objectOutputStream.flush();
-            return true;
-        } catch (IOException ex) {
-            Logger.getLogger(Pickle.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
         }
     }
 
-    public static Serializable load(String path) {
+    public static Serializable load(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
         try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path))) {
             return (Serializable) objectInputStream.readObject();
-        } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(Pickle.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
         }
     }
 

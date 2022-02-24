@@ -5,6 +5,8 @@
  */
 package models;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import utils.Pickle;
@@ -39,11 +41,11 @@ public class Progetto implements Serializable{
         return listaComputi.remove(computo);
     }
     
-    public boolean salvaProgetto(String path) {
-        return Pickle.save(path, this);
+    public void salvaProgetto(String path) throws FileNotFoundException, IOException {
+        Pickle.save(path, this);
     }
     
-    public static Progetto caricaProgetto(String path) {
+    public static Progetto caricaProgetto(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
         return (Progetto) Pickle.load(path);
     }
 }

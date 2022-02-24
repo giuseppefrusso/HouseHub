@@ -6,7 +6,10 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.JOptionPane;
@@ -234,7 +237,16 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         //visualizza il progetto corrente nella scheda Computo
         schermataProgetto();
-        Progetto progetto = Progetto.caricaProgetto(fileProgetto);
+        Progetto progetto;
+        try {
+            progetto = Progetto.caricaProgetto(fileProgetto);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Progetto non trovato", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         HashSet<Computo> computi = progetto.getListaComputi();
         for(Computo c : computi) {
             computoComboBox.addItem(c);
@@ -290,7 +302,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
     private void capitolatoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_capitolatoButtonActionPerformed
         EventQueue.invokeLater(() -> {
-            new CapitolatoInterface(user).setVisible(true);
+            new CapitolatoInterface().setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_capitolatoButtonActionPerformed
