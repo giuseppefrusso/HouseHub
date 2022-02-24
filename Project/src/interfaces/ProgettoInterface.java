@@ -9,8 +9,6 @@ import java.awt.EventQueue;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.JOptionPane;
@@ -114,6 +112,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         panel.setBackground(new java.awt.Color(240, 245, 58));
         panel.setLayout(new java.awt.GridBagLayout());
 
+        openProgettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         openProgettoButton.setText("Apri progetto");
         openProgettoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,6 +125,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panel.add(openProgettoButton, gridBagConstraints);
 
+        computoComboBox.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         computoComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 computoComboBoxActionPerformed(evt);
@@ -143,6 +143,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panel.add(computoComboBox1, gridBagConstraints);
 
+        computoLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         computoLabel.setText("DATA E TOTALE");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -150,6 +151,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridwidth = 11;
         panel.add(computoLabel, gridBagConstraints);
 
+        createProgettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         createProgettoButton.setText("Crea progetto");
         createProgettoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,6 +165,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panel.add(createProgettoButton, gridBagConstraints);
 
+        visualizzaComputoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         visualizzaComputoButton.setText("Visualizza");
         visualizzaComputoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,6 +178,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panel.add(visualizzaComputoButton, gridBagConstraints);
 
+        createComputoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         createComputoButton.setText("Crea nuovo computo");
         createComputoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,6 +191,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         panel.add(createComputoButton, gridBagConstraints);
 
         capitolatoButton.setBackground(new java.awt.Color(255, 51, 51));
+        capitolatoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         capitolatoButton.setText("Capitolato");
         capitolatoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,6 +205,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         panel.add(capitolatoButton, gridBagConstraints);
 
+        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         jLabel2.setText("Progetto");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -297,7 +303,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_createProgettoButtonActionPerformed
 
     private void createComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createComputoButtonActionPerformed
-        String computoName = JOptionPane.showInputDialog(this, "Scegli il nome del computo");
+        String computoName = JOptionPane.showInputDialog(this, "Scegli il nome del computo", "Nuovo computo", JOptionPane.QUESTION_MESSAGE);
         if (computoName == null) {
             return;
         }
