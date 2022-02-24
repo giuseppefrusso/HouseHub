@@ -25,6 +25,8 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         this.computo = computo;
         this.model = initTableModel();
         initComponents();
+        Object[] obj = {"dddd", "dfgfge", "dddddddddddd", 30.0, true};
+        model.addRow(obj);
     }
 
     private DefaultTableModel initTableModel() {
