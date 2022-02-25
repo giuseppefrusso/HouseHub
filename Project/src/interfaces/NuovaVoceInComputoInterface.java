@@ -45,7 +45,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         try {
             Capitolato c = Capitolato.caricaCapitolato(CapitolatoInterface.FILEPATH);
             for(Voce v : c.getCapitolatoClienti().values()) {
-                Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario()};
+                Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
                 model.addRow(rowData);
             }
         } catch (IOException ex) {

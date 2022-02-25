@@ -41,6 +41,7 @@ public class ComputoInterface extends javax.swing.JFrame {
     public ComputoInterface() {
         model = initTableModel();
         initComponents();
+        refreshTable();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
 
