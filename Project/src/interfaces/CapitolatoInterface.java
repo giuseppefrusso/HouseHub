@@ -20,7 +20,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     protected DefaultTableModel clientiModel, subModel;
     private Capitolato capitolato;
-    private final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
+    private static final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
     private boolean saved;
 
     /**
@@ -120,8 +120,10 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         clientiTable = new javax.swing.JTable();
+        clientiTable.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
         jScrollPane2 = new javax.swing.JScrollPane();
         subTable = new javax.swing.JTable();
+        subTable.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
         addVoceButton = new javax.swing.JButton();
         deleteVoceButton = new javax.swing.JButton();
         salvaCapitolatoButton = new javax.swing.JButton();

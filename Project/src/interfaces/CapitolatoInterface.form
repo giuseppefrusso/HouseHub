@@ -104,6 +104,9 @@
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="clientiTableMouseClicked"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="clientiTable.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());&#xd;&#xa;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -131,6 +134,9 @@
               <Events>
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="subTableMouseClicked"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="subTable.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

@@ -5,7 +5,6 @@
  */
 package interfaces;
 
-import java.awt.EventQueue;
 import javax.swing.table.DefaultTableModel;
 import models.Computo;
 
@@ -20,12 +19,15 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
     /**
      * Creates new form NuovaVoceInComputoInterface
+     *
+     * @param computo
      */
     public NuovaVoceInComputoInterface(Computo computo) {
         this.computo = computo;
         this.model = initTableModel();
         initComponents();
-        Object[] obj = {"dddd", "dfgfge", "dddddddddddd", 30.0, true};
+        model = (DefaultTableModel) table.getModel();
+        Object[] obj = {"dddd", "dfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfge", "dddddddddddd", 30.0, true};
         model.addRow(obj);
     }
 
@@ -33,11 +35,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         DefaultTableModel tm = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                if (column == 4) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return column == 4;
             }
 
             @Override
@@ -61,8 +59,6 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         return tm;
     }
 
-
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -74,8 +70,9 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        scrollPane = new javax.swing.JScrollPane();
+        table = new javax.swing.JTable();
+        table.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
         jPanel3 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
 
@@ -84,14 +81,44 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 0));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jTable1.setModel(model);
-        jScrollPane1.setViewportView(jTable1);
+        table.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+            },
+            new String [] {
+                "Codice", "Descrizione", "Unità di misura", "Prezzo unitario", "Scegli"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.setRowSelectionAllowed(false);
+        scrollPane.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(4).setMinWidth(50);
+            table.getColumnModel().getColumn(4).setPreferredWidth(50);
+            table.getColumnModel().getColumn(4).setMaxWidth(50);
+        }
+
+        jPanel2.add(scrollPane, java.awt.BorderLayout.CENTER);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 0));
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
+        jButton1.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         jButton1.setText("Conferma");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -157,7 +184,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane scrollPane;
+    private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

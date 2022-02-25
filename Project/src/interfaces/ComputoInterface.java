@@ -7,7 +7,6 @@ package interfaces;
 
 import java.awt.EventQueue;
 import java.io.IOException;
-import java.util.HashSet;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Computo;
@@ -158,6 +157,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jTable2.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
         aggiungiButton = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
 
