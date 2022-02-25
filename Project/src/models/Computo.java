@@ -7,6 +7,7 @@ package models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -18,13 +19,13 @@ public class Computo implements Serializable{
     
     private final String nome, data;
     private double totale;
-    private HashSet<VoceComputo> listaVoci;
+    private HashMap<Integer, VoceComputo> listaVoci;
     
     public Computo(String nome) {
         this.nome = nome;
         this.data = LocalDate.now().toString();
         totale = 0.0;
-        listaVoci = new HashSet<>();
+        listaVoci = new HashMap<>();
     }
 
     public String getNome() {
@@ -40,24 +41,28 @@ public class Computo implements Serializable{
     }
     
     public boolean aggiungiVoce(VoceComputo voce) {
-        boolean result = listaVoci.add(voce);
-        if(result)
+        VoceComputo result = listaVoci.put(voce.getNumeroProgressivo(), voce);
+        if(result != null) {
             totale += voce.getPrezzoComplessivo();
-        return result;
+            return true;
+        }
+        return false;
     }
     
     public boolean rimuoviVoce(VoceComputo voce) {
-        boolean result = listaVoci.remove(voce);
-        if(result)
+        VoceComputo result = listaVoci.remove(voce.getNumeroProgressivo());
+        if(result != null) {
             totale -= voce.getPrezzoComplessivo();
-        return result;
+            return true;
+        }
+        return false;
     }
     
     public void svuotaVociComputo() {
         listaVoci.clear();
     }
     
-    public HashSet<VoceComputo> getVociComputo() {
+    public HashMap<Integer, VoceComputo> getVociComputo() {
         return listaVoci;
     }
     

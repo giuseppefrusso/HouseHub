@@ -5,8 +5,16 @@
  */
 package interfaces;
 
+import java.awt.EventQueue;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import models.Capitolato;
 import models.Computo;
+import models.Voce;
+import models.VoceComputo;
 
 /**
  *
@@ -27,10 +35,26 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         this.model = initTableModel();
         initComponents();
         model = (DefaultTableModel) table.getModel();
-        Object[] obj = {"dddd", "dfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfge", "dddddddddddd", 30.0, true};
-        model.addRow(obj);
+        fillTableModel();
+        //Object[] obj = {"dddd", "dfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfgedfgfge", "dddddddddddd", 30.0, true};
+        //model.addRow(obj);
     }
 
+    private void fillTableModel() {
+        //rimuovere le voci gia presenti nel computo
+        try {
+            Capitolato c = Capitolato.caricaCapitolato(CapitolatoInterface.FILEPATH);
+            for(Voce v : c.getCapitolatoClienti().values()) {
+                Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario()};
+                model.addRow(rowData);
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Capitolato vuoto", "Avviso", JOptionPane.WARNING_MESSAGE);
+        } catch (ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     private DefaultTableModel initTableModel() {
         DefaultTableModel tm = new DefaultTableModel() {
             @Override
@@ -74,7 +98,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         table = new javax.swing.JTable();
         table.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        confermaButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,13 +142,18 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 0));
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jButton1.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
-        jButton1.setText("Conferma");
+        confermaButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        confermaButton.setText("Conferma");
+        confermaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confermaButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        jPanel3.add(jButton1, gridBagConstraints);
+        jPanel3.add(confermaButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -143,6 +172,27 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
+        int count = 1;
+        for(int i = 0; i < model.getRowCount(); i++) {
+            if((Boolean) model.getValueAt(i, 4)) {
+                String codice = (String) model.getValueAt(i, 0);
+                String descrizione = (String) model.getValueAt(i, 1);
+                String unitaDiMisura = (String) model.getValueAt(i, 2);
+                double prezzoUnitario = (Double) model.getValueAt(i, 3);
+                double[] dimensioni = {0.0,0.0,0.0,0.0};
+                VoceComputo vc = new VoceComputo(count,codice,descrizione,null,unitaDiMisura, dimensioni, prezzoUnitario);
+                computo.aggiungiVoce(vc);
+                count ++;
+            }
+        }
+        
+        EventQueue.invokeLater(() -> {
+            new ComputoInterface().setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_confermaButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,7 +231,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton confermaButton;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane scrollPane;

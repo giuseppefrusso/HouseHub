@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Computo;
 import models.Progetto;
-import models.Voce;
 import models.VoceComputo;
 
 /**
@@ -50,10 +49,12 @@ public class ComputoInterface extends javax.swing.JFrame {
             @Override
             public boolean isCellEditable(int row, int column) {
                 switch (column) {
-                    case 4:
+                    case 3:
                     case 5:
                     case 6:
                     case 7:
+                    case 8:
+                    //case 9: //quantita
                         return true;
                     default:
                         return false;
@@ -64,10 +65,11 @@ public class ComputoInterface extends javax.swing.JFrame {
             public Class getColumnClass(int columnIndex) {
                 switch (columnIndex) {
                     case 0:
+                    case 3:
                         return Integer.class;
                     case 1:
                     case 2:
-                    case 3:
+                    case 4:
                         return String.class;
                     default:
                         return Double.class;
@@ -77,6 +79,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         tm.addColumn("N.");
         tm.addColumn("Codice");
         tm.addColumn("Descrizione");
+        tm.addColumn("Vedi voce");
         tm.addColumn("Unità di misura");
         tm.addColumn("Parti uguali");
         tm.addColumn("Lunghezza");
@@ -92,13 +95,12 @@ public class ComputoInterface extends javax.swing.JFrame {
     private void refreshTable() {
         model.setRowCount(0);
 
-        for (VoceComputo voce : computo.getVociComputo()) {
+        for (VoceComputo voce : computo.getVociComputo().values()) {
             double pu = voce.getDimensioni()[0], lung = voce.getDimensioni()[1],
                     larg = voce.getDimensioni()[2], h = voce.getDimensioni()[3];
 
-            Object[] row = {voce.getNumeroProgressivo(), voce.getVoceBase().getCodice(), voce.getVoceBase().getDescrizione(),
-                voce.getVoceBase().getUnitaDiMisura(), pu, lung, larg, h, voce.getQuantita(),
-                voce.getVoceBase().getPrezzoUnitario(), voce.getPrezzoComplessivo()};
+            Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.getUnitaDiMisura(), 
+                pu, lung, larg, h, voce.getQuantita(), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo()};
 
             model.addRow(row);
         }
@@ -110,18 +112,25 @@ public class ComputoInterface extends javax.swing.JFrame {
             int numProg = (int) model.getValueAt(i, 0);
             String codice = (String) model.getValueAt(i, 1);
             String desc = (String) model.getValueAt(i, 2);
-            String unita = (String) model.getValueAt(i, 3);
-            double pu = (Double) model.getValueAt(i, 4);
-            double lung = (Double) model.getValueAt(i, 5);
-            double larg = (Double) model.getValueAt(i, 6);
-            double h = (Double) model.getValueAt(i, 7);
-            double quant = (Double) model.getValueAt(i, 8);
-            double prezzoU = (Double) model.getValueAt(i, 9);
-            double prezzoC = (Double) model.getValueAt(i, 10);
-
+            int vediVoceNum = (Integer) model.getValueAt(i, 3);
+            String unita = (String) model.getValueAt(i, 4);
+            double pu = (Double) model.getValueAt(i, 5);
+            double lung = (Double) model.getValueAt(i, 6);
+            double larg = (Double) model.getValueAt(i, 7);
+            double h = (Double) model.getValueAt(i, 8);
+            double quant = (Double) model.getValueAt(i, 9);
+            double prezzoU = (Double) model.getValueAt(i, 10);
+            double prezzoC = (Double) model.getValueAt(i, 11);
+            
+            VoceComputo vediVoce;
+            if(vediVoceNum == 0)
+                vediVoce = null;
+            else
+                vediVoce = computo.getVociComputo().get(vediVoceNum);
+            
             double[] dimensioni = {pu, lung, larg, h};
 
-            computo.aggiungiVoce(new VoceComputo(numProg, new Voce(codice, desc, unita, prezzoU), dimensioni));
+            computo.aggiungiVoce(new VoceComputo(numProg, codice, desc, vediVoce, unita, dimensioni, prezzoU));
         }
 
         Progetto p;

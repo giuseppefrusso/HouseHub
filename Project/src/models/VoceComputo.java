@@ -5,45 +5,44 @@
  */
 package models;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 /**
  *
  * @author Pepito
  */
-public class VoceComputo implements Serializable{
+public class VoceComputo extends Voce{
     
     private int numeroProgressivo;
-    private Voce voceBase;
     private double[] dimensioni;
     private double prezzoComplessivo;
     private double quantita;
+    private VoceComputo vediVoce;
 
-    public VoceComputo(int numeroProgressivo, Voce voceBase, double[] dimensioni) {
+    public VoceComputo(int numeroProgressivo, String codice, String descrizione, VoceComputo vediVoce, String unitaDiMisura, double[] dimensioni, double prezzoUnitario) {
+        super(codice, descrizione, unitaDiMisura, prezzoUnitario);
         this.numeroProgressivo = numeroProgressivo;
-        this.voceBase = voceBase;
         this.dimensioni = dimensioni;
-        this.quantita = calcolaQuantita(voceBase.getUnitaDiMisura(), dimensioni);
-        this.prezzoComplessivo = this.quantita * voceBase.getPrezzoUnitario();
+        this.vediVoce = vediVoce;
+        this.quantita = calcolaQuantita(vediVoce, dimensioni);
+        this.prezzoComplessivo = this.quantita * prezzoUnitario;
     }
 
-    private double calcolaQuantita(String unitaDiMisura, double dimensioni[]) {
+    public double calcolaQuantita(VoceComputo vediVoce, double dimensioni[]) {
         double partiUguali = dimensioni[0];
         double lunghezza = dimensioni[1];
         double larghezza = dimensioni[2];
         double altezza_peso = dimensioni[3];
         
-        if(unitaDiMisura.equalsIgnoreCase("A corpo") || unitaDiMisura.equalsIgnoreCase("Cadauno"))
-            return partiUguali;
-        else if(unitaDiMisura.equals("m"))
-            return lunghezza * partiUguali;
-        else if(unitaDiMisura.equals("m2"))
-            return lunghezza * larghezza * partiUguali;
-        else if(unitaDiMisura.equals("m3")) 
-            return lunghezza * larghezza * altezza_peso * partiUguali;
+        if(lunghezza == 0) 
+            lunghezza = 1;
+        if(larghezza == 0)
+            larghezza = 1;
+        if(altezza_peso == 0)
+            altezza_peso = 1;
+        
+        if(vediVoce == null) 
+            return partiUguali*lunghezza*larghezza*altezza_peso;
         else
-            return altezza_peso * partiUguali;
+            return partiUguali*lunghezza*larghezza*altezza_peso*vediVoce.getQuantita();
     }
     
     public int getNumeroProgressivo() {
@@ -54,24 +53,14 @@ public class VoceComputo implements Serializable{
         this.numeroProgressivo = numeroProgressivo;
     }
 
-    public Voce getVoceBase() {
-        return voceBase;
-    }
-
-    public void setVoceBase(Voce voceBase) {
-        this.voceBase = voceBase;
-        this.quantita = calcolaQuantita(voceBase.getUnitaDiMisura(), this.dimensioni);
-        this.prezzoComplessivo = this.quantita * voceBase.getPrezzoUnitario();
-    }
-
     public double[] getDimensioni() {
         return dimensioni;
     }
 
     public void setDimensioni(double[] dimensioni) {
         this.dimensioni = dimensioni;
-        this.quantita = calcolaQuantita(this.voceBase.getUnitaDiMisura(), dimensioni);
-        this.prezzoComplessivo = this.quantita * voceBase.getPrezzoUnitario();
+        this.quantita = calcolaQuantita(vediVoce, dimensioni);
+        this.prezzoComplessivo = this.quantita * this.getPrezzoUnitario();
     }
 
     public double getPrezzoComplessivo() {
@@ -82,26 +71,14 @@ public class VoceComputo implements Serializable{
         return quantita;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.voceBase);
-        return hash;
+    public VoceComputo getVediVoce() {
+        return vediVoce;
     }
 
-    //togliere se si vuole permettere di avere più vociComputo con lo stesso id nello stesso computo
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final VoceComputo other = (VoceComputo) obj;
-        return Objects.equals(this.voceBase, other.voceBase);
+    public void setVediVoce(VoceComputo vediVoce) {
+        this.vediVoce = vediVoce;
+        this.quantita = calcolaQuantita(vediVoce, dimensioni);
     }
+    
+    //ridefinire equals() solo se si vuole rendere VociComputo uguali sulla base del numero progressivo   
 }

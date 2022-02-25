@@ -18,9 +18,9 @@ import models.Voce;
  */
 public class CapitolatoInterface extends javax.swing.JFrame {
 
-    protected DefaultTableModel clientiModel, subModel;
+    private DefaultTableModel clientiModel, subModel;
     private Capitolato capitolato;
-    private static final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
+    protected static final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
     private boolean saved;
 
     /**
