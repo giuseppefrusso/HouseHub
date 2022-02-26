@@ -326,7 +326,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     private void tableKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyTyped
         //BISOGNA GESTIRE IL CASO IN CUI SI SCRIVA UN NON-DOUBLE IN UNA COLONNA DOUBLE
-        //-> per esempio cancella ultimo carattere e rifai conversione e cosi' via
+        //-> si potrebbe fare così: cancella ultimo carattere e rifai conversione e cosi' via
         
         int selectedRow = table.getSelectedRow(), selectedColumn = table.getSelectedColumn();
         Object newValue = model.getValueAt(selectedRow, selectedColumn);
@@ -334,6 +334,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         
         /*switch(selectedColumn) {
            //a seconda della colonna selezionata fare una set a un attributo diverso di VoceComputo 
+           //il nuovo oggetto VoceComputo andrà aggiornato all'interno dell'oggetto computo. come?
         }*/
     }//GEN-LAST:event_tableKeyTyped
 
