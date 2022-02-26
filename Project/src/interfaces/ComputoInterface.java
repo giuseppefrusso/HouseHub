@@ -7,7 +7,11 @@ package interfaces;
 
 import java.awt.EventQueue;
 import java.io.IOException;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import models.Computo;
 import models.Progetto;
@@ -55,7 +59,7 @@ public class ComputoInterface extends javax.swing.JFrame {
                     case 6:
                     case 7:
                     case 8:
-                    //case 9: //quantita
+                        //case 9: //quantita
                         return true;
                     default:
                         return false;
@@ -100,7 +104,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             double pu = voce.getDimensioni()[0], lung = voce.getDimensioni()[1],
                     larg = voce.getDimensioni()[2], h = voce.getDimensioni()[3];
 
-            Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.getUnitaDiMisura(), 
+            Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.getUnitaDiMisura(),
                 pu, lung, larg, h, voce.getQuantita(), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo()};
 
             model.addRow(row);
@@ -108,6 +112,9 @@ public class ComputoInterface extends javax.swing.JFrame {
     }
 
     private void save() {
+        //SALVARE COSI' NON E' IL MODO MIGLIORE, MEGLIO SETTARE DI VOLTA IN VOLTA OGNI ATTRIBUTO MODIFICATO
+        //IN OGNI CASO, SALVARE A OGNI MODIFICA O METTERE UN BOTTONE DI SALVA? SE SI SALVA CON BOTTONE, METTERE FLAG "saved" COME IN UN'ALTRA INTERFACE 
+        
         computo.svuotaVociComputo();
         for (int i = 0; i < model.getRowCount(); i++) {
             int numProg = (int) model.getValueAt(i, 0);
@@ -122,18 +129,21 @@ public class ComputoInterface extends javax.swing.JFrame {
             double quant = (Double) model.getValueAt(i, 9);
             double prezzoU = (Double) model.getValueAt(i, 10);
             double prezzoC = (Double) model.getValueAt(i, 11);
-            
+
             VoceComputo vediVoce;
-            if(vediVoceNum == 0)
+            if (vediVoceNum == 0) {
                 vediVoce = null;
-            else
+            } else {
                 vediVoce = computo.getVociComputo().get(vediVoceNum);
-            
+            }
+
             double[] dimensioni = {pu, lung, larg, h};
 
             computo.aggiungiVoce(new VoceComputo(numProg, codice, desc, vediVoce, unita, dimensioni, prezzoU));
         }
 
+        
+        //QUESTO E' UN PASSAGGIO COMPLETAMENTE DIVERSO DAL PRECEDENTE, SERVE A SALVARE IL COMPUTO AGGIORNATO SUL FILE DI PROGETTO
         Progetto p;
         try {
             p = Progetto.caricaProgetto(fileProgetto);
@@ -143,7 +153,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         }
 
         refreshTable();
-
+        
         //sicuro che basti questo a salvare tutto sul file progetto?
         p.rimuoviComputo(computo);
         p.aggiungiComputo(computo);
@@ -163,13 +173,19 @@ public class ComputoInterface extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jTable2.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
+        table = new javax.swing.JTable();
+        table.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
         aggiungiButton = new javax.swing.JButton();
         titleLabel = new javax.swing.JLabel();
+        gestisciVoceButton = new javax.swing.JButton();
+        progettoButton = new javax.swing.JButton();
+        exportForSub = new javax.swing.JButton();
+        exportForClient = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("House Hub");
@@ -177,13 +193,21 @@ public class ComputoInterface extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jPanel2.setBackground(new java.awt.Color(240, 245, 58));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        jTable2.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
-        jTable2.setModel(model);
-        jScrollPane2.setViewportView(jTable2);
+        table.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        table.setModel(model);
+        table.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                tableKeyTyped(evt);
+            }
+        });
+        jScrollPane2.setViewportView(table);
 
-        jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        jPanel2.add(jScrollPane2, gridBagConstraints);
 
         aggiungiButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         aggiungiButton.setText("Aggiungi nuova voce");
@@ -192,12 +216,74 @@ public class ComputoInterface extends javax.swing.JFrame {
                 aggiungiButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(aggiungiButton, java.awt.BorderLayout.PAGE_END);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        jPanel2.add(aggiungiButton, gridBagConstraints);
 
         titleLabel.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         titleLabel.setText("Computo metrico");
-        jPanel2.add(titleLabel, java.awt.BorderLayout.PAGE_START);
+        jPanel2.add(titleLabel, new java.awt.GridBagConstraints());
+
+        gestisciVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        gestisciVoceButton.setText("Gestisci voce");
+        gestisciVoceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gestisciVoceButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        jPanel2.add(gestisciVoceButton, gridBagConstraints);
+
+        progettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        progettoButton.setText("Progetto");
+        progettoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                progettoButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        jPanel2.add(progettoButton, gridBagConstraints);
+
+        exportForSub.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        exportForSub.setText("Esporta per sub-appaltatori");
+        exportForSub.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportForSubActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        jPanel2.add(exportForSub, gridBagConstraints);
+
+        exportForClient.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        exportForClient.setText("Esporta per cliente");
+        exportForClient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportForClientActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        jPanel2.add(exportForClient, gridBagConstraints);
+
+        saveButton.setText("Salva computo");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        jPanel2.add(saveButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -214,12 +300,87 @@ public class ComputoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void aggiungiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aggiungiButtonActionPerformed
-        // TODO add your handling code here:
         EventQueue.invokeLater(() -> {
             new NuovaVoceInComputoInterface(computo).setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_aggiungiButtonActionPerformed
+
+    private void gestisciVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestisciVoceButtonActionPerformed
+        int selectedRow = table.getSelectedRow();
+        int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
+        VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
+
+        EventQueue.invokeLater(() -> {
+            new VoceComputoInterface(selectedVoce).setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_gestisciVoceButtonActionPerformed
+
+    private void progettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_progettoButtonActionPerformed
+        EventQueue.invokeLater(() -> {
+            new ProgettoInterface(true).setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_progettoButtonActionPerformed
+
+    private void tableKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyTyped
+        //BISOGNA GESTIRE IL CASO IN CUI SI SCRIVA UN NON-DOUBLE IN UNA COLONNA DOUBLE
+        //-> per esempio cancella ultimo carattere e rifai conversione e cosi' via
+        
+        int selectedRow = table.getSelectedRow(), selectedColumn = table.getSelectedColumn();
+        Object newValue = model.getValueAt(selectedRow, selectedColumn);
+        System.out.println("You are writing '"+newValue+"' in cell ("+selectedRow+", "+selectedColumn+")");
+        
+        /*switch(selectedColumn) {
+           //a seconda della colonna selezionata fare una set a un attributo diverso di VoceComputo 
+        }*/
+    }//GEN-LAST:event_tableKeyTyped
+
+    private String chooseFileToSave(String dest) {
+        //Scegli dove salvare file
+        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        jfc.setDialogTitle("Salva il computo per " + dest);
+        jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileFilter filter = new FileNameExtensionFilter("File PDF", "pdf");
+        jfc.setFileFilter(filter);
+
+        int returnValue = jfc.showSaveDialog(this);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            if (jfc.getSelectedFile().isFile()) {
+                int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler sovrascrivere il file?");
+                if (choice != JOptionPane.YES_OPTION) {
+                    return null;
+                }
+            }
+            String filePdf = jfc.getSelectedFile().toString();
+            if (!filePdf.endsWith(".pdf")) {
+                filePdf = filePdf.concat(".pdf");
+            }
+            System.out.println("You selected the file: " + filePdf);
+            return filePdf;
+        } else {
+            return null;
+        }
+    }
+    
+    private void exportForClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportForClientActionPerformed
+       String filePdf = chooseFileToSave("cliente");
+       
+       if(filePdf == null)
+           return;
+    }//GEN-LAST:event_exportForClientActionPerformed
+
+    private void exportForSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportForSubActionPerformed
+        String filePdf = chooseFileToSave("sub-appaltatori");
+        
+        if(filePdf == null) 
+            return;
+    }//GEN-LAST:event_exportForSubActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -256,9 +417,14 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aggiungiButton;
+    private javax.swing.JButton exportForClient;
+    private javax.swing.JButton exportForSub;
+    private javax.swing.JButton gestisciVoceButton;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JButton progettoButton;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JTable table;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

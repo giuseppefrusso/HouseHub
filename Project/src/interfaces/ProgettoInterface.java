@@ -113,7 +113,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         panel.setLayout(new java.awt.GridBagLayout());
 
         openProgettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
-        openProgettoButton.setText("Apri progetto");
+        openProgettoButton.setText("Apri progetto esistente");
         openProgettoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openProgettoButtonActionPerformed(evt);
@@ -169,7 +169,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         panel.add(createProgettoButton, gridBagConstraints);
 
         visualizzaComputoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
-        visualizzaComputoButton.setText("Visualizza");
+        visualizzaComputoButton.setText("Visualizza computo");
         visualizzaComputoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 visualizzaComputoButtonActionPerformed(evt);
@@ -192,6 +192,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(15, 0, 15, 0);
         panel.add(createComputoButton, gridBagConstraints);
 
