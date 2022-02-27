@@ -57,7 +57,7 @@ public class LoginInterface extends javax.swing.JFrame {
         setTitle("HouseHub");
         setResizable(false);
 
-        panel.setBackground(new java.awt.Color(240, 245, 58));
+        panel.setBackground(new java.awt.Color(153, 153, 153));
         panel.setLayout(new java.awt.GridLayout(3, 2, 10, 10));
 
         userLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
@@ -99,7 +99,7 @@ public class LoginInterface extends javax.swing.JFrame {
         });
         panel.add(loginButton);
 
-        jPanel2.setBackground(new java.awt.Color(240, 245, 58));
+        jPanel2.setBackground(new java.awt.Color(153, 153, 153));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/House_Hub_PDF.png"))); // NOI18N

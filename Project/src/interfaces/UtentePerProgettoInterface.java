@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.*;
 import models.*;
 
 
@@ -59,6 +60,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         tecnicoTextField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
         nomeTextField = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("House Hub");
@@ -179,6 +181,13 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 1, 10, 0);
         jPanel1.add(nomeTextField, gridBagConstraints);
 
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user.png"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 12, 0);
+        jPanel1.add(jLabel9, gridBagConstraints);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -256,6 +265,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField mailTextField;
     private javax.swing.JTextField nomeTextField;
