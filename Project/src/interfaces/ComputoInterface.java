@@ -151,8 +151,6 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        refreshTable();
         
         //sicuro che basti questo a salvare tutto sul file progetto?
         p.rimuoviComputo(computo);
@@ -163,6 +161,8 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
         //
+        
+        refreshTable();
     }
 
     /**

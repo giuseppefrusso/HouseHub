@@ -174,9 +174,10 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
-        int count = 1;
+        int count = computo.getVociComputo().size();
         for(int i = 0; i < model.getRowCount(); i++) {
             if((Boolean) model.getValueAt(i, 4)) {
+                count ++;
                 String codice = (String) model.getValueAt(i, 0);
                 String descrizione = (String) model.getValueAt(i, 1);
                 String unitaDiMisura = (String) model.getValueAt(i, 2);
@@ -184,7 +185,6 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
                 double[] dimensioni = {0.0,0.0,0.0,0.0};
                 VoceComputo vc = new VoceComputo(count,codice,descrizione,null,unitaDiMisura, dimensioni, prezzoUnitario);
                 computo.aggiungiVoce(vc);
-                count ++;
             }
         }
         

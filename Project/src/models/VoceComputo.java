@@ -16,6 +16,8 @@ public class VoceComputo extends Voce{
     private double prezzoComplessivo;
     private double quantita;
     private VoceComputo vediVoce;
+    
+    //mettere lista di vediVoce e lista di misurazioni
 
     public VoceComputo(int numeroProgressivo, String codice, String descrizione, VoceComputo vediVoce, String unitaDiMisura, double[] dimensioni, double prezzoUnitario) {
         super(codice, descrizione, unitaDiMisura, prezzoUnitario);
