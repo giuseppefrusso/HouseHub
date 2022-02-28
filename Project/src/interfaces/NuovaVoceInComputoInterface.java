@@ -7,12 +7,11 @@ package interfaces;
 
 import java.awt.EventQueue;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Capitolato;
 import models.Computo;
+import models.Progetto;
 import models.Voce;
 import models.VoceComputo;
 
@@ -23,6 +22,7 @@ import models.VoceComputo;
 public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
     private Computo computo;
+    private String fileProgetto;
     private DefaultTableModel model;
 
     /**
@@ -30,8 +30,9 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
      *
      * @param computo
      */
-    public NuovaVoceInComputoInterface(Computo computo) {
+    public NuovaVoceInComputoInterface(Computo computo, String fileProgetto) {
         this.computo = computo;
+        this.fileProgetto = fileProgetto;
         this.model = initTableModel();
         initComponents();
         model = (DefaultTableModel) table.getModel();
@@ -173,6 +174,19 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void salvaComputo() {
+        try {
+            Progetto p = Progetto.caricaProgetto(fileProgetto);
+            p.rimuoviComputo(computo);
+            
+            p.aggiungiComputo(computo);
+            p.salvaProgetto(fileProgetto);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
         int count = computo.getVociComputo().size();
         for(int i = 0; i < model.getRowCount(); i++) {
@@ -186,6 +200,8 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
                 computo.aggiungiVoce(vc);
             }
         }
+        
+        salvaComputo();
         
         EventQueue.invokeLater(() -> {
             new ComputoInterface().setVisible(true);
@@ -222,11 +238,11 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NuovaVoceInComputoInterface(new Computo("computo")).setVisible(true);
+                new NuovaVoceInComputoInterface(new Computo("computo"), "progetto.hhp").setVisible(true);
             }
-        });
+        });*/
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

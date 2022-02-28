@@ -5,6 +5,13 @@
  */
 package interfaces;
 
+import java.awt.EventQueue;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.swing.ListModel;
+import javax.swing.table.DefaultTableModel;
+import models.Computo;
+import models.Progetto;
 import models.VoceComputo;
 
 /**
@@ -14,13 +21,25 @@ import models.VoceComputo;
 public class VoceComputoInterface extends javax.swing.JFrame {
 
     private VoceComputo voce;
+    private Computo computo;
+    private String fileProgetto;
+    
+    private ListModel voceModel;
+    private DefaultTableModel misurazioniModel;
+    
+    private boolean saved;
     
     /**
      * Creates new form VoceComputoInterface
      */
-    public VoceComputoInterface(VoceComputo voce) {
+    public VoceComputoInterface(VoceComputo voce, Computo computo, String fileProgetto) {
         this.voce = voce;
+        this.computo = computo;
+        this.fileProgetto = fileProgetto;
+        this.saved = true;
         initComponents();
+        voceModel = voceList.getModel();
+        misurazioniModel = (DefaultTableModel) misurazioniTable.getModel();
     }
 
     /**
@@ -34,30 +53,35 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        voceList = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        misurazioniTable = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        addVoceButton = new javax.swing.JButton();
+        removeVoceButton = new javax.swing.JButton();
+        addMisurazioneButton = new javax.swing.JButton();
+        removeMisurazioneButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(149, 165, 166));
 
-        jList1.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        voceList.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        voceList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(voceList);
 
         jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
         jLabel1.setText("Vedi voce");
@@ -86,19 +110,24 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(149, 165, 166));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jTable1.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        misurazioniTable.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        misurazioniTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Misurazione", "Parti uguali", "Lunghezza", "Larghezza", "Altezza/peso"
             }
-        ));
-        jScrollPane2.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(misurazioniTable);
 
         jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -108,20 +137,45 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(149, 165, 166));
 
-        jButton1.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jButton1.setText("Aggiungi voce");
+        addVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        addVoceButton.setText("Aggiungi voce");
+        addVoceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addVoceButtonActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jButton2.setText("Rimuovi voce");
+        removeVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        removeVoceButton.setText("Rimuovi voce");
+        removeVoceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeVoceButtonActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jButton3.setText("Aggiungi misurazione");
+        addMisurazioneButton.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        addMisurazioneButton.setText("Aggiungi misurazione");
+        addMisurazioneButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addMisurazioneButtonActionPerformed(evt);
+            }
+        });
 
-        jButton4.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jButton4.setText("Elimina misurazione");
+        removeMisurazioneButton.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        removeMisurazioneButton.setText("Elimina misurazione");
+        removeMisurazioneButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeMisurazioneButtonActionPerformed(evt);
+            }
+        });
 
-        jButton5.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
-        jButton5.setText("Salva");
+        saveButton.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
+        saveButton.setText("Salva");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -130,26 +184,26 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(addMisurazioneButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(removeVoceButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addVoceButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(removeMisurazioneButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(101, 101, 101)
-                .addComponent(jButton1)
+                .addComponent(addVoceButton)
                 .addGap(43, 43, 43)
-                .addComponent(jButton2)
+                .addComponent(removeVoceButton)
                 .addGap(37, 37, 37)
-                .addComponent(jButton3)
+                .addComponent(addMisurazioneButton)
                 .addGap(43, 43, 43)
-                .addComponent(jButton4)
+                .addComponent(removeMisurazioneButton)
                 .addGap(42, 42, 42)
-                .addComponent(jButton5)
+                .addComponent(saveButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -173,6 +227,67 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void save() {
+        try {
+            Progetto p = Progetto.caricaProgetto(fileProgetto);
+            p.rimuoviComputo(computo);
+            computo.rimuoviVoce(voce);
+            
+            computo.aggiungiVoce(voce);
+            p.aggiungiComputo(computo);
+            p.salvaProgetto(fileProgetto);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if(saved == false) {
+            int choice = JOptionPane.showConfirmDialog(this, "Vuoi salvare prima di chiudere?");
+            if(choice == JOptionPane.YES_OPTION)
+                save();
+            else if(choice == JOptionPane.CANCEL_OPTION) 
+                return;
+        }
+        
+        EventQueue.invokeLater(() -> {
+            new ComputoInterface().setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_formWindowClosing
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        save();
+        saved = true;
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
+        String newVoce = JOptionPane.showInputDialog(this, "Inserisci un vedi voce", "Nuova voce", JOptionPane.QUESTION_MESSAGE);
+        
+        try{
+            int newVoceNum = Integer.parseInt(newVoce);
+        } catch(NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Inserire un numero intero", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        //voceModel.
+        
+        saved = false;
+    }//GEN-LAST:event_addVoceButtonActionPerformed
+
+    private void removeVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeVoceButtonActionPerformed
+        saved = false;
+    }//GEN-LAST:event_removeVoceButtonActionPerformed
+
+    private void addMisurazioneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMisurazioneButtonActionPerformed
+        saved = false;
+    }//GEN-LAST:event_addMisurazioneButtonActionPerformed
+
+    private void removeMisurazioneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeMisurazioneButtonActionPerformed
+        saved = false;
+    }//GEN-LAST:event_removeMisurazioneButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,19 +325,19 @@ public class VoceComputoInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton addMisurazioneButton;
+    private javax.swing.JButton addVoceButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable misurazioniTable;
+    private javax.swing.JButton removeMisurazioneButton;
+    private javax.swing.JButton removeVoceButton;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JList<String> voceList;
     // End of variables declaration//GEN-END:variables
 }

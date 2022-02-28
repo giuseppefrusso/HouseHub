@@ -107,12 +107,12 @@ public class ComputoInterface extends javax.swing.JFrame {
             Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.vediVoceToString(),
                 voce.getUnitaDiMisura(), voce.partiUgualiToString(), voce.lunghezzeToString(), voce.larghezzeToString(),
                 voce.altezzePesiToString(), voce.getQuantita(), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo()};
-            
+
             model.addRow(row);
         }
     }
 
-    private void save() {
+    /*protected void save() {
         HashMap<Integer, VoceComputo> voci = computo.getVociComputo();
         for (int i = 0; i < model.getRowCount(); i++) {
             int numProg = (int) model.getValueAt(i, 0);
@@ -133,32 +133,23 @@ public class ComputoInterface extends javax.swing.JFrame {
                 vediVoce = computo.getVociComputo().get(vediVoceNum);
             }
 
-            double[] dimensioni = {pu, lung, larg, h};
-
             computo.aggiungiVoce(curr);
         }
 
         //QUESTO E' UN PASSAGGIO COMPLETAMENTE DIVERSO DAL PRECEDENTE, SERVE A SALVARE IL COMPUTO AGGIORNATO SUL FILE DI PROGETTO
-        Progetto p;
         try {
-            p = Progetto.caricaProgetto(fileProgetto);
+            Progetto p = Progetto.caricaProgetto(fileProgetto);
+            //sicuro che basti questo a salvare tutto sul file progetto?
+            p.rimuoviComputo(computo);
+            p.aggiungiComputo(computo);
+            p.salvaProgetto(fileProgetto);
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        //sicuro che basti questo a salvare tutto sul file progetto?
-        p.rimuoviComputo(computo);
-        p.aggiungiComputo(computo);
-        try {
-            p.salvaProgetto(fileProgetto);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
-        //
-
         refreshTable();
-    }
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -339,7 +330,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     private void aggiungiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aggiungiButtonActionPerformed
         EventQueue.invokeLater(() -> {
-            new NuovaVoceInComputoInterface(computo).setVisible(true);
+            new NuovaVoceInComputoInterface(computo, fileProgetto).setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_aggiungiButtonActionPerformed
@@ -356,7 +347,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
 
         EventQueue.invokeLater(() -> {
-            new VoceComputoInterface(selectedVoce).setVisible(true);
+            new VoceComputoInterface(selectedVoce, computo, fileProgetto).setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_gestisciVoceButtonActionPerformed
@@ -418,14 +409,27 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Seleziona una voce del computo", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
-        
+
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
         
         computo.rimuoviVoce(selectedVoce);
+        salvaComputo();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    private void salvaComputo() {
+        try {
+            Progetto p = Progetto.caricaProgetto(fileProgetto);
+            p.rimuoviComputo(computo);
+            
+            p.aggiungiComputo(computo);
+            p.salvaProgetto(fileProgetto);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */

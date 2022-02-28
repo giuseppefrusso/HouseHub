@@ -336,7 +336,11 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             else if(choice == JOptionPane.CANCEL_OPTION) 
                 return;
         }
-        dispose();
+        
+        EventQueue.invokeLater(() -> {
+            new ProgettoInterface(false).setVisible(true);
+            dispose();
+        });
     }//GEN-LAST:event_formWindowClosing
 
     private void clientiTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clientiTableMouseClicked
