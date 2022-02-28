@@ -181,7 +181,6 @@ public class ComputoInterface extends javax.swing.JFrame {
         exportForSub = new javax.swing.JButton();
         exportForClient = new javax.swing.JButton();
         progettoButton = new javax.swing.JButton();
-        saveButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -305,21 +304,6 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(69, 91, 0, 0);
         jPanel1.add(progettoButton, gridBagConstraints);
 
-        saveButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
-        saveButton.setText("Salva computo");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(55, 91, 86, 0);
-        jPanel1.add(saveButton, gridBagConstraints);
-
         deleteButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         deleteButton.setText("Elimina voce");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -427,10 +411,6 @@ public class ComputoInterface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_exportForSubActionPerformed
 
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        save();
-    }//GEN-LAST:event_saveButtonActionPerformed
-
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -478,7 +458,6 @@ public class ComputoInterface extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton progettoButton;
-    private javax.swing.JButton saveButton;
     private javax.swing.JTable table;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
