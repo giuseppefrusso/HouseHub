@@ -55,9 +55,10 @@ public class LoginInterface extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HouseHub");
+        setBackground(new java.awt.Color(8, 14, 44));
         setResizable(false);
 
-        panel.setBackground(new java.awt.Color(153, 153, 153));
+        panel.setBackground(new java.awt.Color(192, 192, 192));
         panel.setLayout(new java.awt.GridLayout(3, 2, 10, 10));
 
         userLabel.setFont(new java.awt.Font("Comic Sans MS", 0, 12)); // NOI18N
@@ -99,7 +100,7 @@ public class LoginInterface extends javax.swing.JFrame {
         });
         panel.add(loginButton);
 
-        jPanel2.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel2.setBackground(new java.awt.Color(8, 14, 44));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/House_Hub_PDF.png"))); // NOI18N
@@ -134,7 +135,8 @@ public class LoginInterface extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();

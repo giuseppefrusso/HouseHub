@@ -65,6 +65,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("House Hub");
         setBackground(new java.awt.Color(240, 245, 58));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(240, 245, 58));
         jPanel1.setLayout(new java.awt.GridBagLayout());
