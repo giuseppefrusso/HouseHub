@@ -432,7 +432,18 @@ public class ComputoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = table.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona una voce del computo", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
+        
+        VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
+        
+        computo.rimuoviVoce(selectedVoce);
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     /**
