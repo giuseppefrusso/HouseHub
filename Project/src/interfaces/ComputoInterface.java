@@ -182,6 +182,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         exportForClient = new javax.swing.JButton();
         progettoButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
+        deleteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("House Hub");
@@ -256,9 +257,9 @@ public class ComputoInterface extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(46, 52, 26, 0);
+        gridBagConstraints.insets = new java.awt.Insets(51, 52, 86, 0);
         jPanel1.add(gestisciVoceButton, gridBagConstraints);
 
         exportForSub.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -285,9 +286,9 @@ public class ComputoInterface extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(46, 60, 26, 0);
+        gridBagConstraints.insets = new java.awt.Insets(51, 60, 86, 0);
         jPanel1.add(exportForClient, gridBagConstraints);
 
         progettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -304,6 +305,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(69, 91, 0, 0);
         jPanel1.add(progettoButton, gridBagConstraints);
 
+        saveButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         saveButton.setText("Salva computo");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -312,17 +314,32 @@ public class ComputoInterface extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(50, 91, 26, 0);
+        gridBagConstraints.insets = new java.awt.Insets(55, 91, 86, 0);
         jPanel1.add(saveButton, gridBagConstraints);
+
+        deleteButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        deleteButton.setText("Elimina voce");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.ipadx = 60;
+        gridBagConstraints.insets = new java.awt.Insets(10, 40, 15, 5);
+        jPanel1.add(deleteButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -330,7 +347,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, Short.MAX_VALUE))
         );
 
         pack();
@@ -414,6 +431,10 @@ public class ComputoInterface extends javax.swing.JFrame {
         save();
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -449,6 +470,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aggiungiButton;
+    private javax.swing.JButton deleteButton;
     private javax.swing.JButton exportForClient;
     private javax.swing.JButton exportForSub;
     private javax.swing.JButton gestisciVoceButton;
