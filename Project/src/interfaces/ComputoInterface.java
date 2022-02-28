@@ -116,10 +116,10 @@ public class ComputoInterface extends javax.swing.JFrame {
         HashMap<Integer, VoceComputo> voci = computo.getVociComputo();
         for (int i = 0; i < model.getRowCount(); i++) {
             int numProg = (int) model.getValueAt(i, 0);
-            
+
             VoceComputo curr = voci.get(numProg);
             computo.rimuoviVoce(curr);
-            
+
             int vediVoceNum = (Integer) model.getValueAt(i, 3);
             double pu = (Double) model.getValueAt(i, 5);
             double lung = (Double) model.getValueAt(i, 6);
@@ -135,7 +135,6 @@ public class ComputoInterface extends javax.swing.JFrame {
 
             double[] dimensioni = {pu, lung, larg, h};
 
-            
             computo.aggiungiVoce(curr);
         }
 
@@ -312,16 +311,18 @@ public class ComputoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void aggiungiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aggiungiButtonActionPerformed
-        if (table.getSelectedRow() != -1) {
-            EventQueue.invokeLater(() -> {
-                new NuovaVoceInComputoInterface(computo).setVisible(true);
-                dispose();
-            });
-        }
+        EventQueue.invokeLater(() -> {
+            new NuovaVoceInComputoInterface(computo).setVisible(true);
+            dispose();
+        });
     }//GEN-LAST:event_aggiungiButtonActionPerformed
 
     private void gestisciVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestisciVoceButtonActionPerformed
         int selectedRow = table.getSelectedRow();
+        
+        if(selectedRow == -1)
+            return;
+        
         int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
 
