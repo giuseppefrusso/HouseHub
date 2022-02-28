@@ -7,6 +7,7 @@ package interfaces;
 
 import java.awt.EventQueue;
 import java.io.IOException;
+import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -112,23 +113,18 @@ public class ComputoInterface extends javax.swing.JFrame {
     }
 
     private void save() {
-        //SALVARE COSI' NON E' IL MODO MIGLIORE, MEGLIO SETTARE DI VOLTA IN VOLTA OGNI ATTRIBUTO MODIFICATO
-        //IN OGNI CASO, SALVARE A OGNI MODIFICA O METTERE UN BOTTONE DI SALVA? SE SI SALVA CON BOTTONE, METTERE FLAG "saved" COME IN UN'ALTRA INTERFACE 
-        
-        computo.svuotaVociComputo();
+        HashMap<Integer, VoceComputo> voci = computo.getVociComputo();
         for (int i = 0; i < model.getRowCount(); i++) {
             int numProg = (int) model.getValueAt(i, 0);
-            String codice = (String) model.getValueAt(i, 1);
-            String desc = (String) model.getValueAt(i, 2);
+            
+            VoceComputo curr = voci.get(numProg);
+            computo.rimuoviVoce(curr);
+            
             int vediVoceNum = (Integer) model.getValueAt(i, 3);
-            String unita = (String) model.getValueAt(i, 4);
             double pu = (Double) model.getValueAt(i, 5);
             double lung = (Double) model.getValueAt(i, 6);
             double larg = (Double) model.getValueAt(i, 7);
             double h = (Double) model.getValueAt(i, 8);
-            double quant = (Double) model.getValueAt(i, 9);
-            double prezzoU = (Double) model.getValueAt(i, 10);
-            double prezzoC = (Double) model.getValueAt(i, 11);
 
             VoceComputo vediVoce;
             if (vediVoceNum == 0) {
@@ -139,10 +135,10 @@ public class ComputoInterface extends javax.swing.JFrame {
 
             double[] dimensioni = {pu, lung, larg, h};
 
-            computo.aggiungiVoce(new VoceComputo(numProg, codice, desc, vediVoce, unita, dimensioni, prezzoU));
+            
+            computo.aggiungiVoce(curr);
         }
 
-        
         //QUESTO E' UN PASSAGGIO COMPLETAMENTE DIVERSO DAL PRECEDENTE, SERVE A SALVARE IL COMPUTO AGGIORNATO SUL FILE DI PROGETTO
         Progetto p;
         try {
@@ -151,7 +147,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         //sicuro che basti questo a salvare tutto sul file progetto?
         p.rimuoviComputo(computo);
         p.aggiungiComputo(computo);
@@ -161,7 +157,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
         //
-        
+
         refreshTable();
     }
 
@@ -198,11 +194,6 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         table.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         table.setModel(model);
-        table.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                tableKeyTyped(evt);
-            }
-        });
         jScrollPane2.setViewportView(table);
 
         jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -321,10 +312,12 @@ public class ComputoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void aggiungiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aggiungiButtonActionPerformed
-        EventQueue.invokeLater(() -> {
-            new NuovaVoceInComputoInterface(computo).setVisible(true);
-            dispose();
-        });
+        if (table.getSelectedRow() != -1) {
+            EventQueue.invokeLater(() -> {
+                new NuovaVoceInComputoInterface(computo).setVisible(true);
+                dispose();
+            });
+        }
     }//GEN-LAST:event_aggiungiButtonActionPerformed
 
     private void gestisciVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestisciVoceButtonActionPerformed
@@ -344,20 +337,6 @@ public class ComputoInterface extends javax.swing.JFrame {
             dispose();
         });
     }//GEN-LAST:event_progettoButtonActionPerformed
-
-    private void tableKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableKeyTyped
-        //BISOGNA GESTIRE IL CASO IN CUI SI SCRIVA UN NON-DOUBLE IN UNA COLONNA DOUBLE
-        //-> si potrebbe fare così: cancella ultimo carattere e rifai conversione e cosi' via
-        
-        int selectedRow = table.getSelectedRow(), selectedColumn = table.getSelectedColumn();
-        Object newValue = model.getValueAt(selectedRow, selectedColumn);
-        System.out.println("You are writing '"+newValue+"' in cell ("+selectedRow+", "+selectedColumn+")");
-        
-        /*switch(selectedColumn) {
-           //a seconda della colonna selezionata fare una set a un attributo diverso di VoceComputo 
-           //il nuovo oggetto VoceComputo andrà aggiornato all'interno dell'oggetto computo. come?
-        }*/
-    }//GEN-LAST:event_tableKeyTyped
 
     private String chooseFileToSave(String dest) {
         //Scegli dove salvare file
@@ -385,23 +364,25 @@ public class ComputoInterface extends javax.swing.JFrame {
             return null;
         }
     }
-    
+
     private void exportForClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportForClientActionPerformed
-       String filePdf = chooseFileToSave("cliente");
-       
-       if(filePdf == null)
-           return;
+        String filePdf = chooseFileToSave("cliente");
+
+        if (filePdf == null) {
+            return;
+        }
     }//GEN-LAST:event_exportForClientActionPerformed
 
     private void exportForSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportForSubActionPerformed
         String filePdf = chooseFileToSave("sub-appaltatori");
-        
-        if(filePdf == null) 
+
+        if (filePdf == null) {
             return;
+        }
     }//GEN-LAST:event_exportForSubActionPerformed
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:
+        save();
     }//GEN-LAST:event_saveButtonActionPerformed
 
     /**
