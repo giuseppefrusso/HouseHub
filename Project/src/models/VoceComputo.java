@@ -15,10 +15,13 @@ import java.util.LinkedList;
 public class VoceComputo extends Voce {
 
     private int numeroProgressivo;
+    
+    private LinkedList<String> misurazioni;
     private LinkedList<Double> partiUguali;
     private LinkedList<Double> lunghezze;
     private LinkedList<Double> larghezze;
     private LinkedList<Double> altezze_pesi;
+    
     private double prezzoComplessivo;
     private double quantita;
     private HashMap<Integer, VoceComputo> vediVoce;
@@ -27,10 +30,13 @@ public class VoceComputo extends Voce {
     public VoceComputo(int numeroProgressivo, String codice, String descrizione, String unitaDiMisura, double prezzoUnitario) {
         super(codice, descrizione, unitaDiMisura, prezzoUnitario);
         this.numeroProgressivo = numeroProgressivo;
+        
+        misurazioni = new LinkedList<>();
         partiUguali = new LinkedList<>();
         lunghezze = new LinkedList<>();
         larghezze = new LinkedList<>();
         altezze_pesi = new LinkedList<>();
+        
         this.vediVoce = new HashMap<>();
         calcolaQuantita();
         this.prezzoComplessivo = this.quantita * prezzoUnitario;
@@ -77,6 +83,10 @@ public class VoceComputo extends Voce {
         return quantita;
     }
 
+    public LinkedList<String> getMisurazioni() {
+        return misurazioni;
+    }
+    
     public LinkedList<Double> getPartiUguali() {
         return partiUguali;
     }
@@ -93,7 +103,8 @@ public class VoceComputo extends Voce {
         return altezze_pesi;
     }
 
-    public void aggiungiDimensioni(double pu, double lung, double larg, double alt_p) {
+    public void aggiungiDimensioni(String m, double pu, double lung, double larg, double alt_p) {
+        misurazioni.add(m);
         partiUguali.add(pu);
         lunghezze.add(lung);
         larghezze.add(larg);
@@ -102,6 +113,7 @@ public class VoceComputo extends Voce {
     }
 
     public void rimuoviDimensioni(int index) {
+        misurazioni.remove(index);
         partiUguali.remove(index);
         lunghezze.remove(index);
         larghezze.remove(index);
@@ -120,6 +132,18 @@ public class VoceComputo extends Voce {
     
     public VoceComputo rimuoviVediVoce(int numeroProgressivo) {
         return vediVoce.remove(numeroProgressivo);
+    }
+    
+    private String misurazioniToString() {
+        StringBuffer sb = new StringBuffer();
+        
+        for(int i = 0; i < misurazioni.size(); i++) {
+            sb.append(misurazioni.get(i));
+            if(i != misurazioni.size()-1)
+                sb.append("\n");
+        }
+        
+        return sb.toString();
     }
     
     private String dimensioneToString(LinkedList<Double> dimensione) {
