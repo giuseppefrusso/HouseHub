@@ -67,7 +67,7 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         setBackground(new java.awt.Color(240, 245, 58));
         setResizable(false);
 
-        jPanel1.setBackground(new java.awt.Color(240, 245, 58));
+        jPanel1.setBackground(new java.awt.Color(149, 165, 166));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         jLabel4.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N

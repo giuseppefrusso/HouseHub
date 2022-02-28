@@ -55,7 +55,7 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("House Hub");
 
-        jPanel1.setBackground(new java.awt.Color(240, 245, 58));
+        jPanel1.setBackground(new java.awt.Color(149, 165, 166));
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         confermaButton.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
@@ -85,7 +85,7 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
         jPanel1.add(indietroButton, gridBagConstraints);
 
-        nuovaVoceLabel.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        nuovaVoceLabel.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
         nuovaVoceLabel.setText("Nuova voce");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
