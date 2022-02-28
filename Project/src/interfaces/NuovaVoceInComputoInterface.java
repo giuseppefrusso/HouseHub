@@ -182,8 +182,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
                 String descrizione = (String) model.getValueAt(i, 1);
                 String unitaDiMisura = (String) model.getValueAt(i, 2);
                 double prezzoUnitario = (Double) model.getValueAt(i, 3);
-                double[] dimensioni = {0.0,0.0,0.0,0.0};
-                VoceComputo vc = new VoceComputo(count,codice,descrizione,null,unitaDiMisura, dimensioni, prezzoUnitario);
+                VoceComputo vc = new VoceComputo(count,codice,descrizione,unitaDiMisura,prezzoUnitario);
                 computo.aggiungiVoce(vc);
             }
         }

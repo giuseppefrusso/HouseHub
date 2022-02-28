@@ -36,21 +36,24 @@ public class ComputoInterface extends javax.swing.JFrame {
      */
     public ComputoInterface(Computo computo, String fileProgetto) {
         ComputoInterface.computo = computo;
-        model = initTableModel();
-        refreshTable();
+        //model = initTableModel();
         ComputoInterface.fileProgetto = fileProgetto;
         initComponents();
+        model = (DefaultTableModel) table.getModel();
+        refreshTable();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
 
     public ComputoInterface() {
-        model = initTableModel();
+        //model = initTableModel();
         initComponents();
+        model = (DefaultTableModel) table.getModel();
         refreshTable();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
 
-    private DefaultTableModel initTableModel() {
+    /*private DefaultTableModel initTableModel() {
+        
         DefaultTableModel tm = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -96,18 +99,15 @@ public class ComputoInterface extends javax.swing.JFrame {
         tm.addColumn("Prezzo complessivo");
 
         return tm;
-    }
-
+    }*/
     private void refreshTable() {
         model.setRowCount(0);
 
         for (VoceComputo voce : computo.getVociComputo().values()) {
-            double pu = voce.getDimensioni()[0], lung = voce.getDimensioni()[1],
-                    larg = voce.getDimensioni()[2], h = voce.getDimensioni()[3];
-
-            Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.getUnitaDiMisura(),
-                pu, lung, larg, h, voce.getQuantita(), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo()};
-
+            Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.vediVoceToString(),
+                voce.getUnitaDiMisura(), voce.partiUgualiToString(), voce.lunghezzeToString(), voce.larghezzeToString(),
+                voce.altezzePesiToString(), voce.getQuantita(), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo()};
+            
             model.addRow(row);
         }
     }
@@ -192,8 +192,34 @@ public class ComputoInterface extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         table.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
-        table.setModel(model);
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "N°", "Codice", "Descrizione", "Vedi voce", "Unità di misura", "Parti uguali", "Lunghezza", "Larghezza", "Altezza/peso", "Quantità", "Prezzo unitario", "Prezzo complessivo"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(table);
+        if (table.getColumnModel().getColumnCount() > 0) {
+            table.getColumnModel().getColumn(0).setMinWidth(50);
+            table.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
 
         jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -319,10 +345,11 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     private void gestisciVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestisciVoceButtonActionPerformed
         int selectedRow = table.getSelectedRow();
-        
-        if(selectedRow == -1)
+
+        if (selectedRow == -1) {
             return;
-        
+        }
+
         int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
 
