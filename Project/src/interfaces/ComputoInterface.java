@@ -347,6 +347,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         int selectedRow = table.getSelectedRow();
 
         if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona una voce del computo", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
