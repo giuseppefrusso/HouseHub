@@ -33,7 +33,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     public NuovaVoceInComputoInterface(Computo computo, String fileProgetto) {
         this.computo = computo;
         this.fileProgetto = fileProgetto;
-        this.model = initTableModel();
+        //this.model = initTableModel();
         initComponents();
         model = (DefaultTableModel) table.getModel();
         fillTableModel();
@@ -47,6 +47,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
             Capitolato c = Capitolato.caricaCapitolato(CapitolatoInterface.FILEPATH);
             for (Voce v : c.getCapitolatoClienti().values()) {
                 if (!computo.getCodici().contains(v.getCodice())) {
+                    System.out.println(v.getCodice() + " non presente");
                     Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
                     model.addRow(rowData);
                 } else
@@ -59,7 +60,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         }
     }
 
-    private DefaultTableModel initTableModel() {
+    /*private DefaultTableModel initTableModel() {
         DefaultTableModel tm = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -85,7 +86,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         tm.addColumn("Scegli");
 
         return tm;
-    }
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -241,7 +242,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
- /*java.awt.EventQueue.invokeLater(new Runnable() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new NuovaVoceInComputoInterface(new Computo("computo"), "progetto.hhp").setVisible(true);
             }
