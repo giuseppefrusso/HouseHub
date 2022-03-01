@@ -108,6 +108,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         capitolatoButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         deleteComputoButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HouseHub");
@@ -221,7 +222,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 12;
+        gridBagConstraints.gridwidth = 8;
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 7, 0);
         panel.add(jLabel2, gridBagConstraints);
 
@@ -239,6 +240,14 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         panel.add(deleteComputoButton, gridBagConstraints);
+
+        jButton1.setText("jButton1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        panel.add(jButton1, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -427,6 +436,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
     private javax.swing.JButton createComputoButton;
     private javax.swing.JButton createProgettoButton;
     private javax.swing.JButton deleteComputoButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton openProgettoButton;
     private javax.swing.JPanel panel;
