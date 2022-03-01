@@ -71,6 +71,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         misurazioniTable = new javax.swing.JTable();
+        misurazioniTable.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
         misurazioniLabel = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         addVoceButton = new javax.swing.JButton();
@@ -222,6 +223,10 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(voceTable);
+        if (voceTable.getColumnModel().getColumnCount() > 0) {
+            voceTable.getColumnModel().getColumn(0).setMinWidth(50);
+            voceTable.getColumnModel().getColumn(0).setMaxWidth(50);
+        }
 
         jPanel4.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
