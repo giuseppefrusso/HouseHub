@@ -52,6 +52,9 @@ public class Cliente implements Serializable{
         return tecnico;
     }
     
-    
+    @Override
+    public String toString() {
+        return cognome+" "+nome+"\nTelefono: "+telefono+"\nIndirizzo del cantiere: "+indirizzoCantiere+"\nEmail: "+email+"\nTecnico: "+tecnico;
+    }
     
 }

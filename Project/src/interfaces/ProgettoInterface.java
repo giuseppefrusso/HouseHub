@@ -9,6 +9,8 @@ import java.awt.EventQueue;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.JOptionPane;
@@ -61,6 +63,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
     }
 
     private void schermataIniziale() {
+        clienteButton.setEnabled(false);
         computoComboBox.setEnabled(false);
         computoLabel.setText("");
         visualizzaComputoButton.setEnabled(false);
@@ -69,6 +72,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
     }
 
     private void schermataProgetto() {
+        clienteButton.setEnabled(true);
         computoComboBox.setEnabled(true);
         visualizzaComputoButton.setEnabled(true);
         deleteComputoButton.setEnabled(true);
@@ -108,7 +112,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         capitolatoButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         deleteComputoButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        clienteButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HouseHub");
@@ -241,13 +245,18 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         panel.add(deleteComputoButton, gridBagConstraints);
 
-        jButton1.setText("jButton1");
+        clienteButton.setText("Cliente");
+        clienteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clienteButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        panel.add(jButton1, gridBagConstraints);
+        panel.add(clienteButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -393,6 +402,15 @@ public class ProgettoInterface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_deleteComputoButtonActionPerformed
 
+    private void clienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clienteButtonActionPerformed
+        try {
+            Progetto p = Progetto.caricaProgetto(fileProgetto);
+            JOptionPane.showMessageDialog(this, p.getUtente(), "Cliente", JOptionPane.PLAIN_MESSAGE);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_clienteButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -430,13 +448,13 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton capitolatoButton;
+    private javax.swing.JButton clienteButton;
     private javax.swing.JComboBox<Computo> computoComboBox;
     private javax.swing.JComboBox<String> computoComboBox1;
     private javax.swing.JLabel computoLabel;
     private javax.swing.JButton createComputoButton;
     private javax.swing.JButton createProgettoButton;
     private javax.swing.JButton deleteComputoButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton openProgettoButton;
     private javax.swing.JPanel panel;
