@@ -8,7 +8,7 @@ package models;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.HashMap;
 import utils.Pickle;
 
 /**
@@ -18,27 +18,27 @@ import utils.Pickle;
 public class Progetto implements Serializable{
 
     private final Cliente cliente;
-    private HashSet<Computo> listaComputi;
+    private HashMap<String, Computo> listaComputi;
 
     public Progetto(Cliente cliente) {
         this.cliente = cliente;
-        this.listaComputi = new HashSet<>();
+        this.listaComputi = new HashMap<>();
     }
 
     public Cliente getUtente() {
         return cliente;
     }
 
-    public HashSet<Computo> getListaComputi() {
+    public HashMap<String, Computo> getListaComputi() {
         return listaComputi;
     }
 
-    public boolean aggiungiComputo(Computo computo) {
-        return listaComputi.add(computo);
+    public Computo aggiungiComputo(Computo computo) {
+        return listaComputi.put(computo.getNome(), computo);
     }
 
-    public boolean rimuoviComputo(Computo computo) {
-        return listaComputi.remove(computo);
+    public Computo rimuoviComputo(Computo computo) {
+        return listaComputi.remove(computo.getNome());
     }
     
     public void salvaProgetto(String path) throws FileNotFoundException, IOException {
