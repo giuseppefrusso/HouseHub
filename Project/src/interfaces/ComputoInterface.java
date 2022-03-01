@@ -173,6 +173,8 @@ public class ComputoInterface extends javax.swing.JFrame {
         exportForClient = new javax.swing.JButton();
         progettoButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        upButton = new javax.swing.JButton();
+        downButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("House Hub");
@@ -249,7 +251,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(51, 52, 86, 0);
+        gridBagConstraints.insets = new java.awt.Insets(51, 52, 106, 0);
         jPanel1.add(gestisciVoceButton, gridBagConstraints);
 
         exportForSub.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -260,11 +262,11 @@ public class ComputoInterface extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(69, 60, 0, 28);
+        gridBagConstraints.insets = new java.awt.Insets(44, 60, 0, 28);
         jPanel1.add(exportForSub, gridBagConstraints);
 
         exportForClient.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -275,10 +277,10 @@ public class ComputoInterface extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(51, 60, 86, 0);
+        gridBagConstraints.insets = new java.awt.Insets(51, 60, 106, 0);
         jPanel1.add(exportForClient, gridBagConstraints);
 
         progettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -307,8 +309,28 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 60;
-        gridBagConstraints.insets = new java.awt.Insets(10, 40, 15, 5);
+        gridBagConstraints.insets = new java.awt.Insets(25, 40, 10, 5);
         jPanel1.add(deleteButton, gridBagConstraints);
+
+        upButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        upButton.setText("Su");
+        upButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                upButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(70, 0, 0, 0);
+        jPanel1.add(upButton, gridBagConstraints);
+
+        downButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        downButton.setText("Giu");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 2;
+        jPanel1.add(downButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -418,6 +440,10 @@ public class ComputoInterface extends javax.swing.JFrame {
         salvaComputo();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
+    private void upButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_upButtonActionPerformed
+
     private void salvaComputo() {
         try {
             Progetto p = Progetto.caricaProgetto(fileProgetto);
@@ -466,6 +492,7 @@ public class ComputoInterface extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aggiungiButton;
     private javax.swing.JButton deleteButton;
+    private javax.swing.JButton downButton;
     private javax.swing.JButton exportForClient;
     private javax.swing.JButton exportForSub;
     private javax.swing.JButton gestisciVoceButton;
@@ -475,5 +502,6 @@ public class ComputoInterface extends javax.swing.JFrame {
     private javax.swing.JButton progettoButton;
     private javax.swing.JTable table;
     private javax.swing.JLabel titleLabel;
+    private javax.swing.JButton upButton;
     // End of variables declaration//GEN-END:variables
 }
