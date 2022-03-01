@@ -40,6 +40,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         misurazioniLabel.setText("Misurazioni (" + voce.getUnitaDiMisura() + ")");
         voceModel = (DefaultTableModel) voceTable.getModel();
         misurazioniModel = (DefaultTableModel) misurazioniTable.getModel();
+        refreshTables();
     }
 
     private void refreshTables() {
@@ -52,7 +53,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             voceModel.addRow(rowData);
         }
 
-        for (int i = 0; i < voce.getPartiUguali().size(); i++) {
+        for (int i = 0; i < voce.getMisurazioni().size(); i++) {
             Object[] rowData = {voce.getMisurazioni().get(i),voce.getPartiUguali().get(i), 
                 voce.getLunghezze().get(i),voce.getLarghezze().get(i), voce.getAltezze_pesi().get(i)};
             misurazioniModel.addRow(rowData);
@@ -85,6 +86,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         voceTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("House Hub");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -109,6 +111,11 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        misurazioniTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                misurazioniTableMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(misurazioniTable);
@@ -208,7 +215,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Double.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false
@@ -255,11 +262,23 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         try {
             Progetto p = Progetto.caricaProgetto(fileProgetto);
             p.rimuoviComputo(computo);
-            computo.rimuoviVoce(voce);
+            computo.rimuoviVoce(voce.getNumeroProgressivo());
+            
+            voce.svuotaDimensioni();
+            for(int row = 0; row < misurazioniModel.getRowCount(); row++) {
+                String m = (String) misurazioniModel.getValueAt(row, 0);
+                double pu = (double) misurazioniModel.getValueAt(row, 1);
+                double lung = (double) misurazioniModel.getValueAt(row, 2);
+                double larg = (double) misurazioniModel.getValueAt(row, 3);
+                double alt_p = (double) misurazioniModel.getValueAt(row, 4);
+                voce.aggiungiDimensioni(m, pu, lung, larg, alt_p);
+            }
 
             computo.aggiungiVoce(voce);
             p.aggiungiComputo(computo);
             p.salvaProgetto(fileProgetto);
+            
+            saved=true;
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
@@ -283,7 +302,6 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         save();
-        saved = true;
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
@@ -294,6 +312,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         }
 
         try {
+            System.out.println(newVoce);
             int newVoceNum = Integer.parseInt(newVoce);
             
             TreeMap<Integer, VoceComputo> voci = computo.getVociComputo();
@@ -302,7 +321,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Inserire un numero di voce minore di quella corrente", "Avviso", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            
+            System.out.println(newVoceNum);
             voce.aggiungiVediVoce(voci.get(newVoceNum));
             refreshTables();
             saved = false;
@@ -350,6 +369,10 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         refreshTables();
         saved = false;
     }//GEN-LAST:event_removeMisurazioneButtonActionPerformed
+
+    private void misurazioniTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_misurazioniTableMouseClicked
+        saved = false;
+    }//GEN-LAST:event_misurazioniTableMouseClicked
 
     /**
      * @param args the command line arguments

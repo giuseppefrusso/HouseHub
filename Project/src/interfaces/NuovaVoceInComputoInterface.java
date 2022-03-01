@@ -43,11 +43,9 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
             Capitolato c = Capitolato.caricaCapitolato(CapitolatoInterface.FILEPATH);
             for (Voce v : c.getCapitolatoClienti().values()) {
                 if (!computo.getCodici().contains(v.getCodice())) {
-                    System.out.println(v.getCodice() + " non presente");
                     Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
                     model.addRow(rowData);
-                } else
-                    System.out.println(v.getCodice() + " già presente");
+                } 
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Capitolato vuoto", "Avviso", JOptionPane.WARNING_MESSAGE);
@@ -101,7 +99,13 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         confermaButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("House Hub");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 0));
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -194,12 +198,20 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
 
+        backToComputoInterface();
+    }//GEN-LAST:event_confermaButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        backToComputoInterface();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void backToComputoInterface() {
         EventQueue.invokeLater(() -> {
             new ComputoInterface().setVisible(true);
             dispose();
         });
-    }//GEN-LAST:event_confermaButtonActionPerformed
-
+    }
+    
     /**
      * @param args the command line arguments
      */

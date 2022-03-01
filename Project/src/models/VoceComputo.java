@@ -39,7 +39,6 @@ public class VoceComputo extends Voce {
         
         this.vediVoce = new HashMap<>();
         calcolaQuantita();
-        this.prezzoComplessivo = this.quantita * prezzoUnitario;
     }
 
     public void calcolaQuantita() {
@@ -65,6 +64,8 @@ public class VoceComputo extends Voce {
         for (int numProgr : vediVoce.keySet()) {
             quantita *= vediVoce.get(numProgr).quantita;
         }
+        
+        this.prezzoComplessivo = this.quantita * getPrezzoUnitario();
     }
 
     public int getNumeroProgressivo() {
@@ -121,6 +122,15 @@ public class VoceComputo extends Voce {
         calcolaQuantita();
     }
     
+    public void svuotaDimensioni() {
+        misurazioni.clear();
+        partiUguali.clear();
+        lunghezze.clear();
+        larghezze.clear();
+        altezze_pesi.clear();
+        calcolaQuantita();
+    }
+    
     public HashMap<Integer, VoceComputo> getVediVoce() {
         return vediVoce;
     }
@@ -159,7 +169,15 @@ public class VoceComputo extends Voce {
     }
     
     public String partiUgualiToString() {
-        return dimensioneToString(partiUguali);
+        StringBuffer sb = new StringBuffer();
+        
+        for(int i = 0; i < partiUguali.size(); i++) {
+            sb.append(misurazioni.get(i)).append(" ").append(partiUguali.get(i));
+            if(i != partiUguali.size()-1)
+                sb.append(", ");
+        }
+        
+        return sb.toString();
     }
     
     public String lunghezzeToString() {

@@ -7,9 +7,6 @@ package interfaces;
 
 import java.awt.EventQueue;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -17,7 +14,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import models.Computo;
-import models.Progetto;
 import models.VoceComputo;
 
 /**
@@ -105,8 +101,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         return tm;
     }*/
-    
-    /*protected void save() {
+ /*protected void save() {
         HashMap<Integer, VoceComputo> voci = computo.getVociComputo();
         for (int i = 0; i < model.getRowCount(); i++) {
             int numProg = (int) model.getValueAt(i, 0);
@@ -144,10 +139,9 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         refreshTable();
     }*/
-    
     private void refreshTable() {
         model.setRowCount(0);
-        
+
         for (VoceComputo voce : computo.getVociComputo().values()) {
             Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.vediVoceToString(),
                 voce.getUnitaDiMisura(), voce.partiUgualiToString(), voce.lunghezzeToString(), voce.larghezzeToString(),
@@ -212,6 +206,11 @@ public class ComputoInterface extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(table);
@@ -360,7 +359,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void aggiungiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aggiungiButtonActionPerformed
         EventQueue.invokeLater(() -> {
             new NuovaVoceInComputoInterface(computo, fileProgetto).setVisible(true);
@@ -368,7 +367,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_aggiungiButtonActionPerformed
 
-    private void gestisciVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestisciVoceButtonActionPerformed
+    private void gestisciVoce() {
         int selectedRow = table.getSelectedRow();
 
         if (selectedRow == -1) {
@@ -383,6 +382,10 @@ public class ComputoInterface extends javax.swing.JFrame {
             new VoceComputoInterface(selectedVoce, computo, fileProgetto).setVisible(true);
             dispose();
         });
+    }
+    
+    private void gestisciVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestisciVoceButtonActionPerformed
+        gestisciVoce();
     }//GEN-LAST:event_gestisciVoceButtonActionPerformed
 
     private void progettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_progettoButtonActionPerformed
@@ -446,8 +449,8 @@ public class ComputoInterface extends javax.swing.JFrame {
         int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
 
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
-        
-        computo.rimuoviVoce(selectedVoce);
+
+        computo.rimuoviVoce(selectedVoce.getNumeroProgressivo());
         try {
             computo.salvaComputoInProgetto(fileProgetto);
         } catch (IOException | ClassNotFoundException ex) {
@@ -463,26 +466,26 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Seleziona una voce del computo", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        int selectedNumProgr = (int) model.getValueAt(selectedRow, 0); 
-        
-        if(selectedNumProgr <= 1) {
+
+        int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
+
+        if (selectedNumProgr <= 1) {
             JOptionPane.showMessageDialog(this, "Non puoi spostare in alto la prima voce", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
-        VoceComputo swappedVoce = computo.getVociComputo().get(selectedNumProgr-1);
-        
-        computo.rimuoviVoce(selectedVoce); 
-        computo.rimuoviVoce(swappedVoce);
-        
-        selectedVoce.setNumeroProgressivo(selectedNumProgr-1);
+        VoceComputo swappedVoce = computo.getVociComputo().get(selectedNumProgr - 1);
+
+        computo.rimuoviVoce(selectedVoce.getNumeroProgressivo());
+        computo.rimuoviVoce(swappedVoce.getNumeroProgressivo());
+
+        selectedVoce.setNumeroProgressivo(selectedNumProgr - 1);
         swappedVoce.setNumeroProgressivo(selectedNumProgr);
-        
+
         computo.aggiungiVoce(selectedVoce);
         computo.aggiungiVoce(swappedVoce);
-        
+
         try {
             computo.salvaComputoInProgetto(fileProgetto);
         } catch (IOException | ClassNotFoundException ex) {
@@ -498,26 +501,26 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Seleziona una voce del computo", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        int selectedNumProgr = (int) model.getValueAt(selectedRow, 0); 
-        
-        if(selectedNumProgr >= computo.getVociComputo().size()) {
+
+        int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
+
+        if (selectedNumProgr >= computo.getVociComputo().size()) {
             JOptionPane.showMessageDialog(this, "Non puoi spostare in basso l'ultima voce", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
-        VoceComputo swappedVoce = computo.getVociComputo().get(selectedNumProgr+1);
-        
-        computo.rimuoviVoce(selectedVoce); 
-        computo.rimuoviVoce(swappedVoce);
-        
-        selectedVoce.setNumeroProgressivo(selectedNumProgr+1);
+        VoceComputo swappedVoce = computo.getVociComputo().get(selectedNumProgr + 1);
+
+        computo.rimuoviVoce(selectedVoce.getNumeroProgressivo());
+        computo.rimuoviVoce(swappedVoce.getNumeroProgressivo());
+
+        selectedVoce.setNumeroProgressivo(selectedNumProgr + 1);
         swappedVoce.setNumeroProgressivo(selectedNumProgr);
-        
+
         computo.aggiungiVoce(selectedVoce);
         computo.aggiungiVoce(swappedVoce);
-        
+
         try {
             computo.salvaComputoInProgetto(fileProgetto);
         } catch (IOException | ClassNotFoundException ex) {
@@ -525,7 +528,14 @@ public class ComputoInterface extends javax.swing.JFrame {
         }
         refreshTable();
     }//GEN-LAST:event_downButtonActionPerformed
-    
+
+    private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
+        if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+            evt.consume();
+            gestisciVoce();
+        }
+    }//GEN-LAST:event_tableMouseClicked
+
     /**
      * @param args the command line arguments
      */

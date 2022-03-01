@@ -64,12 +64,14 @@ public class ProgettoInterface extends javax.swing.JFrame {
         computoComboBox.setEnabled(false);
         computoLabel.setText("");
         visualizzaComputoButton.setEnabled(false);
+        deleteComputoButton.setEnabled(false);
         createComputoButton.setEnabled(false);
     }
 
     private void schermataProgetto() {
         computoComboBox.setEnabled(true);
         visualizzaComputoButton.setEnabled(true);
+        deleteComputoButton.setEnabled(true);
         createComputoButton.setEnabled(true);
         
         refreshComboBox();
@@ -105,7 +107,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         createComputoButton = new javax.swing.JButton();
         capitolatoButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        deleteComputoButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("HouseHub");
@@ -223,15 +225,20 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(3, 0, 7, 0);
         panel.add(jLabel2, gridBagConstraints);
 
-        jButton1.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
-        jButton1.setText("Elimina computo");
+        deleteComputoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        deleteComputoButton.setText("Elimina computo");
+        deleteComputoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteComputoButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.gridwidth = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
-        panel.add(jButton1, gridBagConstraints);
+        panel.add(deleteComputoButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -272,6 +279,8 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
     private void refreshComboBox() {
         //visualizza il progetto corrente nella scheda Computo
+        computoComboBox.removeAllItems();
+        
         try {
             Progetto progetto = Progetto.caricaProgetto(fileProgetto);
             HashMap<String, Computo> computi = progetto.getListaComputi();
@@ -350,12 +359,30 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
     private void visualizzaComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizzaComputoButtonActionPerformed
         Computo computo = (Computo) computoComboBox.getSelectedItem();
+        
+        if(computo == null) {
+            JOptionPane.showMessageDialog(this, "Non è stato selezionato alcun computo", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         EventQueue.invokeLater(() -> {
             new ComputoInterface(computo, fileProgetto).setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_visualizzaComputoButtonActionPerformed
+
+    private void deleteComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteComputoButtonActionPerformed
+        try {
+            Computo computo = (Computo) computoComboBox.getSelectedItem();
+            Progetto p = Progetto.caricaProgetto(fileProgetto);
+            p.rimuoviComputo(computo);
+            p.salvaProgetto(fileProgetto);
+            refreshComboBox();
+            setComputoLabel();
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_deleteComputoButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -399,7 +426,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
     private javax.swing.JLabel computoLabel;
     private javax.swing.JButton createComputoButton;
     private javax.swing.JButton createProgettoButton;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton deleteComputoButton;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton openProgettoButton;
     private javax.swing.JPanel panel;

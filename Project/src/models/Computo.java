@@ -5,7 +5,6 @@
  */
 package models;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -22,14 +21,12 @@ public class Computo implements Serializable {
     private final String nome, data;
     private double totale;
     private TreeMap<Integer, VoceComputo> listaVoci;
-    private HashSet<String> codici;
 
     public Computo(String nome) {
         this.nome = nome;
         this.data = LocalDate.now().toString();
         totale = 0.0;
         listaVoci = new TreeMap<>();
-        codici = new HashSet<>();
     }
 
     public String getNome() {
@@ -45,27 +42,43 @@ public class Computo implements Serializable {
     }
 
     public HashSet<String> getCodici() {
-        return codici;
+        HashSet<String> currentCodici = new HashSet<>();
+        
+        for(VoceComputo vc : listaVoci.values()) {
+            currentCodici.add(vc.getCodice());
+        }
+        
+        return currentCodici;
     }
 
     public boolean aggiungiVoce(VoceComputo voce) {
         VoceComputo result = listaVoci.put(voce.getNumeroProgressivo(), voce);
         if (result != null) {
             totale += result.getPrezzoComplessivo();
-            codici.add(result.getCodice());
             return true;
         }
         return false;
     }
 
-    public boolean rimuoviVoce(VoceComputo voce) {
-        VoceComputo result = listaVoci.remove(voce.getNumeroProgressivo());
+    public boolean rimuoviVoce(int numeroProgressivo) {
+        VoceComputo result = listaVoci.remove(numeroProgressivo);
         if (result != null) {
-            totale -= voce.getPrezzoComplessivo();
-            codici.remove(result.getCodice());
+            totale -= result.getPrezzoComplessivo();
+            shiftVoci(result.getNumeroProgressivo());
             return true;
         }
         return false;
+    }
+    
+    private void shiftVoci(int numProgressivoEliminato) {
+        for(int curr : listaVoci.keySet()) {
+            if(curr >= numProgressivoEliminato) {
+                int newNum = curr - 1;
+                VoceComputo v = listaVoci.remove(curr);
+                v.setNumeroProgressivo(newNum);
+                listaVoci.put(newNum, v);
+            }
+        }
     }
 
     public void svuotaVociComputo() {
