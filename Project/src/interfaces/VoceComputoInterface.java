@@ -7,7 +7,7 @@ package interfaces;
 
 import java.awt.EventQueue;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.TreeMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Computo;
@@ -296,7 +296,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         try {
             int newVoceNum = Integer.parseInt(newVoce);
             
-            HashMap<Integer, VoceComputo> voci = computo.getVociComputo();
+            TreeMap<Integer, VoceComputo> voci = computo.getVociComputo();
             
             if(!voci.containsKey(newVoceNum) || newVoceNum >= voce.getNumeroProgressivo()) {
                 JOptionPane.showMessageDialog(this, "Inserire un numero di voce minore di quella corrente", "Avviso", JOptionPane.WARNING_MESSAGE);

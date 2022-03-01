@@ -45,9 +45,12 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         //rimuovere le voci gia presenti nel computo
         try {
             Capitolato c = Capitolato.caricaCapitolato(CapitolatoInterface.FILEPATH);
-            for(Voce v : c.getCapitolatoClienti().values()) {
-                Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
-                model.addRow(rowData);
+            for (Voce v : c.getCapitolatoClienti().values()) {
+                if (!computo.getCodici().contains(v.getCodice())) {
+                    Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
+                    model.addRow(rowData);
+                } else
+                    System.out.println(v.getCodice() + " già presente");
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Capitolato vuoto", "Avviso", JOptionPane.WARNING_MESSAGE);
@@ -55,7 +58,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private DefaultTableModel initTableModel() {
         DefaultTableModel tm = new DefaultTableModel() {
             @Override
@@ -178,31 +181,31 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         try {
             Progetto p = Progetto.caricaProgetto(fileProgetto);
             p.rimuoviComputo(computo);
-            
+
             p.aggiungiComputo(computo);
             p.salvaProgetto(fileProgetto);
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    
+
+
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
         int count = computo.getVociComputo().size();
-        for(int i = 0; i < model.getRowCount(); i++) {
-            if((Boolean) model.getValueAt(i, 4)) {
-                count ++;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if ((Boolean) model.getValueAt(i, 4)) {
+                count++;
                 String codice = (String) model.getValueAt(i, 0);
                 String descrizione = (String) model.getValueAt(i, 1);
                 String unitaDiMisura = (String) model.getValueAt(i, 2);
                 double prezzoUnitario = (Double) model.getValueAt(i, 3);
-                VoceComputo vc = new VoceComputo(count,codice,descrizione,unitaDiMisura,prezzoUnitario);
+                VoceComputo vc = new VoceComputo(count, codice, descrizione, unitaDiMisura, prezzoUnitario);
                 computo.aggiungiVoce(vc);
             }
         }
-        
+
         salvaComputo();
-        
+
         EventQueue.invokeLater(() -> {
             new ComputoInterface().setVisible(true);
             dispose();
@@ -238,7 +241,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        /*java.awt.EventQueue.invokeLater(new Runnable() {
+ /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new NuovaVoceInComputoInterface(new Computo("computo"), "progetto.hhp").setVisible(true);
             }

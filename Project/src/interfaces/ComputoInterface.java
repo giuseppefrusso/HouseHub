@@ -100,18 +100,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         return tm;
     }*/
-    private void refreshTable() {
-        model.setRowCount(0);
-
-        for (VoceComputo voce : computo.getVociComputo().values()) {
-            Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.vediVoceToString(),
-                voce.getUnitaDiMisura(), voce.partiUgualiToString(), voce.lunghezzeToString(), voce.larghezzeToString(),
-                voce.altezzePesiToString(), voce.getQuantita(), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo()};
-
-            model.addRow(row);
-        }
-    }
-
+    
     /*protected void save() {
         HashMap<Integer, VoceComputo> voci = computo.getVociComputo();
         for (int i = 0; i < model.getRowCount(); i++) {
@@ -150,6 +139,18 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         refreshTable();
     }*/
+    
+    private void refreshTable() {
+        model.setRowCount(0);
+        
+        for (VoceComputo voce : computo.getVociComputo().values()) {
+            Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.vediVoceToString(),
+                voce.getUnitaDiMisura(), voce.partiUgualiToString(), voce.lunghezzeToString(), voce.larghezzeToString(),
+                voce.altezzePesiToString(), voce.getQuantita(), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo()};
+
+            model.addRow(row);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -327,6 +328,11 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         downButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         downButton.setText("Giu");
+        downButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
@@ -349,7 +355,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void aggiungiButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aggiungiButtonActionPerformed
         EventQueue.invokeLater(() -> {
             new NuovaVoceInComputoInterface(computo, fileProgetto).setVisible(true);
@@ -438,11 +444,70 @@ public class ComputoInterface extends javax.swing.JFrame {
         
         computo.rimuoviVoce(selectedVoce);
         salvaComputo();
+        refreshTable();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     private void upButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_upButtonActionPerformed
-        // TODO add your handling code here:
+        int selectedRow = table.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona una voce del computo", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int selectedNumProgr = (int) model.getValueAt(selectedRow, 0); 
+        
+        if(selectedNumProgr <= 1) {
+            JOptionPane.showMessageDialog(this, "Non puoi spostare in alto la prima voce", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
+        VoceComputo swappedVoce = computo.getVociComputo().get(selectedNumProgr-1);
+        
+        computo.rimuoviVoce(selectedVoce); 
+        computo.rimuoviVoce(swappedVoce);
+        
+        selectedVoce.setNumeroProgressivo(selectedNumProgr-1);
+        swappedVoce.setNumeroProgressivo(selectedNumProgr);
+        
+        computo.aggiungiVoce(selectedVoce);
+        computo.aggiungiVoce(swappedVoce);
+        
+        salvaComputo();
+        refreshTable();
     }//GEN-LAST:event_upButtonActionPerformed
+
+    private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
+        int selectedRow = table.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona una voce del computo", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int selectedNumProgr = (int) model.getValueAt(selectedRow, 0); 
+        
+        if(selectedNumProgr >= computo.getVociComputo().size()) {
+            JOptionPane.showMessageDialog(this, "Non puoi spostare in basso l'ultima voce", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
+        VoceComputo swappedVoce = computo.getVociComputo().get(selectedNumProgr+1);
+        
+        computo.rimuoviVoce(selectedVoce); 
+        computo.rimuoviVoce(swappedVoce);
+        
+        selectedVoce.setNumeroProgressivo(selectedNumProgr+1);
+        swappedVoce.setNumeroProgressivo(selectedNumProgr);
+        
+        computo.aggiungiVoce(selectedVoce);
+        computo.aggiungiVoce(swappedVoce);
+        
+        salvaComputo();
+        refreshTable();
+    }//GEN-LAST:event_downButtonActionPerformed
 
     private void salvaComputo() {
         try {
@@ -485,7 +550,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ComputoInterface(new Computo("computo"), "C:\\Users\\gerar\\Desktop\\progetto.hhp").setVisible(true);
+            new ComputoInterface(new Computo("computo"), "C:\\Users\\Pepito\\Desktop\\progetto.hhp").setVisible(true);
         });
     }
 

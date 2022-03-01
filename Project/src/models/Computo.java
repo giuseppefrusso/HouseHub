@@ -7,8 +7,9 @@ package models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.TreeMap;
 
 /**
  *
@@ -18,13 +19,15 @@ public class Computo implements Serializable{
     
     private final String nome, data;
     private double totale;
-    private HashMap<Integer, VoceComputo> listaVoci;
+    private TreeMap<Integer, VoceComputo> listaVoci;
+    private HashSet<String> codici;
     
     public Computo(String nome) {
         this.nome = nome;
         this.data = LocalDate.now().toString();
         totale = 0.0;
-        listaVoci = new HashMap<>();
+        listaVoci = new TreeMap<>();
+        codici = new HashSet<>();
     }
 
     public String getNome() {
@@ -39,10 +42,15 @@ public class Computo implements Serializable{
         return totale;
     }
     
+    public HashSet<String> getCodici() {
+        return codici;
+    }
+    
     public boolean aggiungiVoce(VoceComputo voce) {
         VoceComputo result = listaVoci.put(voce.getNumeroProgressivo(), voce);
         if(result != null) {
-            totale += voce.getPrezzoComplessivo();
+            totale += result.getPrezzoComplessivo();
+            codici.add(result.getCodice());
             return true;
         }
         return false;
@@ -52,6 +60,7 @@ public class Computo implements Serializable{
         VoceComputo result = listaVoci.remove(voce.getNumeroProgressivo());
         if(result != null) {
             totale -= voce.getPrezzoComplessivo();
+            codici.remove(result.getCodice());
             return true;
         }
         return false;
@@ -61,7 +70,7 @@ public class Computo implements Serializable{
         listaVoci.clear();
     }
     
-    public HashMap<Integer, VoceComputo> getVociComputo() {
+    public TreeMap<Integer, VoceComputo> getVociComputo() {
         return listaVoci;
     }
     
