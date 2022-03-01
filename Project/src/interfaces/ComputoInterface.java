@@ -8,6 +8,8 @@ package interfaces;
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -36,7 +38,6 @@ public class ComputoInterface extends javax.swing.JFrame {
      */
     public ComputoInterface(Computo computo, String fileProgetto) {
         ComputoInterface.computo = computo;
-        //model = initTableModel();
         ComputoInterface.fileProgetto = fileProgetto;
         initComponents();
         model = (DefaultTableModel) table.getModel();
@@ -45,7 +46,11 @@ public class ComputoInterface extends javax.swing.JFrame {
     }
 
     public ComputoInterface() {
-        //model = initTableModel();
+        try {
+            ComputoInterface.computo = Computo.caricaComputoDaProgetto(fileProgetto, computo.getNome());
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
         initComponents();
         model = (DefaultTableModel) table.getModel();
         refreshTable();
@@ -443,7 +448,11 @@ public class ComputoInterface extends javax.swing.JFrame {
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
         
         computo.rimuoviVoce(selectedVoce);
-        salvaComputo();
+        try {
+            computo.salvaComputoInProgetto(fileProgetto);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
         refreshTable();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -474,7 +483,11 @@ public class ComputoInterface extends javax.swing.JFrame {
         computo.aggiungiVoce(selectedVoce);
         computo.aggiungiVoce(swappedVoce);
         
-        salvaComputo();
+        try {
+            computo.salvaComputoInProgetto(fileProgetto);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
         refreshTable();
     }//GEN-LAST:event_upButtonActionPerformed
 
@@ -505,21 +518,13 @@ public class ComputoInterface extends javax.swing.JFrame {
         computo.aggiungiVoce(selectedVoce);
         computo.aggiungiVoce(swappedVoce);
         
-        salvaComputo();
-        refreshTable();
-    }//GEN-LAST:event_downButtonActionPerformed
-
-    private void salvaComputo() {
         try {
-            Progetto p = Progetto.caricaProgetto(fileProgetto);
-            p.rimuoviComputo(computo);
-            
-            p.aggiungiComputo(computo);
-            p.salvaProgetto(fileProgetto);
+            computo.salvaComputoInProgetto(fileProgetto);
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
-    }
+        refreshTable();
+    }//GEN-LAST:event_downButtonActionPerformed
     
     /**
      * @param args the command line arguments

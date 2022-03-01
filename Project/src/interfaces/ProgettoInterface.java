@@ -8,7 +8,7 @@ package interfaces;
 import java.awt.EventQueue;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.JOptionPane;
@@ -71,7 +71,8 @@ public class ProgettoInterface extends javax.swing.JFrame {
         computoComboBox.setEnabled(true);
         visualizzaComputoButton.setEnabled(true);
         createComputoButton.setEnabled(true);
-
+        
+        refreshComboBox();
         setComputoLabel();
     }
 
@@ -255,16 +256,17 @@ public class ProgettoInterface extends javax.swing.JFrame {
             return;
         }
 
+        schermataProgetto();
+    }//GEN-LAST:event_openProgettoButtonActionPerformed
+
+    private void refreshComboBox() {
         //visualizza il progetto corrente nella scheda Computo
         try {
             Progetto progetto = Progetto.caricaProgetto(fileProgetto);
-            schermataProgetto();
-            HashSet<Computo> computi = progetto.getListaComputi();
-            for (Computo c : computi) {
+            HashMap<String, Computo> computi = progetto.getListaComputi();
+            for (Computo c : computi.values()) {
                 computoComboBox.addItem(c);
             }
-            
-            setComputoLabel();
         } catch(FileNotFoundException ex) {
             JOptionPane.showMessageDialog(this, "Progetto non trovato", "Avviso", JOptionPane.WARNING_MESSAGE);
         } catch (IOException ex) {
@@ -272,8 +274,8 @@ public class ProgettoInterface extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }   
-    }//GEN-LAST:event_openProgettoButtonActionPerformed
-
+    }
+    
     private void createProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createProgettoButtonActionPerformed
         //Scegli dove salvare file
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
