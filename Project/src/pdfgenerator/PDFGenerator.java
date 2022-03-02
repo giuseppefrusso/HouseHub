@@ -21,13 +21,18 @@ import org.apache.pdfbox.pdmodel.*;
 public class PDFGenerator {
 
     public static void generatePDF(String fileProgetto, Computo computo, String PDFfilepath, boolean cliente) throws IOException, ClassNotFoundException {
+        //Load necessary files
         Progetto p = Progetto.caricaProgetto(fileProgetto);
         Capitolato c = Capitolato.caricaCapitolato();
+        //
         
+        //Create blank document
         PDDocument document = new PDDocument();
         PDPage blankPage = new PDPage();
         document.addPage(blankPage);
+        //
 
+        //Set document properties
         PDDocumentInformation pdd = document.getDocumentInformation();
         pdd.setAuthor(p.getUtente().getTecnico());
         pdd.setTitle(computo.getNome());
@@ -36,27 +41,19 @@ public class PDFGenerator {
 
         Calendar date = new GregorianCalendar();
         String dateFields[] = computo.getData().split("-");
-        date.set(new Integer(dateFields[0]), new Integer(dateFields[1]), new Integer(dateFields[2]));
+        Integer year = new Integer(dateFields[0]), month = new Integer(dateFields[1]), dayOfMonth = new Integer(dateFields[2]);
+        date.set(year, month, dayOfMonth);
         pdd.setCreationDate(date);
-        
+        //
 
-        //Setting keywords for the document 
-        pdd.setKeywords("sample, first example, my pdf");
-
-        //Saving the document 
-        document.save("my_doc.pdf");
-
-        System.out.println("Properties added successfully ");
-
-        
-        
         if(cliente) {
             
         } else {
             
         }
         
-        //Closing the document
+        //Save document
+        document.save(PDFfilepath);
         document.close();
     }
 
