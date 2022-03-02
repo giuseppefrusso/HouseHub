@@ -40,7 +40,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     private void fillTableModel() {
         //rimuovere le voci gia presenti nel computo
         try {
-            Capitolato c = Capitolato.caricaCapitolato(CapitolatoInterface.FILEPATH);
+            Capitolato c = Capitolato.caricaCapitolato();
             for (Voce v : c.getCapitolatoClienti().values()) {
                 if (!computo.getCodici().contains(v.getCodice())) {
                     Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
@@ -49,38 +49,11 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Capitolato vuoto", "Avviso", JOptionPane.WARNING_MESSAGE);
+            backToComputoInterface();
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-    /*private DefaultTableModel initTableModel() {
-        DefaultTableModel tm = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 4;
-            }
-
-            @Override
-            public Class getColumnClass(int columnIndex) {
-                switch (columnIndex) {
-                    case 3:
-                        return Double.class;
-                    case 4:
-                        return Boolean.class;
-                    default:
-                        return String.class;
-                }
-            }
-        };
-        tm.addColumn("Codice");
-        tm.addColumn("Descrizione");
-        tm.addColumn("Unità di misura");
-        tm.addColumn("Prezzo unitario");
-        tm.addColumn("Scegli");
-
-        return tm;
-    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.

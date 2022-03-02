@@ -8,7 +8,7 @@ package models;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.TreeMap;
 import utils.Pickle;
 
 /**
@@ -17,11 +17,12 @@ import utils.Pickle;
  */
 public class Capitolato implements Serializable{
     
-    private HashMap<String, Voce> capitolatoClienti, capitolatoSubappaltatori;
+    private TreeMap<String, Voce> capitolatoClienti, capitolatoSubappaltatori;
+    private static final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
     
     public Capitolato() {
-        capitolatoClienti = new HashMap<>();
-        capitolatoSubappaltatori = new HashMap<>();
+        capitolatoClienti = new TreeMap<>();
+        capitolatoSubappaltatori = new TreeMap<>();
     }
     
     public Voce addVoceCliente(Voce voce) {
@@ -40,11 +41,11 @@ public class Capitolato implements Serializable{
         return capitolatoSubappaltatori.remove(codice);
     }
     
-    public HashMap<String, Voce> getCapitolatoClienti() {
+    public TreeMap<String, Voce> getCapitolatoClienti() {
         return capitolatoClienti;
     }
 
-    public HashMap<String, Voce> getCapitolatoSubappaltatori() {
+    public TreeMap<String, Voce> getCapitolatoSubappaltatori() {
         return capitolatoSubappaltatori;
     }
     
@@ -56,11 +57,11 @@ public class Capitolato implements Serializable{
         return capitolatoSubappaltatori.get(codice);
     }
     
-    public void salvaCapitolato(String path) throws FileNotFoundException, IOException {
-        Pickle.save(path, this);
+    public void salvaCapitolato() throws FileNotFoundException, IOException {
+        Pickle.save(FILEPATH, this);
     }
     
-    public static Capitolato caricaCapitolato(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
-        return (Capitolato) Pickle.load(path);
+    public static Capitolato caricaCapitolato() throws FileNotFoundException, IOException, ClassNotFoundException {
+        return (Capitolato) Pickle.load(FILEPATH);
     }
 }

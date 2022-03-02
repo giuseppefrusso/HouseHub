@@ -20,7 +20,6 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     private DefaultTableModel clientiModel, subModel;
     private Capitolato capitolato;
-    protected static final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
     private boolean saved;
 
     /**
@@ -65,7 +64,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     
     private void initCapitolati() {
         try {
-            capitolato = Capitolato.caricaCapitolato(FILEPATH);
+            capitolato = Capitolato.caricaCapitolato();
             return;
         } catch (IOException ex) {
             capitolato = new Capitolato();
@@ -74,7 +73,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             return;
         }
         try {
-            capitolato.salvaCapitolato(FILEPATH);
+            capitolato.salvaCapitolato();
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
@@ -131,7 +130,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("HouseHub");
+        setTitle("House Hub");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -270,9 +269,9 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     private void salva() {
         try {
-            capitolato.salvaCapitolato(FILEPATH);
+            capitolato.salvaCapitolato();
             saved = true;
-            capitolato = Capitolato.caricaCapitolato(FILEPATH);
+            capitolato = Capitolato.caricaCapitolato();
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
@@ -349,8 +348,38 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     private void subTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subTableMouseClicked
         clientiTable.clearSelection();
+        
+        if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+            evt.consume();
+            gestisciVoceSub();
+        }
     }//GEN-LAST:event_subTableMouseClicked
 
+    private void gestisciVoceSub() {
+        int selectedRow = subTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona una voce del capitolato", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        double prezzo = (double) subTable.getValueAt(selectedRow, 3);
+        
+        Double nuovoPrezzo;
+        try{
+        nuovoPrezzo = new Double((String) JOptionPane.showInputDialog(this, "Scegli nuovo prezzo per sub-appaltatori", 
+                "Prezzo unitario", JOptionPane.QUESTION_MESSAGE, null, null, prezzo));
+        } catch(NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Il prezzo non è corretto", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        Voce v = capitolato.removeVoceSubappaltatori((String) subTable.getValueAt(selectedRow, 0));
+        v.setPrezzoUnitario(nuovoPrezzo);
+        capitolato.addVoceSubappaltori(v);
+        saved = false;
+        refreshTables();
+    }
+    
     /**
      * @param args the command line arguments
      */

@@ -44,6 +44,13 @@ public class ComputoInterface extends javax.swing.JFrame {
     public ComputoInterface() {
         try {
             ComputoInterface.computo = Computo.caricaComputoDaProgetto(fileProgetto, computo.getNome());
+            if (computo == null) {
+                EventQueue.invokeLater(() -> {
+                    new CapitolatoInterface().setVisible(true);
+                    dispose();
+                });
+                return;
+            }
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }

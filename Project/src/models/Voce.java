@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author Pepito
  */
-public class Voce implements Serializable{
+public class Voce implements Serializable, Comparable<Voce>{
     
     private final String codice;
     private String descrizione, unitaDiMisura;
@@ -49,7 +49,7 @@ public class Voce implements Serializable{
         return prezzoUnitario;
     }
 
-    public void setPrezzo(double prezzoUnitario) {
+    public void setPrezzoUnitario(double prezzoUnitario) {
         this.prezzoUnitario = prezzoUnitario;
     }       
 
@@ -72,5 +72,10 @@ public class Voce implements Serializable{
         }
         final Voce other = (Voce) obj;
         return Objects.equals(this.codice, other.codice);
+    }
+
+    @Override
+    public int compareTo(Voce o) {
+        return this.codice.compareTo(o.codice);
     }
 }
