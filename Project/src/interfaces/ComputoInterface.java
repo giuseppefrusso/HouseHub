@@ -72,7 +72,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         for (VoceComputo voce : computo.getVociComputo().values()) {
             Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.vediVoceToString(),
                 voce.getUnitaDiMisura(), voce.partiUgualiToString(), voce.lunghezzeToString(), voce.larghezzeToString(),
-                voce.altezzePesiToString(), voce.getQuantita(), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo()};
+                voce.altezzePesiToString(), voce.getQuantita(computo), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo(computo)};
 
             model.addRow(row);
         }

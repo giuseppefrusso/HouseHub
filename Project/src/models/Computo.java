@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.TreeMap;
+import java.lang.Math;
 
 /**
  *
@@ -19,13 +20,12 @@ import java.util.TreeMap;
 public class Computo implements Serializable {
 
     private final String nome, data;
-    private double totale;
+    //private double totale;
     private TreeMap<Integer, VoceComputo> listaVoci;
 
     public Computo(String nome) {
         this.nome = nome;
         this.data = LocalDate.now().toString();
-        totale = 0.0;
         listaVoci = new TreeMap<>();
     }
 
@@ -38,6 +38,14 @@ public class Computo implements Serializable {
     }
 
     public double getTotale() {
+        double totale=0;
+        
+        for(VoceComputo c: listaVoci.values()){
+            totale += c.getPrezzoComplessivo(this);
+            
+        }
+        totale = Math.round(totale*100.0)/100.0;
+        
         return totale;
     }
 
@@ -54,7 +62,6 @@ public class Computo implements Serializable {
     public boolean aggiungiVoce(VoceComputo voce) {
         VoceComputo result = listaVoci.put(voce.getNumeroProgressivo(), voce);
         if (result != null) {
-            totale += result.getPrezzoComplessivo();
             return true;
         }
         return false;
@@ -63,7 +70,6 @@ public class Computo implements Serializable {
     public boolean rimuoviVoce(int numeroProgressivo) {
         VoceComputo result = listaVoci.remove(numeroProgressivo);
         if (result != null) {
-            totale -= result.getPrezzoComplessivo();
             shiftVoci(result.getNumeroProgressivo());
             return true;
         }

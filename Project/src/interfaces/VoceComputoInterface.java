@@ -47,9 +47,9 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         voceModel.setRowCount(0);
         misurazioniModel.setRowCount(0);
 
-        for (int numVediVoce : voce.getVediVoce().keySet()) {
+        for (int numVediVoce : voce.getVediVoce()) {
             VoceComputo vediVoce = computo.getVociComputo().get(numVediVoce);
-            Object[] rowData = {numVediVoce, vediVoce.getUnitaDiMisura(), vediVoce.getQuantita()};
+            Object[] rowData = {numVediVoce, vediVoce.getUnitaDiMisura(), vediVoce.getQuantita(computo)};
             voceModel.addRow(rowData);
         }
 
@@ -321,8 +321,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Inserire un numero di voce minore di quella corrente", "Avviso", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            System.out.println(newVoceNum);
-            voce.aggiungiVediVoce(voci.get(newVoceNum));
+            voce.aggiungiVediVoce(newVoceNum);
             refreshTables();
             saved = false;
         } catch (NumberFormatException ex) {

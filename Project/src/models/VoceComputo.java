@@ -7,6 +7,7 @@ package models;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.TreeSet;
 
 /**
  *
@@ -22,9 +23,9 @@ public class VoceComputo extends Voce {
     private LinkedList<Double> larghezze;
     private LinkedList<Double> altezze_pesi;
     
-    private double prezzoComplessivo;
-    private double quantita;
-    private HashMap<Integer, VoceComputo> vediVoce;
+    //private double prezzoComplessivo;
+    //private double quantita;
+    private TreeSet<Integer> vediVoce;
 
     
     public VoceComputo(int numeroProgressivo, String codice, String descrizione, String unitaDiMisura, double prezzoUnitario) {
@@ -37,13 +38,13 @@ public class VoceComputo extends Voce {
         larghezze = new LinkedList<>();
         altezze_pesi = new LinkedList<>();
         
-        this.vediVoce = new HashMap<>();
-        calcolaQuantita();
+        this.vediVoce = new TreeSet<>();
+        //calcolaQuantita();
     }
 
-    public void calcolaQuantita() {
+    public double calcolaQuantita(Computo computo) {
 
-        quantita = 0;
+        double quantita = 0;
 
         for (int i = 0; i < partiUguali.size(); i++) {
             double lunghezza = lunghezze.get(i), larghezza = larghezze.get(i), altezza_peso = altezze_pesi.get(i);
@@ -61,11 +62,11 @@ public class VoceComputo extends Voce {
             quantita += (partiUguali.get(i) * lunghezza * larghezza * altezza_peso);
         }
 
-        for (int numProgr : vediVoce.keySet()) {
-            quantita *= vediVoce.get(numProgr).quantita;
+        for (int numProgr : vediVoce) {
+            quantita *= computo.getVociComputo().get(numProgr).getQuantita(computo);
         }
-        
-        this.prezzoComplessivo = this.quantita * getPrezzoUnitario();
+        return quantita;
+        //this.prezzoComplessivo = this.quantita * getPrezzoUnitario();
     }
 
     public int getNumeroProgressivo() {
@@ -76,11 +77,16 @@ public class VoceComputo extends Voce {
         this.numeroProgressivo = numeroProgressivo;
     }
 
-    public double getPrezzoComplessivo() {
+    public double getPrezzoComplessivo(Computo computo) {        
+        double quantita = calcolaQuantita(computo);
+        double prezzoComplessivo = quantita*getPrezzoUnitario();
+        prezzoComplessivo = Math.round(prezzoComplessivo*100.0)/100.0;
         return prezzoComplessivo;
     }
 
-    public double getQuantita() {
+    public double getQuantita(Computo computo) {
+        double quantita = calcolaQuantita(computo);
+        quantita = Math.round(quantita*100.0)/100.0;
         return quantita;
     }
 
@@ -110,7 +116,7 @@ public class VoceComputo extends Voce {
         lunghezze.add(lung);
         larghezze.add(larg);
         altezze_pesi.add(alt_p);
-        calcolaQuantita();
+        //calcolaQuantita();
     }
 
     public void rimuoviDimensioni(int index) {
@@ -119,7 +125,7 @@ public class VoceComputo extends Voce {
         lunghezze.remove(index);
         larghezze.remove(index);
         altezze_pesi.remove(index);
-        calcolaQuantita();
+        //calcolaQuantita();
     }
     
     public void svuotaDimensioni() {
@@ -128,19 +134,19 @@ public class VoceComputo extends Voce {
         lunghezze.clear();
         larghezze.clear();
         altezze_pesi.clear();
-        calcolaQuantita();
+        //calcolaQuantita();
     }
     
-    public HashMap<Integer, VoceComputo> getVediVoce() {
+    public TreeSet<Integer> getVediVoce() {
         return vediVoce;
     }
     
-    public void aggiungiVediVoce(VoceComputo voce) {
-        vediVoce.put(voce.numeroProgressivo, voce);
-        calcolaQuantita();
+    public void aggiungiVediVoce(int numeroProgressivo) {
+        vediVoce.add(numeroProgressivo);
+        //calcolaQuantita();
     }
     
-    public VoceComputo rimuoviVediVoce(int numeroProgressivo) {
+    public boolean rimuoviVediVoce(int numeroProgressivo) {
         return vediVoce.remove(numeroProgressivo);
     }
     
@@ -196,8 +202,8 @@ public class VoceComputo extends Voce {
         StringBuffer sb = new StringBuffer();
         
         int count = 0;
-        int size = vediVoce.keySet().size();
-        for(int nP : vediVoce.keySet()) {
+        int size = vediVoce.size();
+        for(int nP : vediVoce) {
             sb.append(nP);
             count ++;
             if(count != size) {
