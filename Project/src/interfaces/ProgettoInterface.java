@@ -161,6 +161,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 11;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         panel.add(computoLabel, gridBagConstraints);
 
         createProgettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
