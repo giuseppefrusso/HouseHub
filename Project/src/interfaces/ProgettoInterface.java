@@ -118,7 +118,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         setTitle("HouseHub");
         setResizable(false);
 
-        panel.setBackground(new java.awt.Color(240, 245, 58));
+        panel.setBackground(new java.awt.Color(149, 165, 166));
         panel.setLayout(new java.awt.GridBagLayout());
 
         openProgettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -221,8 +221,8 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         panel.add(capitolatoButton, gridBagConstraints);
 
-        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
-        jLabel2.setText("PROGETTO");
+        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        jLabel2.setText("Gestione progetto");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -245,6 +245,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         panel.add(deleteComputoButton, gridBagConstraints);
 
+        clienteButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
         clienteButton.setText("Cliente");
         clienteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -255,7 +256,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 5;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 15, 0, 0);
         panel.add(clienteButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
