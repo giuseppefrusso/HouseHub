@@ -6,13 +6,19 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
+
+import pdfgenerator.PDFGenerator;
+
 import models.Computo;
 import models.VoceComputo;
 
@@ -60,92 +66,6 @@ public class ComputoInterface extends javax.swing.JFrame {
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
 
-    /*private DefaultTableModel initTableModel() {
-        
-        DefaultTableModel tm = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                switch (column) {
-                    case 3:
-                    case 5:
-                    case 6:
-                    case 7:
-                    case 8:
-                        //case 9: //quantita
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-
-            @Override
-            public Class getColumnClass(int columnIndex) {
-                switch (columnIndex) {
-                    case 0:
-                    case 3:
-                        return Integer.class;
-                    case 1:
-                    case 2:
-                    case 4:
-                        return String.class;
-                    default:
-                        return Double.class;
-                }
-            }
-        };
-        tm.addColumn("N.");
-        tm.addColumn("Codice");
-        tm.addColumn("Descrizione");
-        tm.addColumn("Vedi voce");
-        tm.addColumn("Unità di misura");
-        tm.addColumn("Parti uguali");
-        tm.addColumn("Lunghezza");
-        tm.addColumn("Larghezza");
-        tm.addColumn("Altezza/peso");
-        tm.addColumn("Quantità");
-        tm.addColumn("Prezzo unitario");
-        tm.addColumn("Prezzo complessivo");
-
-        return tm;
-    }*/
- /*protected void save() {
-        HashMap<Integer, VoceComputo> voci = computo.getVociComputo();
-        for (int i = 0; i < model.getRowCount(); i++) {
-            int numProg = (int) model.getValueAt(i, 0);
-
-            VoceComputo curr = voci.get(numProg);
-            computo.rimuoviVoce(curr);
-
-            int vediVoceNum = (Integer) model.getValueAt(i, 3);
-            double pu = (Double) model.getValueAt(i, 5);
-            double lung = (Double) model.getValueAt(i, 6);
-            double larg = (Double) model.getValueAt(i, 7);
-            double h = (Double) model.getValueAt(i, 8);
-
-            VoceComputo vediVoce;
-            if (vediVoceNum == 0) {
-                vediVoce = null;
-            } else {
-                vediVoce = computo.getVociComputo().get(vediVoceNum);
-            }
-
-            computo.aggiungiVoce(curr);
-        }
-
-        //QUESTO E' UN PASSAGGIO COMPLETAMENTE DIVERSO DAL PRECEDENTE, SERVE A SALVARE IL COMPUTO AGGIORNATO SUL FILE DI PROGETTO
-        try {
-            Progetto p = Progetto.caricaProgetto(fileProgetto);
-            //sicuro che basti questo a salvare tutto sul file progetto?
-            p.rimuoviComputo(computo);
-            p.aggiungiComputo(computo);
-            p.salvaProgetto(fileProgetto);
-        } catch (IOException | ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        refreshTable();
-    }*/
     private void refreshTable() {
         model.setRowCount(0);
 
@@ -409,26 +329,30 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     private String chooseFileToSave(String dest) {
         //Scegli dove salvare file
-        JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+        File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
+        JFileChooser jfc = new JFileChooser(homeDirectory);
         jfc.setDialogTitle("Salva il computo per " + dest);
+        jfc.setSelectedFile(new File(homeDirectory.toString()+"\\"+computo.getNome()+"_"+dest+".pdf"));
         jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         FileFilter filter = new FileNameExtensionFilter("File PDF", "pdf");
         jfc.setFileFilter(filter);
 
         int returnValue = jfc.showSaveDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            if (jfc.getSelectedFile().isFile()) {
+            File selectedFile = jfc.getSelectedFile();
+            String filepath = selectedFile.toString();
+            if (!filepath.endsWith(".pdf")) {
+                filepath = filepath.concat(".pdf");
+                selectedFile = new File(filepath);
+            }
+            if (selectedFile.isFile()) {
                 int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler sovrascrivere il file?");
                 if (choice != JOptionPane.YES_OPTION) {
                     return null;
                 }
             }
-            String filePdf = jfc.getSelectedFile().toString();
-            if (!filePdf.endsWith(".pdf")) {
-                filePdf = filePdf.concat(".pdf");
-            }
-            System.out.println("You selected the file: " + filePdf);
-            return filePdf;
+            System.out.println("You selected the file: " + filepath);
+            return filepath;
         } else {
             return null;
         }
@@ -440,6 +364,12 @@ public class ComputoInterface extends javax.swing.JFrame {
         if (filePdf == null) {
             return;
         }
+
+        try {
+            PDFGenerator.generatePDF(fileProgetto, computo, filePdf, true);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_exportForClientActionPerformed
 
     private void exportForSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportForSubActionPerformed
@@ -447,6 +377,12 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         if (filePdf == null) {
             return;
+        }
+
+        try {
+            PDFGenerator.generatePDF(fileProgetto, computo, filePdf, false);
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_exportForSubActionPerformed
 

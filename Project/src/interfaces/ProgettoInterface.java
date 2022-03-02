@@ -6,11 +6,10 @@
 package interfaces;
 
 import java.awt.EventQueue;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.JOptionPane;
@@ -334,16 +333,19 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
         int returnValue = jfc.showSaveDialog(this);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
-            if (jfc.getSelectedFile().isFile()) {
+            File selectedFile = jfc.getSelectedFile();
+            String filepath = selectedFile.toString();
+            if (!filepath.endsWith(".hhp")) {
+                filepath = filepath.concat(".hhp");
+                selectedFile = new File(filepath);
+            }
+            if (selectedFile.isFile()) {
                 int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler sovrascrivere il file?");
                 if (choice != JOptionPane.YES_OPTION) {
                     return;
                 }
             }
-            fileProgetto = jfc.getSelectedFile().toString();
-            if (!fileProgetto.endsWith(".hhp")) {
-                fileProgetto = fileProgetto.concat(".hhp");
-            }
+            fileProgetto = filepath;
             System.out.println("You selected the file: " + fileProgetto);
         } else {
             return;

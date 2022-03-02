@@ -40,6 +40,7 @@ public class PDFGenerator {
         pdd.setSubject("Computo metrico");
 
         Calendar date = new GregorianCalendar();
+        System.out.println(computo.getData());
         String dateFields[] = computo.getData().split("-");
         Integer year = new Integer(dateFields[0]), month = new Integer(dateFields[1]), dayOfMonth = new Integer(dateFields[2]);
         date.set(year, month, dayOfMonth);
@@ -55,6 +56,7 @@ public class PDFGenerator {
         //Save document
         document.save(PDFfilepath);
         document.close();
+        System.out.println("Saved document");
     }
 
     /**
