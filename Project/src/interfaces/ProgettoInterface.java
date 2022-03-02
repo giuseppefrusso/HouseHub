@@ -77,7 +77,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         visualizzaComputoButton.setEnabled(true);
         deleteComputoButton.setEnabled(true);
         createComputoButton.setEnabled(true);
-        
+
         refreshComboBox();
         setComputoLabel();
     }
@@ -298,22 +298,22 @@ public class ProgettoInterface extends javax.swing.JFrame {
     private void refreshComboBox() {
         //visualizza il progetto corrente nella scheda Computo
         computoComboBox.removeAllItems();
-        
+
         try {
             Progetto progetto = Progetto.caricaProgetto(fileProgetto);
             HashMap<String, Computo> computi = progetto.getListaComputi();
             for (Computo c : computi.values()) {
                 computoComboBox.addItem(c);
             }
-        } catch(FileNotFoundException ex) {
+        } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(this, "Progetto non trovato", "Avviso", JOptionPane.WARNING_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Il file del progetto è corrotto", "Avviso", JOptionPane.WARNING_MESSAGE);
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }   
+        }
     }
-    
+
     private void createProgettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createProgettoButtonActionPerformed
         //Scegli dove salvare file
         JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -377,8 +377,8 @@ public class ProgettoInterface extends javax.swing.JFrame {
 
     private void visualizzaComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_visualizzaComputoButtonActionPerformed
         Computo computo = (Computo) computoComboBox.getSelectedItem();
-        
-        if(computo == null) {
+
+        if (computo == null) {
             JOptionPane.showMessageDialog(this, "Non è stato selezionato alcun computo", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -390,8 +390,14 @@ public class ProgettoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_visualizzaComputoButtonActionPerformed
 
     private void deleteComputoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteComputoButtonActionPerformed
+        Computo computo = (Computo) computoComboBox.getSelectedItem();
+
+        if (computo == null) {
+            JOptionPane.showMessageDialog(this, "Non è stato selezionato alcun computo", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         try {
-            Computo computo = (Computo) computoComboBox.getSelectedItem();
             Progetto p = Progetto.caricaProgetto(fileProgetto);
             p.rimuoviComputo(computo);
             p.salvaProgetto(fileProgetto);
@@ -405,7 +411,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
     private void clienteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clienteButtonActionPerformed
         try {
             Progetto p = Progetto.caricaProgetto(fileProgetto);
-            JOptionPane.showMessageDialog(this, p.getUtente(), "Cliente", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(this, p.getUtente(), "Cliente", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
