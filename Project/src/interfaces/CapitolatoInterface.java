@@ -138,7 +138,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             }
         });
 
-        capitolatoPanel.setBackground(new java.awt.Color(240, 245, 58));
+        capitolatoPanel.setBackground(new java.awt.Color(149, 165, 166));
         capitolatoPanel.setLayout(new java.awt.GridBagLayout());
 
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 1, 11)); // NOI18N

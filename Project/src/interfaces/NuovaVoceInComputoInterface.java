@@ -144,7 +144,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
         jPanel2.add(scrollPane, java.awt.BorderLayout.CENTER);
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 0));
+        jPanel3.setBackground(new java.awt.Color(149, 165, 166));
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
         confermaButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N

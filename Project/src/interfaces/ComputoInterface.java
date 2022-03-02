@@ -176,10 +176,15 @@ public class ComputoInterface extends javax.swing.JFrame {
         upButton = new javax.swing.JButton();
         downButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("House Hub");
         setBackground(new java.awt.Color(255, 255, 0));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(149, 165, 166));
         jPanel2.setLayout(new java.awt.BorderLayout());
@@ -383,7 +388,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             dispose();
         });
     }
-    
+
     private void gestisciVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gestisciVoceButtonActionPerformed
         gestisciVoce();
     }//GEN-LAST:event_gestisciVoceButtonActionPerformed
@@ -535,6 +540,14 @@ public class ComputoInterface extends javax.swing.JFrame {
             gestisciVoce();
         }
     }//GEN-LAST:event_tableMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        EventQueue.invokeLater(() -> {
+            new ProgettoInterface(true).setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
