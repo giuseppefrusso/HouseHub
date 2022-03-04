@@ -5,11 +5,12 @@
  */
 package pdfgenerator;
 
-import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.kernel.font.*;
+import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.*;
 import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.VerticalAlignment;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -29,9 +30,7 @@ public class PDFGenerator {
         Cliente utente = progetto.getUtente();
         //
 
-        PdfWriter writer = new PdfWriter(PDFfilepath);
-
-        // Creating a PdfDocument       
+        PdfWriter writer = new PdfWriter(PDFfilepath);     
         PdfDocument pdf = new PdfDocument(writer);
 
         try (Document document = new Document(pdf)) {
@@ -39,10 +38,9 @@ public class PDFGenerator {
             Paragraph paragraph;
             Table table;
             Cell cell;
-            PdfFont helveticaBold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
 
             //Intestazione del computo metrico
-            paragraph = new Paragraph("COMPUTO METRICO");
+            paragraph = new Paragraph("COMPUTO METRICO").setBold();
             document.add(paragraph);
 
             paragraph = new Paragraph("Committente: " + utente.getNome() + " " + utente.getCognome());
@@ -56,52 +54,72 @@ public class PDFGenerator {
 
             document.add(new AreaBreak());
 
-            table = new Table(9);
+            int numCols = 11;
+            table = new Table(numCols);
+            table.setFontSize(10);
 
             //Intestazione della tabella
             cell = new Cell(2, 1);
-            cell.add(new Paragraph("Num. ord.\nTariffa").setFont(helveticaBold));
+            cell.add(new Paragraph("N° ord.\nTariffa"));
+            cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
             table.addHeaderCell(cell);
 
             cell = new Cell(2, 1);
-            cell.add(new Paragraph("Designazione dei lavori").setFont(helveticaBold));
+            cell.add(new Paragraph("Designazione dei lavori"));
+            cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
+            cell.setTextAlignment(TextAlignment.CENTER);
             table.addHeaderCell(cell);
 
-            cell = new Cell(1, 4);
-            cell.add(new Paragraph("Dimensioni").setFont(helveticaBold));
+            cell = new Cell(1, 6);
+            cell.add(new Paragraph("Dimensioni"));
+            cell.setTextAlignment(TextAlignment.CENTER);
             table.addHeaderCell(cell);
 
             cell = new Cell(2, 1);
-            cell.add(new Paragraph("Quantità").setFont(helveticaBold));
+            cell.add(new Paragraph("Quantità"));
+            cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
             table.addHeaderCell(cell);
 
             cell = new Cell(1, 2);
-            cell.add(new Paragraph("Importi").setFont(helveticaBold));
+            cell.add(new Paragraph("Importi"));
+            cell.setTextAlignment(TextAlignment.CENTER);
             table.addHeaderCell(cell);
 
             cell = new Cell(1, 1);
-            cell.add(new Paragraph("Par. ug.").setFont(helveticaBold));
+            cell.add(new Paragraph("Un. mis."));
             table.addHeaderCell(cell);
             
             cell = new Cell(1, 1);
-            cell.add(new Paragraph("Lung.").setFont(helveticaBold));
+            cell.add(new Paragraph("Misuraz."));
             table.addHeaderCell(cell);
             
             cell = new Cell(1, 1);
-            cell.add(new Paragraph("Larg.").setFont(helveticaBold));
+            cell.add(new Paragraph("Par. ug."));
             table.addHeaderCell(cell);
             
             cell = new Cell(1, 1);
-            cell.add(new Paragraph("H/peso").setFont(helveticaBold));
+            cell.add(new Paragraph("Lung."));
+            table.addHeaderCell(cell);
+            
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("Larg."));
+            table.addHeaderCell(cell);
+            
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("H/peso"));
             table.addHeaderCell(cell);
 
             cell = new Cell(1, 1);
-            cell.add(new Paragraph("Unitario").setFont(helveticaBold));
+            cell.add(new Paragraph("Unitario"));
             table.addHeaderCell(cell);
             
             cell = new Cell(1, 1);
-            cell.add(new Paragraph("Totale").setFont(helveticaBold));
+            cell.add(new Paragraph("Compl."));
             table.addHeaderCell(cell);
+            
+            //Cambia impostazioni dell'header
+            table.getHeader().setBold();
+            table.getHeader().setFontColor(ColorConstants.RED);
             //
             
             Double totale;
@@ -130,6 +148,12 @@ public class PDFGenerator {
                     totale += prezzoComplessivo;
                 }
                 
+                for(Integer numProgrVediVoce : vc.getVediVoce()) {
+                    VoceComputo vediVoce = computo.getVociComputo().get(numProgrVediVoce);
+                    String vediVoceInfo = vediVoce.getUnitaDiMisura() + " " + vediVoce.getQuantita(computo);
+                    descrizione = descrizione.concat("\n\nVedi voce n°"+numProgrVediVoce+" ["+vediVoceInfo+"]");
+                }
+                
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(numProgr.toString()+"\n"+codice));
                 table.addCell(cell);
@@ -139,16 +163,39 @@ public class PDFGenerator {
                 table.addCell(cell);
                 
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph());
+                cell.add(new Paragraph(vc.getUnitaDiMisura()));
+                table.addCell(cell);
+
+                String misurazioni = "", partiUguali = "", lunghezze = "", larghezze = "", altezze = "";
+                if(vc.getMisurazioni().size()==1) {
+                    partiUguali = vc.getPartiUguali().get(0).toString();
+                    lunghezze = vc.lunghezzeToString();
+                    larghezze = vc.larghezzeToString();
+                    altezze = vc.altezzePesiToString();
+                } else {
+                    for(int i = 0; i < vc.getMisurazioni().size(); i++) {
+                        misurazioni = misurazioni.concat(vc.getMisurazioni().get(i)+"\n");
+                        partiUguali = partiUguali.concat(vc.getPartiUguali().get(i)+"\n");
+                        lunghezze = lunghezze.concat(vc.getLunghezze().get(i)+"\n");
+                        larghezze = larghezze.concat(vc.getLarghezze().get(i)+"\n");
+                        altezze = altezze.concat(vc.getAltezze_pesi().get(i)+"\n");
+                    }
+                }
+                
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph(misurazioni));
                 table.addCell(cell);
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph());
+                cell.add(new Paragraph(partiUguali));
                 table.addCell(cell);
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph());
+                cell.add(new Paragraph(lunghezze));
                 table.addCell(cell);
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph());
+                cell.add(new Paragraph(larghezze));
+                table.addCell(cell);
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph(altezze));
                 table.addCell(cell);
                 
                 cell = new Cell(1, 1);
@@ -163,6 +210,16 @@ public class PDFGenerator {
                 table.addCell(cell);
             }
 
+            cell = new Cell(1, numCols-2);
+            cell.add(new Paragraph()); //lascio vuoto
+            table.addCell(cell);
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("TOTALE").setBold());
+            table.addCell(cell);
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph(totale.toString()).setBold());
+            table.addCell(cell);
+            
             document.add(table);
         }
 
