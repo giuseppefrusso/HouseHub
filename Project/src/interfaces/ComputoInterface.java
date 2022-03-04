@@ -231,7 +231,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(69, 51, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(73, 51, 0, 0);
         jPanel1.add(progettoButton, gridBagConstraints);
 
         deleteButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N

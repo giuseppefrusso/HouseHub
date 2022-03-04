@@ -116,18 +116,19 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         capitolatoPanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         clientiTable = new javax.swing.JTable();
         clientiTable.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
-        jScrollPane2 = new javax.swing.JScrollPane();
-        subTable = new javax.swing.JTable();
-        subTable.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
+        jPanel1 = new javax.swing.JPanel();
         addVoceButton = new javax.swing.JButton();
         deleteVoceButton = new javax.swing.JButton();
         salvaCapitolatoButton = new javax.swing.JButton();
         progettoButton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        subTable = new javax.swing.JTable();
+        subTable.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("House Hub");
@@ -138,29 +139,13 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         });
 
         capitolatoPanel.setBackground(new java.awt.Color(149, 165, 166));
-        capitolatoPanel.setLayout(new java.awt.GridBagLayout());
+        capitolatoPanel.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Comic Sans MS", 1, 11)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("CAPITOLATO CLIENTI");
         jLabel5.setMaximumSize(new java.awt.Dimension(100, 17));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        capitolatoPanel.add(jLabel5, gridBagConstraints);
-
-        jLabel6.setFont(new java.awt.Font("Comic Sans MS", 1, 11)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("CAPITOLATO SUB-APPALTATORI");
-        jLabel6.setPreferredSize(new java.awt.Dimension(150, 17));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        capitolatoPanel.add(jLabel6, gridBagConstraints);
+        capitolatoPanel.add(jLabel5, java.awt.BorderLayout.PAGE_START);
 
         clientiTable.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         clientiTable.setModel(clientiModel);
@@ -171,11 +156,63 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(clientiTable);
 
+        capitolatoPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel1.setBackground(new java.awt.Color(149, 165, 166));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        addVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
+        addVoceButton.setText("Aggiungi nuova voce");
+        addVoceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addVoceButtonActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        capitolatoPanel.add(jScrollPane1, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 10);
+        jPanel1.add(addVoceButton, gridBagConstraints);
+
+        deleteVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
+        deleteVoceButton.setText("Elimina voce");
+        deleteVoceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteVoceButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
+        jPanel1.add(deleteVoceButton, gridBagConstraints);
+
+        salvaCapitolatoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
+        salvaCapitolatoButton.setText("Salva");
+        salvaCapitolatoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvaCapitolatoButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
+        jPanel1.add(salvaCapitolatoButton, gridBagConstraints);
+
+        progettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
+        progettoButton.setText("Progetti");
+        progettoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                progettoButtonActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
+        jPanel1.add(progettoButton, gridBagConstraints);
+
+        jPanel2.setBackground(new java.awt.Color(149, 165, 166));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel6.setFont(new java.awt.Font("Comic Sans MS", 1, 11)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("CAPITOLATO SUB-APPALTATORI");
+        jLabel6.setPreferredSize(new java.awt.Dimension(150, 17));
+        jPanel2.add(jLabel6, java.awt.BorderLayout.PAGE_START);
 
         subTable.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         subTable.setModel(subModel);
@@ -186,78 +223,26 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(subTable);
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        capitolatoPanel.add(jScrollPane2, gridBagConstraints);
-
-        addVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        addVoceButton.setText("Aggiungi nuova voce");
-        addVoceButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addVoceButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        capitolatoPanel.add(addVoceButton, gridBagConstraints);
-
-        deleteVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        deleteVoceButton.setText("Elimina voce");
-        deleteVoceButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteVoceButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        capitolatoPanel.add(deleteVoceButton, gridBagConstraints);
-
-        salvaCapitolatoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
-        salvaCapitolatoButton.setText("Salva");
-        salvaCapitolatoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salvaCapitolatoButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        capitolatoPanel.add(salvaCapitolatoButton, gridBagConstraints);
-
-        progettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
-        progettoButton.setText("Progetti");
-        progettoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                progettoButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 3;
-        capitolatoPanel.add(progettoButton, gridBagConstraints);
-
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        jLabel1.setText("Capitolato");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 4;
-        capitolatoPanel.add(jLabel1, gridBagConstraints);
+        jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(capitolatoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 941, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(capitolatoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(capitolatoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                    .addComponent(capitolatoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
         );
 
         pack();
@@ -423,9 +408,10 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     private javax.swing.JPanel capitolatoPanel;
     private javax.swing.JTable clientiTable;
     private javax.swing.JButton deleteVoceButton;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton progettoButton;
