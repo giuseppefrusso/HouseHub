@@ -116,7 +116,7 @@ public class PDFGenerator {
                 VoceComputo vc = computo.getVociComputo().get(numProgr);
                 String codice = vc.getCodice();
                 String descrizione;
-                Double prezzoUnitario, prezzoComplessivo;
+                Double prezzoUnitario, prezzoComplessivo, quantita = vc.getQuantita(computo);
                 
                 if(cliente) {
                     descrizione = vc.getDescrizione();
@@ -126,7 +126,7 @@ public class PDFGenerator {
                     Voce sub = capitolato.getCapitolatoSubappaltatori().get(codice);
                     descrizione = sub.getDescrizione();
                     prezzoUnitario = sub.getPrezzoUnitario();
-                    prezzoComplessivo = prezzoUnitario * vc.calcolaQuantita(computo);
+                    prezzoComplessivo = prezzoUnitario * quantita;
                     totale += prezzoComplessivo;
                 }
                 
@@ -136,6 +136,30 @@ public class PDFGenerator {
                 
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(descrizione));
+                table.addCell(cell);
+                
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph());
+                table.addCell(cell);
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph());
+                table.addCell(cell);
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph());
+                table.addCell(cell);
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph());
+                table.addCell(cell);
+                
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph(quantita.toString()));
+                table.addCell(cell);
+                
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph(prezzoUnitario.toString()));
+                table.addCell(cell);
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph(prezzoComplessivo.toString()));
                 table.addCell(cell);
             }
 
