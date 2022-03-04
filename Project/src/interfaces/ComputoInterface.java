@@ -399,6 +399,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
 
         computo.rimuoviVoce(selectedVoce.getNumeroProgressivo());
+        computo.shiftVoci(selectedNumProgr);
         try {
             computo.salvaComputoInProgetto(fileProgetto);
         } catch (IOException | ClassNotFoundException ex) {

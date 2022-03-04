@@ -70,13 +70,13 @@ public class Computo implements Serializable {
     public boolean rimuoviVoce(int numeroProgressivo) {
         VoceComputo result = listaVoci.remove(numeroProgressivo);
         if (result != null) {
-            shiftVoci(result.getNumeroProgressivo());
+            //shiftVoci(result.getNumeroProgressivo());
             return true;
         }
         return false;
     }
     
-    private void shiftVoci(int numProgressivoEliminato) {
+    public void shiftVoci(int numProgressivoEliminato) {
         for(int curr : listaVoci.keySet()) {
             if(curr >= numProgressivoEliminato) {
                 int newNum = curr - 1;

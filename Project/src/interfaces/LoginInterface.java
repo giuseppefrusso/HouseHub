@@ -101,7 +101,7 @@ public class LoginInterface extends javax.swing.JFrame {
         });
         panel.add(loginButton);
 
-        jPanel2.setBackground(new java.awt.Color(8, 14, 44));
+        jPanel2.setBackground(new java.awt.Color(149, 165, 166));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/House_Hub_PDF.png"))); // NOI18N
