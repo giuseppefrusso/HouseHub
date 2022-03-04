@@ -5,14 +5,16 @@
  */
 package pdfgenerator;
 
-import java.io.FileNotFoundException;
+import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.font.*;
+import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.layout.*;
+import com.itextpdf.layout.element.*;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import models.Capitolato;
-import models.Computo;
-import models.Progetto;
-import org.apache.pdfbox.pdmodel.*;
+
+import models.*;
 
 /**
  *
@@ -24,87 +26,171 @@ public class PDFGenerator {
         //Load necessary files
         Progetto p = Progetto.caricaProgetto(fileProgetto);
         Capitolato c = Capitolato.caricaCapitolato();
-        //
-        
-        //Create blank document
-        PDDocument document = new PDDocument();
-        PDPage blankPage = new PDPage();
-        document.addPage(blankPage);
+        Cliente u = p.getUtente();
         //
 
-        //Set document properties
-        PDDocumentInformation pdd = document.getDocumentInformation();
-        pdd.setAuthor(p.getUtente().getTecnico());
-        pdd.setTitle(computo.getNome());
-        pdd.setCreator(p.getUtente().getCognome()+" "+p.getUtente().getNome());
-        pdd.setSubject("Computo metrico");
+        PdfWriter writer = new PdfWriter(PDFfilepath);
 
-        Calendar date = new GregorianCalendar();
-        System.out.println(computo.getData());
-        String dateFields[] = computo.getData().split("-");
-        Integer year = new Integer(dateFields[0]), month = new Integer(dateFields[1]), dayOfMonth = new Integer(dateFields[2]);
-        date.set(year, month, dayOfMonth);
-        pdd.setCreationDate(date);
-        //
+        // Creating a PdfDocument       
+        PdfDocument pdf = new PdfDocument(writer);
 
-        if(cliente) {
-            
-        } else {
-            
+        try (Document document = new Document(pdf)) {
+            //Dichiarazione delle variabili;
+            Paragraph paragraph;
+            Text text;
+            Table table;
+            Cell cell;
+            PdfFont helveticaBold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+
+            //Intestazione del computo metrico
+            paragraph = new Paragraph("COMPUTO METRICO");
+            document.add(paragraph);
+
+            paragraph = new Paragraph("Committente: " + u.getNome() + " " + u.getCognome());
+            document.add(paragraph);
+
+            paragraph = new Paragraph("Indirizzo del cantiere: " + u.getIndirizzoCantiere());
+            document.add(paragraph);
+
+            paragraph = new Paragraph("Tecnico: " + u.getTecnico());
+            document.add(paragraph);
+
+            document.add(new AreaBreak());
+
+            table = new Table(9);
+
+            //Intestazione della tabella
+            cell = new Cell(2, 1);
+            cell.add(new Paragraph("Num. ord.\nTariffa").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+
+            cell = new Cell(2, 1);
+            cell.add(new Paragraph("Designazione dei lavori").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+
+            cell = new Cell(1, 4);
+            cell.add(new Paragraph("Dimensioni").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+
+            cell = new Cell(2, 1);
+            cell.add(new Paragraph("Quantità").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+
+            cell = new Cell(1, 2);
+            cell.add(new Paragraph("Importi").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("Par. ug.").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("Lung.").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("Larg.").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("H/peso").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("Unitario").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("Totale").setFont(helveticaBold));
+            table.addHeaderCell(cell);
+
+            document.add(table);
         }
-        
-        //Save document
-        document.save(PDFfilepath);
-        document.close();
-        System.out.println("Saved document");
+
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().open(new File(PDFfilepath));
+        }
     }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
-        //Creating PDF document object
-        PDDocument document = new PDDocument();
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        String filePath = "C:\\Users\\Pepito\\Desktop\\";
+        String fileProgetto = filePath + "progetto.hhp";
+        String nomeComputo = "computo1";
 
-        //Creating a blank page
-        PDPage blankPage = new PDPage();
+        Progetto p = Progetto.caricaProgetto(fileProgetto);
+        Computo c = p.getListaComputi().get(nomeComputo);
 
-        //Adding the blank page to the document
-        document.addPage(blankPage);
-
-        //Creating the PDDocumentInformation object 
-        PDDocumentInformation pdd = document.getDocumentInformation();
-
-        //Setting the author of the document
-        pdd.setAuthor("Tutorialspoint");
-
-        // Setting the title of the document
-        pdd.setTitle("Sample document");
-
-        //Setting the creator of the document 
-        pdd.setCreator("PDF Examples");
-
-        //Setting the subject of the document 
-        pdd.setSubject("Example document");
-
-        //Setting the created date of the document 
-        Calendar date = new GregorianCalendar();
-        date.set(2015, 11, 5);
-        pdd.setCreationDate(date);
-        //Setting the modified date of the document 
-        date.set(2016, 6, 5);
-        pdd.setModificationDate(date);
-
-        //Setting keywords for the document 
-        pdd.setKeywords("sample, first example, my pdf");
-
-        //Saving the document 
-        document.save("my_doc.pdf");
-
-        System.out.println("Properties added successfully ");
-
-        //Closing the document
-        document.close();
+        String filePDF = filePath + nomeComputo + "_cliente.pdf";
+        PDFGenerator.generatePDF(fileProgetto, c, filePDF, true);
     }
 
 }
+
+//OPENPDF
+/*try (Document document = new Document()) {
+            PdfWriter.getInstance(document, new FileOutputStream(PDFfilepath));
+            document.open();
+
+            //Dichiarazione delle variabili;
+            Paragraph paragraph;
+            Font font;
+            PdfPTable table;
+            PdfPCell cell;
+
+            //Intestazione del computo metrico
+            paragraph = new Paragraph("COMPUTO METRICO");
+            document.add(paragraph);
+
+            paragraph = new Paragraph("Committente: " + u.getNome() + " " + u.getCognome());
+            document.add(paragraph);
+
+            paragraph = new Paragraph("Indirizzo del cantiere: " + u.getIndirizzoCantiere());
+            document.add(paragraph);
+
+            paragraph = new Paragraph("Tecnico: " + u.getTecnico());
+            document.add(paragraph);
+
+            document.newPage();
+            //
+
+            //Intestazione della tabella
+            font = new Font(Font.HELVETICA, 12, Font.BOLD);
+            table = new PdfPTable(9);
+
+            cell = new PdfPCell(new Paragraph("Numero ordine\nTariffa", font));
+            cell.setRowspan(2);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Designazione dei lavori", font));
+            cell.setRowspan(2);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Dimensioni", font));
+            cell.setColspan(4);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Quantità", font));
+            cell.setRowspan(2);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Importi", font));
+            cell.setColspan(2);
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Parti uguali", font));
+            table.addCell(cell);
+            cell = new PdfPCell(new Paragraph("Lunghezza", font));
+            table.addCell(cell);
+            cell = new PdfPCell(new Paragraph("Larghezza", font));
+            table.addCell(cell);
+            cell = new PdfPCell(new Paragraph("Altezza/peso", font));
+            table.addCell(cell);
+
+            cell = new PdfPCell(new Paragraph("Unitario", font));
+            table.addCell(cell);
+            cell = new PdfPCell(new Paragraph("Totale", font));
+            table.addCell(cell);
+
+            table.setHeaderRows(2);
+
+            document.add(table);
+        }*/
