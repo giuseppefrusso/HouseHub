@@ -8,6 +8,7 @@ package pdfgenerator;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.*;
+import com.itextpdf.layout.borders.*;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.VerticalAlignment;
@@ -30,7 +31,7 @@ public class PDFGenerator {
         Cliente utente = progetto.getUtente();
         //
 
-        PdfWriter writer = new PdfWriter(PDFfilepath);     
+        PdfWriter writer = new PdfWriter(PDFfilepath);
         PdfDocument pdf = new PdfDocument(writer);
 
         try (Document document = new Document(pdf)) {
@@ -38,18 +39,35 @@ public class PDFGenerator {
             Paragraph paragraph;
             Table table;
             Cell cell;
+            Text text;
 
             //Intestazione del computo metrico
-            paragraph = new Paragraph("COMPUTO METRICO").setBold();
+            paragraph = new Paragraph("COMPUTO METRICO").setBold().setTextAlignment(TextAlignment.CENTER);
             document.add(paragraph);
 
-            paragraph = new Paragraph("Committente: " + utente.getNome() + " " + utente.getCognome());
+            
+            paragraph = new Paragraph();
+            text = new Text("Committente: ").setBold();
+            paragraph.add(text);
+            text = new Text(utente.getNome().toUpperCase()+" "+utente.getCognome().toUpperCase());
+            paragraph.add(text);
+            paragraph.setMargin(50);
             document.add(paragraph);
 
-            paragraph = new Paragraph("Indirizzo del cantiere: " + utente.getIndirizzoCantiere());
+            paragraph = new Paragraph();
+            text = new Text("Indirizzo del cantiere: ").setBold();
+            paragraph.add(text);
+            text = new Text(utente.getIndirizzoCantiere().toUpperCase());
+            paragraph.add(text);
+            paragraph.setMargin(50);
             document.add(paragraph);
 
-            paragraph = new Paragraph("Tecnico: " + utente.getTecnico());
+            paragraph = new Paragraph();
+            text = new Text("Tecnico: ").setBold();
+            paragraph.add(text);
+            text = new Text(utente.getTecnico().toUpperCase());
+            paragraph.add(text);
+            paragraph.setMargin(50);
             document.add(paragraph);
 
             document.add(new AreaBreak());
@@ -88,23 +106,23 @@ public class PDFGenerator {
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Un. mis."));
             table.addHeaderCell(cell);
-            
+
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Misuraz."));
             table.addHeaderCell(cell);
-            
+
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Par. ug."));
             table.addHeaderCell(cell);
-            
+
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Lung."));
             table.addHeaderCell(cell);
-            
+
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Larg."));
             table.addHeaderCell(cell);
-            
+
             cell = new Cell(1, 1);
             cell.add(new Paragraph("H/peso"));
             table.addHeaderCell(cell);
@@ -112,31 +130,34 @@ public class PDFGenerator {
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Unitario"));
             table.addHeaderCell(cell);
-            
+
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Compl."));
             table.addHeaderCell(cell);
-            
+
             //Cambia impostazioni dell'header
-            table.getHeader().setBold();
-            table.getHeader().setFontColor(ColorConstants.RED);
+            table.getHeader()
+                    .setBold()
+                    //.setBorder(new SolidBorder(ColorConstants.RED, 2))
+                    .setBackgroundColor(ColorConstants.LIGHT_GRAY)
+                    .setFontColor(ColorConstants.RED);
             //
-            
+
             Double totale;
-            
-            if(cliente) {
+
+            if (cliente) {
                 totale = computo.getTotale();
             } else {
                 totale = 0.0;
             }
-            
-            for(Integer numProgr : computo.getVociComputo().keySet()) {
+
+            for (Integer numProgr : computo.getVociComputo().keySet()) {
                 VoceComputo vc = computo.getVociComputo().get(numProgr);
                 String codice = vc.getCodice();
                 String descrizione;
                 Double prezzoUnitario, prezzoComplessivo, quantita = vc.getQuantita(computo);
-                
-                if(cliente) {
+
+                if (cliente) {
                     descrizione = vc.getDescrizione();
                     prezzoUnitario = vc.getPrezzoUnitario();
                     prezzoComplessivo = vc.getPrezzoComplessivo(computo);
@@ -147,41 +168,43 @@ public class PDFGenerator {
                     prezzoComplessivo = prezzoUnitario * quantita;
                     totale += prezzoComplessivo;
                 }
-                
-                for(Integer numProgrVediVoce : vc.getVediVoce()) {
+
+                for (Integer numProgrVediVoce : vc.getVediVoce()) {
                     VoceComputo vediVoce = computo.getVociComputo().get(numProgrVediVoce);
                     String vediVoceInfo = vediVoce.getUnitaDiMisura() + " " + vediVoce.getQuantita(computo);
-                    descrizione = descrizione.concat("\n\nVedi voce n°"+numProgrVediVoce+" ["+vediVoceInfo+"]");
+                    descrizione = descrizione.concat("\n\nVedi voce n°" + numProgrVediVoce + " [" + vediVoceInfo + "]");
                 }
-                
+
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph(numProgr.toString()+"\n"+codice));
+                cell.add(new Paragraph(numProgr.toString() + "\n" + codice));
+                cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
                 table.addCell(cell);
-                
+
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(descrizione));
+                //cell.setTextAlignment(TextAlignment.JUSTIFIED);
                 table.addCell(cell);
-                
+
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(vc.getUnitaDiMisura()));
                 table.addCell(cell);
 
                 String misurazioni = "", partiUguali = "", lunghezze = "", larghezze = "", altezze = "";
-                if(vc.getMisurazioni().size()==1) {
+                if (vc.getMisurazioni().size() == 1) {
                     partiUguali = vc.getPartiUguali().get(0).toString();
                     lunghezze = vc.lunghezzeToString();
                     larghezze = vc.larghezzeToString();
                     altezze = vc.altezzePesiToString();
                 } else {
-                    for(int i = 0; i < vc.getMisurazioni().size(); i++) {
-                        misurazioni = misurazioni.concat(vc.getMisurazioni().get(i)+"\n");
-                        partiUguali = partiUguali.concat(vc.getPartiUguali().get(i)+"\n");
-                        lunghezze = lunghezze.concat(vc.getLunghezze().get(i)+"\n");
-                        larghezze = larghezze.concat(vc.getLarghezze().get(i)+"\n");
-                        altezze = altezze.concat(vc.getAltezze_pesi().get(i)+"\n");
+                    for (int i = 0; i < vc.getMisurazioni().size(); i++) {
+                        misurazioni = misurazioni.concat(vc.getMisurazioni().get(i) + "\n");
+                        partiUguali = partiUguali.concat(vc.getPartiUguali().get(i) + "\n");
+                        lunghezze = lunghezze.concat(vc.getLunghezze().get(i) + "\n");
+                        larghezze = larghezze.concat(vc.getLarghezze().get(i) + "\n");
+                        altezze = altezze.concat(vc.getAltezze_pesi().get(i) + "\n");
                     }
                 }
-                
+
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(misurazioni));
                 table.addCell(cell);
@@ -197,11 +220,11 @@ public class PDFGenerator {
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(altezze));
                 table.addCell(cell);
-                
+
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(quantita.toString()));
                 table.addCell(cell);
-                
+
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(prezzoUnitario.toString()));
                 table.addCell(cell);
@@ -210,16 +233,14 @@ public class PDFGenerator {
                 table.addCell(cell);
             }
 
-            cell = new Cell(1, numCols-2);
-            cell.add(new Paragraph()); //lascio vuoto
-            table.addCell(cell);
-            cell = new Cell(1, 1);
+            cell = new Cell(1, numCols - 1);
             cell.add(new Paragraph("TOTALE").setBold());
+            cell.setTextAlignment(TextAlignment.RIGHT);
             table.addCell(cell);
             cell = new Cell(1, 1);
             cell.add(new Paragraph(totale.toString()).setBold());
             table.addCell(cell);
-            
+
             document.add(table);
         }
 
