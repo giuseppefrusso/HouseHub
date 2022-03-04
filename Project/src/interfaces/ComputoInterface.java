@@ -332,7 +332,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         File homeDirectory = FileSystemView.getFileSystemView().getHomeDirectory();
         JFileChooser jfc = new JFileChooser(homeDirectory);
         jfc.setDialogTitle("Salva il computo per " + dest);
-        jfc.setSelectedFile(new File(homeDirectory.toString()+"\\"+computo.getNome()+"_"+dest+".pdf"));
+        jfc.setSelectedFile(new File(homeDirectory.toString() + "\\" + computo.getNome() + "_" + dest + ".pdf"));
         jfc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         FileFilter filter = new FileNameExtensionFilter("File PDF", "pdf");
         jfc.setFileFilter(filter);
@@ -396,6 +396,18 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
 
+        for (VoceComputo c : computo.getVociComputo().values()) {
+            if (selectedNumProgr >= c.getNumeroProgressivo()) {
+                continue;
+            }
+            for (int numProg : c.getVediVoce()) {
+                if (numProg == selectedNumProgr) {
+                    JOptionPane.showMessageDialog(this, "La voce " + c.getNumeroProgressivo() + " contiene un riferimento a questa voce", "Avviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+        }
+
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
 
         computo.rimuoviVoce(selectedVoce.getNumeroProgressivo());
@@ -423,7 +435,25 @@ public class ComputoInterface extends javax.swing.JFrame {
             return;
         }
 
+        for (VoceComputo c : computo.getVociComputo().values()) {
+            if (selectedNumProgr - 1 >= c.getNumeroProgressivo()) {
+                continue;
+            }
+            for (int numProg : c.getVediVoce()) {
+
+                if (numProg == selectedNumProgr) {
+                    JOptionPane.showMessageDialog(this, "La voce " + c.getNumeroProgressivo() + " contiene un riferimento a questa voce", "Avviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                if (numProg == selectedNumProgr - 1) {
+                    JOptionPane.showMessageDialog(this, "La voce " + c.getNumeroProgressivo() + " contiene un riferimento alla voce " + numProg, "Avviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
+        }
+
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);
+
         VoceComputo swappedVoce = computo.getVociComputo().get(selectedNumProgr - 1);
 
         computo.rimuoviVoce(selectedVoce.getNumeroProgressivo());
@@ -456,6 +486,22 @@ public class ComputoInterface extends javax.swing.JFrame {
         if (selectedNumProgr >= computo.getVociComputo().size()) {
             JOptionPane.showMessageDialog(this, "Non puoi spostare in basso l'ultima voce", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
+        }
+
+        for (VoceComputo c : computo.getVociComputo().values()) {
+            if (selectedNumProgr >= c.getNumeroProgressivo()) {
+                continue;
+            }
+            for (int numProg : c.getVediVoce()) {
+                if (numProg == selectedNumProgr + 1) {
+                    JOptionPane.showMessageDialog(this, "La voce " + c.getNumeroProgressivo() + " contiene un riferimento alla voce " + numProg, "Avviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                if (numProg == selectedNumProgr) {
+                    JOptionPane.showMessageDialog(this, "La voce " + c.getNumeroProgressivo() + " contiene un riferimento a questa voce", "Avviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
         }
 
         VoceComputo selectedVoce = computo.getVociComputo().get(selectedNumProgr);

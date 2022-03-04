@@ -39,6 +39,7 @@ public class VoceComputo extends Voce {
         altezze_pesi = new LinkedList<>();
         
         this.vediVoce = new TreeSet<>();
+        this.aggiungiDimensioni("default", 0, 0, 0, 0);
         //calcolaQuantita();
     }
 

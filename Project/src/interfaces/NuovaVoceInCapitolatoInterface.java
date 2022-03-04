@@ -26,6 +26,7 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
      */
     public NuovaVoceInCapitolatoInterface() {
         initComponents();
+        nuovaVoceLabel.setText("Nuova voce cliente");
     }
 
     /**
@@ -199,6 +200,7 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
                 flag = true;
                 codiceTextField.setEditable(false);
                 misuraTextField.setEditable(false);
+                nuovaVoceLabel.setText("Nuova voce sub-appaltatori");
 
             }
 
