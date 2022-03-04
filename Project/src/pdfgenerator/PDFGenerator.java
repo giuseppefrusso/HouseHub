@@ -37,7 +37,6 @@ public class PDFGenerator {
         try (Document document = new Document(pdf)) {
             //Dichiarazione delle variabili;
             Paragraph paragraph;
-            Text text;
             Table table;
             Cell cell;
             PdfFont helveticaBold = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
@@ -83,12 +82,15 @@ public class PDFGenerator {
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Par. ug.").setFont(helveticaBold));
             table.addHeaderCell(cell);
+            
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Lung.").setFont(helveticaBold));
             table.addHeaderCell(cell);
+            
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Larg.").setFont(helveticaBold));
             table.addHeaderCell(cell);
+            
             cell = new Cell(1, 1);
             cell.add(new Paragraph("H/peso").setFont(helveticaBold));
             table.addHeaderCell(cell);
@@ -96,20 +98,36 @@ public class PDFGenerator {
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Unitario").setFont(helveticaBold));
             table.addHeaderCell(cell);
+            
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Totale").setFont(helveticaBold));
             table.addHeaderCell(cell);
             //
             
+            Double totale;
+            
+            if(cliente) {
+                totale = computo.getTotale();
+            } else {
+                totale = 0.0;
+            }
+            
             for(Integer numProgr : computo.getVociComputo().keySet()) {
                 VoceComputo vc = computo.getVociComputo().get(numProgr);
                 String codice = vc.getCodice();
                 String descrizione;
+                Double prezzoUnitario, prezzoComplessivo;
                 
                 if(cliente) {
                     descrizione = vc.getDescrizione();
+                    prezzoUnitario = vc.getPrezzoUnitario();
+                    prezzoComplessivo = vc.getPrezzoComplessivo(computo);
                 } else {
-                    descrizione = capitolato.getCapitolatoSubappaltatori().get(codice).getDescrizione();
+                    Voce sub = capitolato.getCapitolatoSubappaltatori().get(codice);
+                    descrizione = sub.getDescrizione();
+                    prezzoUnitario = sub.getPrezzoUnitario();
+                    prezzoComplessivo = prezzoUnitario * vc.calcolaQuantita(computo);
+                    totale += prezzoComplessivo;
                 }
                 
                 cell = new Cell(1, 1);
