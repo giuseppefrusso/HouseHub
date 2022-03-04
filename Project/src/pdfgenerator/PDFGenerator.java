@@ -24,9 +24,9 @@ public class PDFGenerator {
 
     public static void generatePDF(String fileProgetto, Computo computo, String PDFfilepath, boolean cliente) throws IOException, ClassNotFoundException {
         //Load necessary files
-        Progetto p = Progetto.caricaProgetto(fileProgetto);
-        Capitolato c = Capitolato.caricaCapitolato();
-        Cliente u = p.getUtente();
+        Progetto progetto = Progetto.caricaProgetto(fileProgetto);
+        Capitolato capitolato = Capitolato.caricaCapitolato();
+        Cliente utente = progetto.getUtente();
         //
 
         PdfWriter writer = new PdfWriter(PDFfilepath);
@@ -46,13 +46,13 @@ public class PDFGenerator {
             paragraph = new Paragraph("COMPUTO METRICO");
             document.add(paragraph);
 
-            paragraph = new Paragraph("Committente: " + u.getNome() + " " + u.getCognome());
+            paragraph = new Paragraph("Committente: " + utente.getNome() + " " + utente.getCognome());
             document.add(paragraph);
 
-            paragraph = new Paragraph("Indirizzo del cantiere: " + u.getIndirizzoCantiere());
+            paragraph = new Paragraph("Indirizzo del cantiere: " + utente.getIndirizzoCantiere());
             document.add(paragraph);
 
-            paragraph = new Paragraph("Tecnico: " + u.getTecnico());
+            paragraph = new Paragraph("Tecnico: " + utente.getTecnico());
             document.add(paragraph);
 
             document.add(new AreaBreak());
@@ -99,6 +99,27 @@ public class PDFGenerator {
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Totale").setFont(helveticaBold));
             table.addHeaderCell(cell);
+            //
+            
+            for(Integer numProgr : computo.getVociComputo().keySet()) {
+                VoceComputo vc = computo.getVociComputo().get(numProgr);
+                String codice = vc.getCodice();
+                String descrizione;
+                
+                if(cliente) {
+                    descrizione = vc.getDescrizione();
+                } else {
+                    descrizione = capitolato.getCapitolatoSubappaltatori().get(codice).getDescrizione();
+                }
+                
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph(numProgr.toString()+"\n"+codice));
+                table.addCell(cell);
+                
+                cell = new Cell(1, 1);
+                cell.add(new Paragraph(descrizione));
+                table.addCell(cell);
+            }
 
             document.add(table);
         }
@@ -110,6 +131,8 @@ public class PDFGenerator {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
+     * @throws java.lang.ClassNotFoundException
      */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         String filePath = "C:\\Users\\Pepito\\Desktop\\";
