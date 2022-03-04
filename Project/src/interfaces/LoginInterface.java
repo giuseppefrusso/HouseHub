@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package interfaces;
+
 ;
 
 import java.awt.EventQueue;
@@ -13,14 +14,18 @@ import javax.swing.JOptionPane;
  *
  * @author Pepito
  */
-public class LoginInterface extends javax.swing.JFrame {
 
+
+public class LoginInterface extends javax.swing.JFrame {
+    
+    private final String password = "admin"; 
+    
     /**
      * Creates new form LoginInterface
      */
     public LoginInterface() {
         initComponents();
-        passwordField.setText("admin");
+        //passwordField.setText(password);
     }
 
     /**
@@ -55,7 +60,7 @@ public class LoginInterface extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("HouseHub");
+        setTitle("House Hub");
         setBackground(new java.awt.Color(8, 14, 44));
         setResizable(false);
 
@@ -172,7 +177,7 @@ public class LoginInterface extends javax.swing.JFrame {
 
     private void loginAsAdmin() {
         String user = (String) userField.getSelectedItem();
-        if (passwordField.getText().equals("admin")) {
+        if (passwordField.getText().equals(password)) {
             EventQueue.invokeLater(() -> {
                 new ProgettoInterface(user, false).setVisible(true);
                 dispose();

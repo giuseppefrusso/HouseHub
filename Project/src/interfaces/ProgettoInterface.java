@@ -115,7 +115,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("HouseHub");
+        setTitle("House Hub");
         setResizable(false);
 
         panel.setBackground(new java.awt.Color(149, 165, 166));
