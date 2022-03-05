@@ -53,9 +53,14 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         descrizioneTextArea = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("House Hub");
         setPreferredSize(new java.awt.Dimension(800, 500));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(149, 165, 166));
         jPanel1.setLayout(new java.awt.GridBagLayout());
@@ -224,6 +229,15 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
             dispose();
         });
     }//GEN-LAST:event_indietroButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        EventQueue.invokeLater(() -> {
+            new CapitolatoInterface().setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_formWindowClosing
+
 
     /**
      * @param args the command line arguments
