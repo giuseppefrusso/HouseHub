@@ -8,7 +8,6 @@ package pdfgenerator;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.layout.*;
-import com.itextpdf.layout.borders.*;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.VerticalAlignment;
@@ -17,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 import models.*;
+import utils.Format;
 
 /**
  *
@@ -191,17 +191,17 @@ public class PDFGenerator {
 
                 String misurazioni = "", partiUguali = "", lunghezze = "", larghezze = "", altezze = "";
                 if (vc.getMisurazioni().size() == 1) {
-                    partiUguali = vc.getPartiUguali().get(0).toString();
+                    partiUguali = Format.formatDouble(vc.getPartiUguali().get(0));
                     lunghezze = vc.lunghezzeToString();
                     larghezze = vc.larghezzeToString();
                     altezze = vc.altezzePesiToString();
                 } else {
                     for (int i = 0; i < vc.getMisurazioni().size(); i++) {
                         misurazioni = misurazioni.concat(vc.getMisurazioni().get(i) + "\n");
-                        partiUguali = partiUguali.concat(vc.getPartiUguali().get(i) + "\n");
-                        lunghezze = lunghezze.concat(vc.getLunghezze().get(i) + "\n");
-                        larghezze = larghezze.concat(vc.getLarghezze().get(i) + "\n");
-                        altezze = altezze.concat(vc.getAltezze_pesi().get(i) + "\n");
+                        partiUguali = partiUguali.concat(Format.formatDouble(vc.getPartiUguali().get(i)) + "\n");
+                        lunghezze = lunghezze.concat(Format.formatDouble(vc.getLunghezze().get(i)) + "\n");
+                        larghezze = larghezze.concat(Format.formatDouble(vc.getLarghezze().get(i)) + "\n");
+                        altezze = altezze.concat(Format.formatDouble(vc.getAltezze_pesi().get(i)) + "\n");
                     }
                 }
 
@@ -222,14 +222,14 @@ public class PDFGenerator {
                 table.addCell(cell);
 
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph(quantita.toString()));
+                cell.add(new Paragraph(Format.formatDouble(quantita)));
                 table.addCell(cell);
 
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph(prezzoUnitario.toString()));
+                cell.add(new Paragraph(Format.formatDouble(prezzoUnitario)));
                 table.addCell(cell);
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph(prezzoComplessivo.toString()));
+                cell.add(new Paragraph(Format.formatDouble(prezzoComplessivo)));
                 table.addCell(cell);
             }
 
@@ -238,7 +238,7 @@ public class PDFGenerator {
             cell.setTextAlignment(TextAlignment.RIGHT);
             table.addCell(cell);
             cell = new Cell(1, 1);
-            cell.add(new Paragraph(totale.toString()).setBold());
+            cell.add(new Paragraph(Format.formatDouble(totale) + " €").setBold());
             table.addCell(cell);
 
             document.add(table);

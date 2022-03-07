@@ -17,6 +17,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import models.Computo;
 import models.Progetto;
+import utils.Format;
 
 /**
  *
@@ -86,7 +87,8 @@ public class ProgettoInterface extends javax.swing.JFrame {
         if (selectedComputo == null) {
             computoLabel.setText("");
         } else {
-            computoLabel.setText("Data: " + selectedComputo.getData() + ", totale: " + selectedComputo.getTotale());
+            computoLabel.setText("Data: " + selectedComputo.getData() + 
+                    ", totale: " + Format.formatDouble(selectedComputo.getTotale()) + " €");
         }
     }
 

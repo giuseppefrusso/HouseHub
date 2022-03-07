@@ -8,6 +8,7 @@ package models;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.TreeSet;
+import utils.Format;
 
 /**
  *
@@ -167,7 +168,7 @@ public class VoceComputo extends Voce {
         StringBuffer sb = new StringBuffer();
         
         for(int i = 0; i < dimensione.size(); i++) {
-            sb.append(dimensione.get(i));
+            sb.append(Format.formatDouble(dimensione.get(i)));
             if(i != dimensione.size()-1)
                 sb.append(", ");
         }
@@ -179,7 +180,7 @@ public class VoceComputo extends Voce {
         StringBuffer sb = new StringBuffer();
         
         for(int i = 0; i < partiUguali.size(); i++) {
-            sb.append(misurazioni.get(i)).append(" ").append(partiUguali.get(i));
+            sb.append(misurazioni.get(i)).append(": ").append(Format.formatDouble(partiUguali.get(i)));
             if(i != partiUguali.size()-1)
                 sb.append(", ");
         }

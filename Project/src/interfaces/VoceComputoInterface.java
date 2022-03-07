@@ -259,6 +259,8 @@ public class VoceComputoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void save() {
+        misurazioniTable.clearSelection();
+        
         try {
             Progetto p = Progetto.caricaProgetto(fileProgetto);
             p.rimuoviComputo(computo);
@@ -286,12 +288,16 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         if (saved == false) {
-            int choice = JOptionPane.showConfirmDialog(this, "Vuoi salvare prima di chiudere?");
+            /*int choice = JOptionPane.showConfirmDialog(this, "Vuoi salvare prima di chiudere?");
             if (choice == JOptionPane.YES_OPTION) {
                 save();
+                
             } else if (choice == JOptionPane.CANCEL_OPTION) {
                 return;
-            }
+            }*/
+            
+            JOptionPane.showMessageDialog(this, "Non hai salvato le ultime modifiche", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
         EventQueue.invokeLater(() -> {
