@@ -170,7 +170,7 @@ public class VoceComputo extends Voce {
         for(int i = 0; i < dimensione.size(); i++) {
             sb.append(Format.formatDouble(dimensione.get(i)));
             if(i != dimensione.size()-1)
-                sb.append(", ");
+                sb.append(";  ");
         }
         
         return sb.toString();
@@ -182,7 +182,7 @@ public class VoceComputo extends Voce {
         for(int i = 0; i < partiUguali.size(); i++) {
             sb.append(misurazioni.get(i)).append(": ").append(Format.formatDouble(partiUguali.get(i)));
             if(i != partiUguali.size()-1)
-                sb.append(", ");
+                sb.append(";  ");
         }
         
         return sb.toString();

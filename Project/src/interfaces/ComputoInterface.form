@@ -154,6 +154,12 @@
                     </Column>
                   </TableColumnModel>
                 </Property>
+                <Property name="showHorizontalLines" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="true" type="code"/>
+                </Property>
+                <Property name="showVerticalLines" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="true" type="code"/>
+                </Property>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>

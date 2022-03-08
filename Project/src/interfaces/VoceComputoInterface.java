@@ -55,8 +55,8 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         }
 
         for (int i = 0; i < voce.getMisurazioni().size(); i++) {
-            Object[] rowData = {voce.getMisurazioni().get(i),voce.getPartiUguali().get(i), 
-                voce.getLunghezze().get(i),voce.getLarghezze().get(i), voce.getAltezze_pesi().get(i)};
+            Object[] rowData = {voce.getMisurazioni().get(i), voce.getPartiUguali().get(i),
+                voce.getLunghezze().get(i), voce.getLarghezze().get(i), voce.getAltezze_pesi().get(i)};
             misurazioniModel.addRow(rowData);
         }
     }
@@ -261,14 +261,14 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
     private void save() {
         misurazioniTable.clearSelection();
-        
+
         try {
             Progetto p = Progetto.caricaProgetto(fileProgetto);
             p.rimuoviComputo(computo);
             computo.rimuoviVoce(voce.getNumeroProgressivo());
-            
+
             voce.svuotaDimensioni();
-            for(int row = 0; row < misurazioniModel.getRowCount(); row++) {
+            for (int row = 0; row < misurazioniModel.getRowCount(); row++) {
                 String m = (String) misurazioniModel.getValueAt(row, 0);
                 double pu = (double) misurazioniModel.getValueAt(row, 1);
                 double lung = (double) misurazioniModel.getValueAt(row, 2);
@@ -280,8 +280,8 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             computo.aggiungiVoce(voce);
             p.aggiungiComputo(computo);
             p.salvaProgetto(fileProgetto);
-            
-            saved=true;
+
+            saved = true;
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
@@ -296,7 +296,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             } else if (choice == JOptionPane.CANCEL_OPTION) {
                 return;
             }*/
-            
+
             JOptionPane.showMessageDialog(this, "Non hai salvato le ultime modifiche", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -321,10 +321,10 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         try {
             System.out.println(newVoce);
             int newVoceNum = Integer.parseInt(newVoce);
-            
+
             TreeMap<Integer, VoceComputo> voci = computo.getVociComputo();
-            
-            if(!voci.containsKey(newVoceNum) || newVoceNum >= voce.getNumeroProgressivo()) {
+
+            if (!voci.containsKey(newVoceNum) || newVoceNum >= voce.getNumeroProgressivo()) {
                 JOptionPane.showMessageDialog(this, "Inserire un numero di voce minore di quella corrente", "Avviso", JOptionPane.WARNING_MESSAGE);
                 return;
             }
@@ -368,6 +368,10 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Seleziona una misurazione", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (selectedRow == 0) {
+            JOptionPane.showMessageDialog(this, "Non puoi eliminare la voce di default", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 

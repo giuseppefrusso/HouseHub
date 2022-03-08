@@ -24,7 +24,7 @@ import utils.Format;
  */
 public class PDFGenerator {
 
-    public static void generatePDF(String fileProgetto, Computo computo, String PDFfilepath, boolean cliente) throws IOException, ClassNotFoundException {
+    public static void generatePDF(String fileProgetto, Computo computo, String PDFfilepath, boolean cliente) throws IOException, ClassNotFoundException, NullPointerException {
         //Load necessary files
         Progetto progetto = Progetto.caricaProgetto(fileProgetto);
         Capitolato capitolato = Capitolato.caricaCapitolato();
@@ -45,11 +45,10 @@ public class PDFGenerator {
             paragraph = new Paragraph("COMPUTO METRICO").setBold().setTextAlignment(TextAlignment.CENTER);
             document.add(paragraph);
 
-            
             paragraph = new Paragraph();
             text = new Text("Committente: ").setBold();
             paragraph.add(text);
-            text = new Text(utente.getNome().toUpperCase()+" "+utente.getCognome().toUpperCase());
+            text = new Text(utente.getNome().toUpperCase() + " " + utente.getCognome().toUpperCase());
             paragraph.add(text);
             paragraph.setMargin(50);
             document.add(paragraph);
@@ -74,7 +73,7 @@ public class PDFGenerator {
 
             int numCols = 11;
             table = new Table(numCols);
-            table.setFontSize(10);
+            table.setFontSize(8);
 
             //Intestazione della tabella
             cell = new Cell(2, 1);
@@ -190,18 +189,26 @@ public class PDFGenerator {
                 table.addCell(cell);
 
                 String misurazioni = "", partiUguali = "", lunghezze = "", larghezze = "", altezze = "";
-                if (vc.getMisurazioni().size() == 1) {
+                if (vc.getMisurazioni().size() == 1 && vc.getPartiUguali().get(0) !=0 ) {
                     partiUguali = Format.formatDouble(vc.getPartiUguali().get(0));
                     lunghezze = vc.lunghezzeToString();
                     larghezze = vc.larghezzeToString();
                     altezze = vc.altezzePesiToString();
                 } else {
-                    for (int i = 0; i < vc.getMisurazioni().size(); i++) {
-                        misurazioni = misurazioni.concat(vc.getMisurazioni().get(i) + "\n");
-                        partiUguali = partiUguali.concat(Format.formatDouble(vc.getPartiUguali().get(i)) + "\n");
-                        lunghezze = lunghezze.concat(Format.formatDouble(vc.getLunghezze().get(i)) + "\n");
-                        larghezze = larghezze.concat(Format.formatDouble(vc.getLarghezze().get(i)) + "\n");
-                        altezze = altezze.concat(Format.formatDouble(vc.getAltezze_pesi().get(i)) + "\n");
+                    if (vc.getPartiUguali().get(0) != 0) {
+                        misurazioni = misurazioni.concat("\n\n");
+                        partiUguali = partiUguali.concat(Format.formatDouble(vc.getPartiUguali().get(0)) + "\n\n");
+                        lunghezze = lunghezze.concat(Format.formatDouble(vc.getLunghezze().get(0)) + "\n\n");
+                        larghezze = larghezze.concat(Format.formatDouble(vc.getLarghezze().get(0)) + "\n\n");
+                        altezze = altezze.concat(Format.formatDouble(vc.getAltezze_pesi().get(0)) + "\n\n");
+                    }
+                    
+                    for (int i = 1; i < vc.getMisurazioni().size(); i++) {
+                        misurazioni = misurazioni.concat(vc.getMisurazioni().get(i) + "\n\n");
+                        partiUguali = partiUguali.concat(Format.formatDouble(vc.getPartiUguali().get(i)) + "\n\n");
+                        lunghezze = lunghezze.concat(Format.formatDouble(vc.getLunghezze().get(i)) + "\n\n");
+                        larghezze = larghezze.concat(Format.formatDouble(vc.getLarghezze().get(i)) + "\n\n");
+                        altezze = altezze.concat(Format.formatDouble(vc.getAltezze_pesi().get(i)) + "\n\n");
                     }
                 }
 

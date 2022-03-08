@@ -109,6 +109,9 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
             }
         });
         table.setRowSelectionAllowed(false);
+        table.setShowHorizontalLines(true
+        );
+        table.setShowVerticalLines(true);
         scrollPane.setViewportView(table);
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(4).setMinWidth(50);

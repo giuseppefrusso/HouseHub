@@ -139,6 +139,8 @@ public class ComputoInterface extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        table.setShowHorizontalLines(true);
+        table.setShowVerticalLines(true);
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableMouseClicked(evt);
@@ -366,7 +368,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         try {
             PDFGenerator.generatePDF(fileProgetto, computo, filePdf, true);
-        } catch (IOException | ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException | NullPointerException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_exportForClientActionPerformed
@@ -380,7 +382,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         try {
             PDFGenerator.generatePDF(fileProgetto, computo, filePdf, false);
-        } catch (IOException | ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException | NullPointerException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_exportForSubActionPerformed

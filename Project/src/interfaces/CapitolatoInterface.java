@@ -19,7 +19,7 @@ import models.Voce;
 public class CapitolatoInterface extends javax.swing.JFrame {
 
     private DefaultTableModel clientiModel, subModel;
-    private Capitolato capitolato;
+    private static Capitolato capitolato;
     private boolean saved;
 
     /**
@@ -33,13 +33,14 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         refreshTables();
         initComponents();
         this.setLocationRelativeTo(null);
+
     }
 
     public CapitolatoInterface(Voce voceCliente, Voce voceSubappaltatore) {
         saved = false;
         clientiModel = initTableModel();
         subModel = initTableModel();
-        initCapitolati();
+        //initCapitolati();
         capitolato.addVoceCliente(voceCliente);
         capitolato.addVoceSubappaltori(voceSubappaltatore);
         refreshTables();
@@ -50,20 +51,20 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     private void refreshTables() {
         clientiModel.setRowCount(0);
         subModel.setRowCount(0);
-        
-        for(String codice : capitolato.getCapitolatoClienti().keySet()) {
+
+        for (String codice : capitolato.getCapitolatoClienti().keySet()) {
             Voce voce = capitolato.getVoceCliente(codice);
             Object[] row = {codice, voce.getDescrizione(), voce.getUnitaDiMisura(), voce.getPrezzoUnitario()};
             clientiModel.addRow(row);
         }
-        
-        for(String codice : capitolato.getCapitolatoSubappaltatori().keySet()) {
+
+        for (String codice : capitolato.getCapitolatoSubappaltatori().keySet()) {
             Voce voce = capitolato.getVoceSubappaltatore(codice);
             Object[] row = {codice, voce.getDescrizione(), voce.getUnitaDiMisura(), voce.getPrezzoUnitario()};
             subModel.addRow(row);
         }
     }
-    
+
     private void initCapitolati() {
         try {
             capitolato = Capitolato.caricaCapitolato();
@@ -87,7 +88,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-            
+
             @Override
             public Class getColumnClass(int columnIndex) {
                 switch (columnIndex) {
@@ -151,6 +152,8 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         clientiTable.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         clientiTable.setModel(clientiModel);
+        clientiTable.setShowHorizontalLines(true);
+        clientiTable.setShowVerticalLines(true);
         clientiTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 clientiTableMouseClicked(evt);
@@ -218,6 +221,9 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         subTable.setFont(new java.awt.Font("Comic Sans MS", 0, 11)); // NOI18N
         subTable.setModel(subModel);
+        subTable.setShowHorizontalLines(true
+        );
+        subTable.setShowVerticalLines(true);
         subTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 subTableMouseClicked(evt);
@@ -263,7 +269,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void deleteVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVoceButtonActionPerformed
         //Bisogna prima aver selezionato la voce
         String selectedCodice;
@@ -300,14 +306,15 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_addVoceButtonActionPerformed
 
     private void progettoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_progettoButtonActionPerformed
-        if(saved == false) {
+        if (saved == false) {
             int choice = JOptionPane.showConfirmDialog(this, "Vuoi salvare prima di passare ai progetti?");
-            if(choice == JOptionPane.YES_OPTION)
+            if (choice == JOptionPane.YES_OPTION) {
                 salva();
-            else if(choice == JOptionPane.CANCEL_OPTION) 
+            } else if (choice == JOptionPane.CANCEL_OPTION) {
                 return;
-        }   
-        
+            }
+        }
+
         EventQueue.invokeLater(() -> {
             new ProgettoInterface(false).setVisible(true);
             dispose();
@@ -315,14 +322,15 @@ public class CapitolatoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_progettoButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if(saved == false) {
+        if (saved == false) {
             int choice = JOptionPane.showConfirmDialog(this, "Vuoi salvare prima di chiudere?");
-            if(choice == JOptionPane.YES_OPTION)
+            if (choice == JOptionPane.YES_OPTION) {
                 salva();
-            else if(choice == JOptionPane.CANCEL_OPTION) 
+            } else if (choice == JOptionPane.CANCEL_OPTION) {
                 return;
+            }
         }
-        
+
         EventQueue.invokeLater(() -> {
             new ProgettoInterface(false).setVisible(true);
             dispose();
@@ -335,7 +343,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     private void subTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subTableMouseClicked
         clientiTable.clearSelection();
-        
+
         if (evt.getClickCount() == 2 && !evt.isConsumed()) {
             evt.consume();
             gestisciVoceSub();
@@ -348,25 +356,25 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Seleziona una voce del capitolato", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         double prezzo = (double) subTable.getValueAt(selectedRow, 3);
-        
+
         Double nuovoPrezzo;
-        try{
-        nuovoPrezzo = new Double((String) JOptionPane.showInputDialog(this, "Scegli nuovo prezzo per sub-appaltatori", 
-                "Prezzo unitario", JOptionPane.QUESTION_MESSAGE, null, null, prezzo));
-        } catch(NumberFormatException e) {
+        try {
+            nuovoPrezzo = new Double((String) JOptionPane.showInputDialog(this, "Scegli nuovo prezzo per sub-appaltatori",
+                    "Prezzo unitario", JOptionPane.QUESTION_MESSAGE, null, null, prezzo));
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Il prezzo non è corretto", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         Voce v = capitolato.removeVoceSubappaltatori((String) subTable.getValueAt(selectedRow, 0));
         v.setPrezzoUnitario(nuovoPrezzo);
         capitolato.addVoceSubappaltori(v);
         saved = false;
         refreshTables();
     }
-    
+
     /**
      * @param args the command line arguments
      */
