@@ -412,6 +412,10 @@ public class ProgettoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Non è stato selezionato alcun computo", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler eliminare " + computo.getNome() + "?");
+        if(choice == JOptionPane.NO_OPTION || choice == JOptionPane.CANCEL_OPTION)
+            return;
 
         try {
             Progetto p = Progetto.caricaProgetto(fileProgetto);
