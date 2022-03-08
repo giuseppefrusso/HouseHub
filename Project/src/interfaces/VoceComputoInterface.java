@@ -37,6 +37,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         this.fileProgetto = fileProgetto;
         this.saved = true;
         initComponents();
+        this.setLocationRelativeTo(null);
         misurazioniLabel.setText("Misurazioni (" + voce.getUnitaDiMisura() + ")");
         voceModel = (DefaultTableModel) voceTable.getModel();
         misurazioniModel = (DefaultTableModel) misurazioniTable.getModel();

@@ -32,6 +32,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         initCapitolati();
         refreshTables();
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     public CapitolatoInterface(Voce voceCliente, Voce voceSubappaltatore) {
@@ -43,6 +44,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         capitolato.addVoceSubappaltori(voceSubappaltatore);
         refreshTables();
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     private void refreshTables() {

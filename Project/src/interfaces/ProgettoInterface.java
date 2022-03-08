@@ -35,6 +35,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
      */
     public ProgettoInterface(boolean toEnable) {
         initComponents();
+        this.setLocationRelativeTo(null);
         controlloUtente();
         if (toEnable) {
             schermataProgetto();
@@ -46,6 +47,7 @@ public class ProgettoInterface extends javax.swing.JFrame {
     public ProgettoInterface(String user, boolean toEnable) {
         ProgettoInterface.user = user;
         initComponents();
+        this.setLocationRelativeTo(null);
         controlloUtente();
         if (toEnable) {
             schermataProgetto();

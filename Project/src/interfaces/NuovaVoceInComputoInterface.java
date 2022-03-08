@@ -33,6 +33,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         this.computo = computo;
         this.fileProgetto = fileProgetto;
         initComponents();
+        this.setLocationRelativeTo(null);
         model = (DefaultTableModel) table.getModel();
         fillTableModel();
     }

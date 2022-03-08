@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.*;
 import models.*;
 
-
 /**
  *
  * @author Pepito
@@ -26,11 +25,12 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
      * Creates new form UtentePerProgettoInterface
      *
      * @param user
-     * @param fileProgetto 
+     * @param fileProgetto
      */
     public UtentePerProgettoInterface(String user, String fileProgetto) {
         this.fileProgetto = fileProgetto;
         initComponents();
+        this.setLocationRelativeTo(null);
         tecnicoTextField.setText(user);
         //tecnicoTextField.setEditable(false);
     }
@@ -62,10 +62,15 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         nomeTextField = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("House Hub");
         setBackground(new java.awt.Color(240, 245, 58));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(149, 165, 166));
         jPanel1.setLayout(new java.awt.GridBagLayout());
@@ -219,10 +224,17 @@ public class UtentePerProgettoInterface extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_saveButtonActionPerformed
 
-    /**
-         * @param args the command line arguments
-         */
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        EventQueue.invokeLater(() -> {
+            new ProgettoInterface(true).setVisible(true);
+            dispose();
+        });
+    }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

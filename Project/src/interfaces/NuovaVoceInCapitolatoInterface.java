@@ -26,6 +26,7 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
      */
     public NuovaVoceInCapitolatoInterface() {
         initComponents();
+        this.setLocationRelativeTo(null);
         nuovaVoceLabel.setText("Nuova voce cliente");
     }
 

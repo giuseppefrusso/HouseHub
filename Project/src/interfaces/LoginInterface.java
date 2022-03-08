@@ -26,6 +26,7 @@ public class LoginInterface extends javax.swing.JFrame {
     public LoginInterface() {
         initComponents();
         //passwordField.setText(password);
+        this.setLocationRelativeTo(null);
     }
 
     /**
