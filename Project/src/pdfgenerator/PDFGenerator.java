@@ -5,15 +5,21 @@
  */
 package pdfgenerator;
 
+import com.itextpdf.io.image.*;
 import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.*;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.kernel.pdf.extgstate.PdfExtGState;
 import com.itextpdf.layout.*;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.VerticalAlignment;
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import models.*;
 import utils.Format;
@@ -189,7 +195,7 @@ public class PDFGenerator {
                 table.addCell(cell);
 
                 String misurazioni = "", partiUguali = "", lunghezze = "", larghezze = "", altezze = "";
-                if (vc.getMisurazioni().size() == 1 && vc.getPartiUguali().get(0) !=0 ) {
+                if (vc.getMisurazioni().size() == 1 && vc.getPartiUguali().get(0) != 0) {
                     partiUguali = Format.formatDouble(vc.getPartiUguali().get(0));
                     lunghezze = vc.lunghezzeToString();
                     larghezze = vc.larghezzeToString();
@@ -202,7 +208,7 @@ public class PDFGenerator {
                         larghezze = larghezze.concat(Format.formatDouble(vc.getLarghezze().get(0)) + "\n\n");
                         altezze = altezze.concat(Format.formatDouble(vc.getAltezze_pesi().get(0)) + "\n\n");
                     }
-                    
+
                     for (int i = 1; i < vc.getMisurazioni().size(); i++) {
                         misurazioni = misurazioni.concat(vc.getMisurazioni().get(i) + "\n\n");
                         partiUguali = partiUguali.concat(Format.formatDouble(vc.getPartiUguali().get(i)) + "\n\n");
@@ -256,13 +262,35 @@ public class PDFGenerator {
         }
     }
 
+    public static void setBackgroundImage(String PDFfilepath) throws FileNotFoundException, MalformedURLException, IOException {
+        String IMAGE = "src\\icons\\logo.png";
+        
+        PdfWriter writer = new PdfWriter(PDFfilepath);
+        PdfDocument pdf = new PdfDocument(writer);
+
+        try (Document document = new Document(pdf)) {
+            ImageData image = ImageDataFactory.create(IMAGE);
+            PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
+            canvas.saveState();
+            PdfExtGState state = new PdfExtGState().setFillOpacity(0.6f);
+            Rectangle rect = new Rectangle(0, 0);
+            canvas.addImageFittedIntoRectangle(image, rect, false);
+            canvas.restoreState();
+            document.add(new Paragraph("Ciao!"));
+        }
+        
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().open(new File(PDFfilepath));
+        }
+    }
+
     /**
      * @param args the command line arguments
      * @throws java.io.IOException
      * @throws java.lang.ClassNotFoundException
      */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        String filePath = "C:\\Users\\Pepito\\Desktop\\";
+        String filePath = "C:\\Users\\Pepito\\Desktop\\House Hub Manager\\";
         String fileProgetto = filePath + "progetto.hhp";
         String nomeComputo = "computo1";
 
@@ -270,7 +298,8 @@ public class PDFGenerator {
         Computo c = p.getListaComputi().get(nomeComputo);
 
         String filePDF = filePath + nomeComputo + "_cliente.pdf";
-        PDFGenerator.generatePDF(fileProgetto, c, filePDF, true);
+        //PDFGenerator.generatePDF(fileProgetto, c, filePDF, true);
+        PDFGenerator.setBackgroundImage(filePDF);
     }
 
 }
