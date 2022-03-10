@@ -342,6 +342,11 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     private void clientiTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clientiTableMouseClicked
         subTable.clearSelection();
+
+        if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+            evt.consume();
+            gestisciVoce(true);
+        }
     }//GEN-LAST:event_clientiTableMouseClicked
 
     private void subTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subTableMouseClicked
@@ -349,31 +354,63 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         if (evt.getClickCount() == 2 && !evt.isConsumed()) {
             evt.consume();
-            gestisciVoceSub();
+            gestisciVoce(false);
         }
     }//GEN-LAST:event_subTableMouseClicked
 
-    private void gestisciVoceSub() {
-        int selectedRow = subTable.getSelectedRow();
+    private void gestisciVoce(boolean cliente) {
+        int selectedRow;
+
+        if (cliente) {
+            selectedRow = clientiTable.getSelectedRow();
+
+        } else {
+            selectedRow = subTable.getSelectedRow();
+        }
+
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Seleziona una voce del capitolato", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        double prezzo = (double) subTable.getValueAt(selectedRow, 3);
+        double prezzo;
+
+        if (cliente) {
+            prezzo = (double) clientiTable.getValueAt(selectedRow, 3);
+        } else {
+            prezzo = (double) subTable.getValueAt(selectedRow, 3);
+        }
 
         Double nuovoPrezzo;
         try {
-            nuovoPrezzo = new Double((String) JOptionPane.showInputDialog(this, "Scegli nuovo prezzo per sub-appaltatori",
-                    "Prezzo unitario", JOptionPane.QUESTION_MESSAGE, null, null, prezzo));
+
+            if (cliente) {
+                nuovoPrezzo = new Double((String) JOptionPane.showInputDialog(this, "Scegli nuovo prezzo per clienti",
+                        "Prezzo unitario", JOptionPane.QUESTION_MESSAGE, null, null, prezzo));
+
+            } else {
+                nuovoPrezzo = new Double((String) JOptionPane.showInputDialog(this, "Scegli nuovo prezzo per sub-appaltatori",
+                        "Prezzo unitario", JOptionPane.QUESTION_MESSAGE, null, null, prezzo));
+            }
+
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Il prezzo non è corretto", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
+        } catch (NullPointerException e){
+            return;
+        }
+        
+        Voce v;
+        if (cliente) {
+            v = capitolato.removeVoceCliente((String) clientiTable.getValueAt(selectedRow, 0));
+            v.setPrezzoUnitario(nuovoPrezzo);
+            capitolato.addVoceCliente(v);
+        } else {
+            v = capitolato.removeVoceSubappaltatori((String) subTable.getValueAt(selectedRow, 0));
+            v.setPrezzoUnitario(nuovoPrezzo);
+            capitolato.addVoceSubappaltori(v);
         }
 
-        Voce v = capitolato.removeVoceSubappaltatori((String) subTable.getValueAt(selectedRow, 0));
-        v.setPrezzoUnitario(nuovoPrezzo);
-        capitolato.addVoceSubappaltori(v);
         saved = false;
         refreshTables();
     }

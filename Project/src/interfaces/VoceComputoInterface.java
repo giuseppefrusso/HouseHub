@@ -47,6 +47,8 @@ public class VoceComputoInterface extends javax.swing.JFrame {
     private void refreshTables() {
         voceModel.setRowCount(0);
         misurazioniModel.setRowCount(0);
+        //String partiUguali = "";
+        //String lunghezza = "";
 
         for (int numVediVoce : voce.getVediVoce()) {
             VoceComputo vediVoce = computo.getVociComputo().get(numVediVoce);
@@ -55,6 +57,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         }
 
         for (int i = 0; i < voce.getMisurazioni().size(); i++) {
+            
             Object[] rowData = {voce.getMisurazioni().get(i), voce.getPartiUguali().get(i),
                 voce.getLunghezze().get(i), voce.getLarghezze().get(i), voce.getAltezze_pesi().get(i)};
             misurazioniModel.addRow(rowData);
@@ -358,7 +361,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             return;
         }
 
-        voce.aggiungiDimensioni(newMis, 0, 0, 0, 0);
+        voce.aggiungiDimensioni(newMis, 0 , 0, 0, 0);
         refreshTables();
         saved = false;
     }//GEN-LAST:event_addMisurazioneButtonActionPerformed
