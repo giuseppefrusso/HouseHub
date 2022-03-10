@@ -290,6 +290,11 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             //Seleziona da clientiTable
             selectedCodice = (String) clientiModel.getValueAt(selectedRow, 0);
         }
+        
+        int choice = JOptionPane.showConfirmDialog(this, 
+                "Sei sicuro di voler eliminare la voce "+selectedCodice+" da entrambi i capitolati?");
+        if(choice == JOptionPane.NO_OPTION || choice == JOptionPane.CANCEL_OPTION)
+            return;
 
         capitolato.removeVoceCliente(selectedCodice);
         capitolato.removeVoceSubappaltatori(selectedCodice);

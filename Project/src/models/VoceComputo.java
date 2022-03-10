@@ -175,6 +175,27 @@ public class VoceComputo extends Voce {
         //calcolaQuantita();
     }
     
+    public void setDimensione(int index, int dimensione, double newValue) {
+        switch(dimensione) {
+            case 1:
+                partiUguali.remove(index);
+                partiUguali.add(index, newValue);
+                break;
+            case 2:
+                lunghezze.remove(index);
+                lunghezze.add(index, newValue);
+                break;
+            case 3:
+                larghezze.remove(index);
+                larghezze.add(index, newValue);
+                break;
+            case 4:
+                altezze_pesi.remove(index);
+                altezze_pesi.add(index, newValue);
+                break;
+        }
+    }
+    
     public void svuotaDimensioni() {
         misurazioni.clear();
         partiUguali.clear();

@@ -400,7 +400,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
         
-        int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler eliminare la voce "+selectedNumProgr);
+        int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler eliminare la voce "+selectedNumProgr+"?");
         if(choice == JOptionPane.NO_OPTION || choice == JOptionPane.CANCEL_OPTION)
             return;
 
