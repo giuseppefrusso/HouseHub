@@ -7,6 +7,7 @@ package interfaces;
 
 import java.awt.EventQueue;
 import java.io.IOException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Capitolato;
@@ -33,6 +34,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         refreshTables();
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
     }
 
@@ -46,6 +48,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         refreshTables();
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     private void refreshTables() {
