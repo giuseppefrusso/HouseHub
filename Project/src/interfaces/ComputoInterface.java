@@ -9,6 +9,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -41,6 +42,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         ComputoInterface.fileProgetto = fileProgetto;
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         model = (DefaultTableModel) table.getModel();
         refreshTable();
         titleLabel.setText("Computo metrico: " + computo.getNome());
