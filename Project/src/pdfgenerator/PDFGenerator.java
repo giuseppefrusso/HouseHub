@@ -5,13 +5,11 @@
  */
 package pdfgenerator;
 
-import com.itextpdf.io.image.*;
 import com.itextpdf.kernel.colors.ColorConstants;
-import com.itextpdf.kernel.geom.PageSize;
-import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.extgstate.PdfExtGState;
+import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.*;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
@@ -31,17 +29,17 @@ import utils.Format;
  */
 public class PDFGenerator {
 
+    private static String BACKGROUND_PDF = "background.pdf";
+
     public static void generatePDF(String fileProgetto, Computo computo, String PDFfilepath, boolean cliente) throws IOException, ClassNotFoundException, NullPointerException {
         //Load necessary files
         Progetto progetto = Progetto.caricaProgetto(fileProgetto);
         Capitolato capitolato = Capitolato.caricaCapitolato();
         Cliente utente = progetto.getUtente();
         //
-
-        PdfWriter writer = new PdfWriter(PDFfilepath);
-        PdfDocument pdf = new PdfDocument(writer);
-
-        try (Document document = new Document(pdf)) {
+        
+        try (PdfDocument pdf = new PdfDocument(new PdfWriter(PDFfilepath));
+                Document document = new Document(pdf)) {
             //Dichiarazione delle variabili;
             Paragraph paragraph;
             Table table;
@@ -256,36 +254,44 @@ public class PDFGenerator {
             table.addCell(cell);
 
             document.add(table);
+            
+            setBackground(pdf);
         }
+
 
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().open(new File(PDFfilepath));
         }
     }
 
-    public static void setBackgroundImage(String PDFfilepath) throws FileNotFoundException, MalformedURLException, IOException {
-        String IMAGE = "floral_bg.jpg";
-        
-        PdfWriter writer = new PdfWriter(PDFfilepath);
-        PdfDocument pdf = new PdfDocument(writer);
-        
-        PageSize pageSize = PageSize.A4;
+    public static void setBackground(PdfDocument pdfDocument) throws FileNotFoundException, MalformedURLException, IOException {
+        /*PageSize pageSize = PageSize.A4;
+        ImageData image = ImageDataFactory.create(IMAGE);
+        PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
+        canvas.saveState();
+        PdfExtGState state = new PdfExtGState().setFillOpacity(0.6f);
+        canvas.setExtGState(state);
+        Rectangle rect = new Rectangle(0, 0, pageSize.getWidth(), pageSize.getHeight());
+        canvas.addImageFittedIntoRectangle(image, rect, false);
+        canvas.restoreState();
+        return canvas;*/
 
-        try (Document document = new Document(pdf)) {
-            ImageData image = ImageDataFactory.create(IMAGE);
-            PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
-            canvas.saveState();
-            PdfExtGState state = new PdfExtGState().setFillOpacity(0.6f);
-            canvas.setExtGState(state);
-            Rectangle rect = new Rectangle(0, 0, pageSize.getWidth(), pageSize.getHeight());
-            canvas.addImageFittedIntoRectangle(image, rect, false);
-            canvas.restoreState();
-            document.add(new Paragraph("Ciao!"));
-        }
+        int firstPage = 1;
         
-        if (Desktop.isDesktopSupported()) {
-            Desktop.getDesktop().open(new File(PDFfilepath));
+        try (PdfDocument backgroundDocument = new PdfDocument(new PdfReader(BACKGROUND_PDF))) {
+
+            PdfFormXObject backgroundXObject = backgroundDocument.getPage(firstPage).copyAsFormXObject(pdfDocument);
+            for (int i = firstPage; i <= pdfDocument.getNumberOfPages(); i++) {
+                PdfPage page = pdfDocument.getPage(i);
+                PdfStream stream = page.newContentStreamBefore();
+                PdfCanvas canvas = new PdfCanvas(stream, page.getResources(), pdfDocument).
+                        addXObject(backgroundXObject, 0, 0);
+                PdfExtGState state = new PdfExtGState().setFillOpacity(0.6f);
+                canvas.setExtGState(state);
+            }
         }
+
+        //return pdfDocument;
     }
 
     /**
@@ -302,8 +308,7 @@ public class PDFGenerator {
         Computo c = p.getListaComputi().get(nomeComputo);
 
         String filePDF = filePath + nomeComputo + "_cliente.pdf";
-        //PDFGenerator.generatePDF(fileProgetto, c, filePDF, true);
-        PDFGenerator.setBackgroundImage(filePDF);
+        PDFGenerator.generatePDF(fileProgetto, c, filePDF, true);
     }
 
 }
