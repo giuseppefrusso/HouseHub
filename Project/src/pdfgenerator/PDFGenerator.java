@@ -7,6 +7,7 @@ package pdfgenerator;
 
 import com.itextpdf.io.image.*;
 import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
@@ -263,17 +264,20 @@ public class PDFGenerator {
     }
 
     public static void setBackgroundImage(String PDFfilepath) throws FileNotFoundException, MalformedURLException, IOException {
-        String IMAGE = "src\\icons\\logo.png";
+        String IMAGE = "floral_bg.jpg";
         
         PdfWriter writer = new PdfWriter(PDFfilepath);
         PdfDocument pdf = new PdfDocument(writer);
+        
+        PageSize pageSize = PageSize.A4;
 
         try (Document document = new Document(pdf)) {
             ImageData image = ImageDataFactory.create(IMAGE);
             PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
             canvas.saveState();
             PdfExtGState state = new PdfExtGState().setFillOpacity(0.6f);
-            Rectangle rect = new Rectangle(0, 0);
+            canvas.setExtGState(state);
+            Rectangle rect = new Rectangle(0, 0, pageSize.getWidth(), pageSize.getHeight());
             canvas.addImageFittedIntoRectangle(image, rect, false);
             canvas.restoreState();
             document.add(new Paragraph("Ciao!"));
