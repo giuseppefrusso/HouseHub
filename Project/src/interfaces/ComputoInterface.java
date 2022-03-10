@@ -62,6 +62,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         model = (DefaultTableModel) table.getModel();
         refreshTable();
         titleLabel.setText("Computo metrico: " + computo.getNome());
