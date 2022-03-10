@@ -20,9 +20,9 @@ import models.VoceComputo;
  */
 public class VoceComputoInterface extends javax.swing.JFrame {
 
-    private VoceComputo voce;
-    private Computo computo;
-    private String fileProgetto;
+    private static VoceComputo voce;
+    private static Computo computo;
+    private static String fileProgetto;
 
     private DefaultTableModel voceModel, misurazioniModel;
 
@@ -36,6 +36,15 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         this.computo = computo;
         this.fileProgetto = fileProgetto;
         this.saved = true;
+        initComponents();
+        this.setLocationRelativeTo(null);
+        misurazioniLabel.setText("Misurazioni (" + voce.getUnitaDiMisura() + ")");
+        voceModel = (DefaultTableModel) voceTable.getModel();
+        misurazioniModel = (DefaultTableModel) misurazioniTable.getModel();
+        refreshTables();
+    }
+    
+    public VoceComputoInterface() {
         initComponents();
         this.setLocationRelativeTo(null);
         misurazioniLabel.setText("Misurazioni (" + voce.getUnitaDiMisura() + ")");
@@ -315,7 +324,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void addVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVoceButtonActionPerformed
-        String newVoce = JOptionPane.showInputDialog(this, "Inserisci un vedi voce", "Nuova voce", JOptionPane.QUESTION_MESSAGE);
+        /*String newVoce = JOptionPane.showInputDialog(this, "Inserisci un vedi voce", "Nuova voce", JOptionPane.QUESTION_MESSAGE);
 
         if (newVoce == null) {
             return;
@@ -336,9 +345,13 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             saved = false;
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Inserire un numero intero", "Avviso", JOptionPane.WARNING_MESSAGE);
-        }
+        }*/
 
-
+        saved = false;
+        EventQueue.invokeLater(() -> {
+            new NuovaVediVoceInComputoInterface(voce, computo, fileProgetto).setVisible(true);
+            dispose();
+        });
     }//GEN-LAST:event_addVoceButtonActionPerformed
 
     private void removeVoceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeVoceButtonActionPerformed
@@ -348,8 +361,14 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Seleziona una voce", "Avviso", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        
+        int selectedNumProgr = (int) voceModel.getValueAt(selectedRow, 0);
+        
+        int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler eliminare la voce "+selectedNumProgr);
+        if(choice == JOptionPane.NO_OPTION || choice == JOptionPane.CANCEL_OPTION)
+            return;
 
-        voce.rimuoviVediVoce((int) voceModel.getValueAt(selectedRow, 0));
+        voce.rimuoviVediVoce(selectedNumProgr);
         refreshTables();
         saved = false;
     }//GEN-LAST:event_removeVoceButtonActionPerformed

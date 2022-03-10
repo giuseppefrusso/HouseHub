@@ -90,7 +90,7 @@ public class Computo implements Serializable {
     
     public void shiftVoci(int numProgressivoEliminato) {
         for(int curr : listaVoci.keySet()) {
-            if(curr >= numProgressivoEliminato) {
+            if(curr > numProgressivoEliminato) {
                 int newNum = curr - 1;
                 VoceComputo v = listaVoci.remove(curr);
                 v.setNumeroProgressivo(newNum);

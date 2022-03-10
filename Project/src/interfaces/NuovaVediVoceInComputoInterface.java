@@ -9,17 +9,16 @@ import java.awt.EventQueue;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import models.Capitolato;
 import models.Computo;
-import models.Voce;
 import models.VoceComputo;
 
 /**
  *
  * @author Pepito
  */
-public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
+public class NuovaVediVoceInComputoInterface extends javax.swing.JFrame {
 
+    private VoceComputo voce;
     private Computo computo;
     private String fileProgetto;
     private DefaultTableModel model;
@@ -30,7 +29,8 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
      * @param computo
      * @param fileProgetto
      */
-    public NuovaVoceInComputoInterface(Computo computo, String fileProgetto) {
+    public NuovaVediVoceInComputoInterface(VoceComputo voce, Computo computo, String fileProgetto) {
+        this.voce = voce;
         this.computo = computo;
         this.fileProgetto = fileProgetto;
         initComponents();
@@ -41,20 +41,15 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     }
 
     private void fillTableModel() {
-        try {
-            Capitolato c = Capitolato.caricaCapitolato();
-            for (Voce v : c.getCapitolatoClienti().values()) {
-                //if (!computo.getCodici().contains(v.getCodice())) {
-                    Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
-                    model.addRow(rowData);
-                //}
+        //rimuovere le voci gia presenti nel vedivoce
+        for (Integer numProgr : computo.getVociComputo().keySet()) {
+            VoceComputo v = computo.getVociComputo().get(numProgr);
+            if (numProgr < voce.getNumeroProgressivo() && !voce.getVediVoce().contains(numProgr)) {
+                Object[] rowData = {numProgr, v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
+                model.addRow(rowData);
             }
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Capitolato vuoto", "Avviso", JOptionPane.WARNING_MESSAGE);
-            backToComputoInterface();
-        } catch (ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
     /**
@@ -91,14 +86,14 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Codice", "Descrizione", "Unità di misura", "Prezzo unitario", "Scegli"
+                "N°", "Codice", "Descrizione", "Unità di misura", "Quantità", "Scegli"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -115,9 +110,11 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         table.setShowVerticalLines(true);
         scrollPane.setViewportView(table);
         if (table.getColumnModel().getColumnCount() > 0) {
-            table.getColumnModel().getColumn(4).setMinWidth(50);
-            table.getColumnModel().getColumn(4).setPreferredWidth(50);
-            table.getColumnModel().getColumn(4).setMaxWidth(50);
+            table.getColumnModel().getColumn(0).setMinWidth(50);
+            table.getColumnModel().getColumn(0).setMaxWidth(50);
+            table.getColumnModel().getColumn(5).setMinWidth(50);
+            table.getColumnModel().getColumn(5).setPreferredWidth(50);
+            table.getColumnModel().getColumn(5).setMaxWidth(50);
         }
 
         jPanel2.add(scrollPane, java.awt.BorderLayout.CENTER);
@@ -157,37 +154,16 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
-        Capitolato cap;
-        try {
-            cap = Capitolato.caricaCapitolato();
-        } catch (IOException | ClassNotFoundException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        int count = computo.getVociComputo().size();
         for (int i = 0; i < model.getRowCount(); i++) {
-            if ((Boolean) model.getValueAt(i, 4)) {
-                count++;
-                String codice = (String) model.getValueAt(i, 0);
-
-                Voce vs = cap.getVoceSubappaltatore(codice);
-
-                if (vs == null) {
-                    JOptionPane.showMessageDialog(this, "Non c'è una voce sub-appaltatore corrispondente", "Errore", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                String descrizione = (String) model.getValueAt(i, 1);
-                String unitaDiMisura = (String) model.getValueAt(i, 2);
-                double prezzoUnitario = (Double) model.getValueAt(i, 3);
-                VoceComputo vc = new VoceComputo(count, codice, descrizione, unitaDiMisura, prezzoUnitario,
-                        vs.getDescrizione(), vs.getPrezzoUnitario());
-                computo.aggiungiVoce(vc);
+            if ((Boolean) model.getValueAt(i, 5)) {
+                int numProgr = (int) model.getValueAt(i, 0);
+                voce.aggiungiVediVoce(numProgr);
             }
         }
 
         try {
+            computo.rimuoviVoce(voce.getNumeroProgressivo());
+            computo.aggiungiVoce(voce);
             computo.salvaComputoInProgetto(fileProgetto);
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
@@ -202,7 +178,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
     private void backToComputoInterface() {
         EventQueue.invokeLater(() -> {
-            new ComputoInterface().setVisible(true);
+            new VoceComputoInterface().setVisible(true);
             dispose();
         });
     }
@@ -224,14 +200,22 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NuovaVoceInComputoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuovaVediVoceInComputoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NuovaVoceInComputoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuovaVediVoceInComputoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NuovaVoceInComputoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuovaVediVoceInComputoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NuovaVoceInComputoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(NuovaVediVoceInComputoInterface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+ /*java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new NuovaVoceInComputoInterface(new Computo("computo"), "progetto.hhp").setVisible(true);
+            }
         //</editor-fold>
         //</editor-fold>
 

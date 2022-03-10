@@ -48,13 +48,31 @@ public class VoceComputo extends Voce {
         this.prezzoUnitarioSubappaltatore = prezzoUnitarioSubappaltatore;
     }
 
+    public boolean controllaMisurazione(int index) {
+        double parteUguale = partiUguali.get(index), 
+                lunghezza = lunghezze.get(index), 
+                larghezza = larghezze.get(index), 
+                altezza_peso = altezze_pesi.get(index);
+        
+        return !(parteUguale == 0 && lunghezza == 0 && larghezza == 0 && altezza_peso == 0);
+    }
+    
     private double calcolaQuantita(Computo computo) {
 
         double quantita = 0;
 
-        for (int i = 0; i < partiUguali.size(); i++) {
-            double lunghezza = lunghezze.get(i), larghezza = larghezze.get(i), altezza_peso = altezze_pesi.get(i);
+        for (int i = 0; i < misurazioni.size(); i++) {
+            double parteUguale = partiUguali.get(i), 
+                    lunghezza = lunghezze.get(i), 
+                    larghezza = larghezze.get(i), 
+                    altezza_peso = altezze_pesi.get(i);
 
+            if(parteUguale == 0 && lunghezza == 0 && larghezza == 0 && altezza_peso == 0) 
+                continue;
+            
+            if (parteUguale == 0) {
+                parteUguale = 1;
+            }
             if (lunghezza == 0) {
                 lunghezza = 1;
             }
@@ -65,7 +83,7 @@ public class VoceComputo extends Voce {
                 altezza_peso = 1;
             }
 
-            quantita += (partiUguali.get(i) * lunghezza * larghezza * altezza_peso);
+            quantita += (parteUguale * lunghezza * larghezza * altezza_peso);
         }
 
         for (int numProgr : vediVoce) {
@@ -180,41 +198,27 @@ public class VoceComputo extends Voce {
     }
     
     private String misurazioniToString() {
-        StringBuffer sb = new StringBuffer();
+        StringJoiner sb = new StringJoiner("\n", "", "");
         
         for(int i = 0; i < misurazioni.size(); i++) {
-            sb.append(misurazioni.get(i));
-            if(i != misurazioni.size()-1)
-                sb.append("\n");
+            sb.add(misurazioni.get(i));
         }
         
         return sb.toString();
     }
     
     private String dimensioneToString(LinkedList<Double> dimensione) {
-        StringBuffer sb = new StringBuffer();
+        StringJoiner sb = new StringJoiner(";  ", "", "");
         
         for(int i = 0; i < dimensione.size(); i++) {
-            sb.append(Format.formatDouble(dimensione.get(i)));
-            if(i != dimensione.size()-1)
-                sb.append(";  ");
+            sb.add(Format.formatDouble(dimensione.get(i)));
         }
         
         return sb.toString();
     }
     
     public String partiUgualiToString() {
-        /*StringBuffer sb = new StringBuffer();
-        
-        for(int i = 0; i < partiUguali.size(); i++) {
-            sb.append(misurazioni.get(i)).append(": ").append(Format.formatDouble(partiUguali.get(i)));
-            if(i != partiUguali.size()-1)
-                sb.append(";  ");
-        }
-        
-        return sb.toString();*/
-        
-        StringJoiner joiner = new StringJoiner("</br>", "<html>", "</html>");
+        StringJoiner joiner = new StringJoiner(";  ", "", "");
         
         for(int i = 0; i < partiUguali.size(); i++) {
             joiner.add(misurazioni.get(i)+": "+Format.formatDouble(partiUguali.get(i)));

@@ -399,6 +399,10 @@ public class ComputoInterface extends javax.swing.JFrame {
         }
 
         int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
+        
+        int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler eliminare la voce "+selectedNumProgr);
+        if(choice == JOptionPane.NO_OPTION || choice == JOptionPane.CANCEL_OPTION)
+            return;
 
         for (VoceComputo c : computo.getVociComputo().values()) {
             if (selectedNumProgr >= c.getNumeroProgressivo()) {
@@ -475,6 +479,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
         refreshTable();
+        table.addRowSelectionInterval(selectedRow - 1, selectedRow - 1);
     }//GEN-LAST:event_upButtonActionPerformed
 
     private void downButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downButtonActionPerformed
@@ -526,6 +531,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
         refreshTable();
+        table.addRowSelectionInterval(selectedRow + 1, selectedRow + 1);
     }//GEN-LAST:event_downButtonActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked

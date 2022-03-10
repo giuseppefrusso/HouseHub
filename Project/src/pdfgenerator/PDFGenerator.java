@@ -37,7 +37,7 @@ public class PDFGenerator {
         Capitolato capitolato = Capitolato.caricaCapitolato();
         Cliente utente = progetto.getUtente();
         //
-        
+
         try (PdfDocument pdf = new PdfDocument(new PdfWriter(PDFfilepath));
                 Document document = new Document(pdf)) {
             //Dichiarazione delle variabili;
@@ -152,7 +152,7 @@ public class PDFGenerator {
             if (cliente) {
                 totale = computo.getTotale();
             } else {
-                totale = 0.0;
+                totale = computo.getTotaleSubappaltatore();
             }
 
             for (Integer numProgr : computo.getVociComputo().keySet()) {
@@ -166,11 +166,9 @@ public class PDFGenerator {
                     prezzoUnitario = vc.getPrezzoUnitario();
                     prezzoComplessivo = vc.getPrezzoComplessivo(computo);
                 } else {
-                    Voce sub = capitolato.getCapitolatoSubappaltatori().get(codice);
-                    descrizione = sub.getDescrizione();
-                    prezzoUnitario = sub.getPrezzoUnitario();
-                    prezzoComplessivo = prezzoUnitario * quantita;
-                    totale += prezzoComplessivo;
+                    descrizione = vc.getDescrizioneSubappaltatore();
+                    prezzoUnitario = vc.getPrezzoUnitarioSubappaltatore();
+                    prezzoComplessivo = vc.getPrezzoComplessivoSubappaltatore(computo);
                 }
 
                 for (Integer numProgrVediVoce : vc.getVediVoce()) {
@@ -194,13 +192,13 @@ public class PDFGenerator {
                 table.addCell(cell);
 
                 String misurazioni = "", partiUguali = "", lunghezze = "", larghezze = "", altezze = "";
-                if (vc.getMisurazioni().size() == 1 && vc.getPartiUguali().get(0) != 0) {
+                if (vc.getMisurazioni().size() == 1 && vc.controllaMisurazione(0)) {
                     partiUguali = Format.formatDouble(vc.getPartiUguali().get(0));
                     lunghezze = vc.lunghezzeToString();
                     larghezze = vc.larghezzeToString();
                     altezze = vc.altezzePesiToString();
                 } else {
-                    if (vc.getPartiUguali().get(0) != 0) {
+                    if (vc.controllaMisurazione(0)) {
                         misurazioni = misurazioni.concat("\n\n");
                         partiUguali = partiUguali.concat(Format.formatDouble(vc.getPartiUguali().get(0)) + "\n\n");
                         lunghezze = lunghezze.concat(Format.formatDouble(vc.getLunghezze().get(0)) + "\n\n");
@@ -209,11 +207,13 @@ public class PDFGenerator {
                     }
 
                     for (int i = 1; i < vc.getMisurazioni().size(); i++) {
-                        misurazioni = misurazioni.concat(vc.getMisurazioni().get(i) + "\n\n");
-                        partiUguali = partiUguali.concat(Format.formatDouble(vc.getPartiUguali().get(i)) + "\n\n");
-                        lunghezze = lunghezze.concat(Format.formatDouble(vc.getLunghezze().get(i)) + "\n\n");
-                        larghezze = larghezze.concat(Format.formatDouble(vc.getLarghezze().get(i)) + "\n\n");
-                        altezze = altezze.concat(Format.formatDouble(vc.getAltezze_pesi().get(i)) + "\n\n");
+                        if (vc.controllaMisurazione(i)) {
+                            misurazioni = misurazioni.concat(vc.getMisurazioni().get(i) + "\n\n");
+                            partiUguali = partiUguali.concat(Format.formatDouble(vc.getPartiUguali().get(i)) + "\n\n");
+                            lunghezze = lunghezze.concat(Format.formatDouble(vc.getLunghezze().get(i)) + "\n\n");
+                            larghezze = larghezze.concat(Format.formatDouble(vc.getLarghezze().get(i)) + "\n\n");
+                            altezze = altezze.concat(Format.formatDouble(vc.getAltezze_pesi().get(i)) + "\n\n");
+                        }
                     }
                 }
 
@@ -254,10 +254,9 @@ public class PDFGenerator {
             table.addCell(cell);
 
             document.add(table);
-            
+
             setBackground(pdf);
         }
-
 
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().open(new File(PDFfilepath));
@@ -277,7 +276,7 @@ public class PDFGenerator {
         return canvas;*/
 
         int firstPage = 1;
-        
+
         try (PdfDocument backgroundDocument = new PdfDocument(new PdfReader(BACKGROUND_PDF))) {
 
             PdfFormXObject backgroundXObject = backgroundDocument.getPage(firstPage).copyAsFormXObject(pdfDocument);
