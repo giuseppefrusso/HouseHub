@@ -7,6 +7,7 @@ package models;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.StringJoiner;
 import java.util.TreeSet;
 import utils.Format;
 
@@ -24,12 +25,13 @@ public class VoceComputo extends Voce {
     private LinkedList<Double> larghezze;
     private LinkedList<Double> altezze_pesi;
     
-    //private double prezzoComplessivo;
-    //private double quantita;
     private TreeSet<Integer> vediVoce;
+    
+    private String descrizioneSubappaltatore;
+    private double prezzoUnitarioSubappaltatore;
 
     
-    public VoceComputo(int numeroProgressivo, String codice, String descrizione, String unitaDiMisura, double prezzoUnitario) {
+    public VoceComputo(int numeroProgressivo, String codice, String descrizione, String unitaDiMisura, double prezzoUnitario, String descrizioneSubappaltatore, double prezzoUnitarioSubappaltatore) {
         super(codice, descrizione, unitaDiMisura, prezzoUnitario);
         this.numeroProgressivo = numeroProgressivo;
         
@@ -41,10 +43,12 @@ public class VoceComputo extends Voce {
         
         this.vediVoce = new TreeSet<>();
         this.aggiungiDimensioni("default", 0, 0, 0, 0);
-        //calcolaQuantita();
+        
+        this.descrizioneSubappaltatore = descrizioneSubappaltatore;
+        this.prezzoUnitarioSubappaltatore = prezzoUnitarioSubappaltatore;
     }
 
-    public double calcolaQuantita(Computo computo) {
+    private double calcolaQuantita(Computo computo) {
 
         double quantita = 0;
 
@@ -79,6 +83,29 @@ public class VoceComputo extends Voce {
         this.numeroProgressivo = numeroProgressivo;
     }
 
+    public String getDescrizioneSubappaltatore() {
+        return descrizioneSubappaltatore;
+    }
+
+    public void setDescrizioneSubappaltatore(String descrizioneSubappaltatore) {
+        this.descrizioneSubappaltatore = descrizioneSubappaltatore;
+    }
+
+    public double getPrezzoUnitarioSubappaltatore() {
+        return prezzoUnitarioSubappaltatore;
+    }
+
+    public void setPrezzoUnitarioSubappaltatore(double prezzoUnitarioSubappaltatore) {
+        this.prezzoUnitarioSubappaltatore = prezzoUnitarioSubappaltatore;
+    }
+    
+    public double getPrezzoComplessivoSubappaltatore(Computo computo) {
+        double quantita = calcolaQuantita(computo);
+        double prezzoComplessivo = quantita*getPrezzoUnitarioSubappaltatore();
+        prezzoComplessivo = Math.round(prezzoComplessivo*100.0)/100.0;
+        return prezzoComplessivo; 
+    }
+    
     public double getPrezzoComplessivo(Computo computo) {        
         double quantita = calcolaQuantita(computo);
         double prezzoComplessivo = quantita*getPrezzoUnitario();
@@ -177,7 +204,7 @@ public class VoceComputo extends Voce {
     }
     
     public String partiUgualiToString() {
-        StringBuffer sb = new StringBuffer();
+        /*StringBuffer sb = new StringBuffer();
         
         for(int i = 0; i < partiUguali.size(); i++) {
             sb.append(misurazioni.get(i)).append(": ").append(Format.formatDouble(partiUguali.get(i)));
@@ -185,7 +212,15 @@ public class VoceComputo extends Voce {
                 sb.append(";  ");
         }
         
-        return sb.toString();
+        return sb.toString();*/
+        
+        StringJoiner joiner = new StringJoiner("</br>", "<html>", "</html>");
+        
+        for(int i = 0; i < partiUguali.size(); i++) {
+            joiner.add(misurazioni.get(i)+": "+Format.formatDouble(partiUguali.get(i)));
+        }
+        
+        return joiner.toString();
     }
     
     public String lunghezzeToString() {

@@ -48,6 +48,18 @@ public class Computo implements Serializable {
         
         return totale;
     }
+    
+    public double getTotaleSubappaltatore() {
+        double totale=0;
+        
+        for(VoceComputo c: listaVoci.values()){
+            totale += c.getPrezzoComplessivoSubappaltatore(this);
+            
+        }
+        totale = Math.round(totale*100.0)/100.0;
+        
+        return totale;
+    }
 
     public HashSet<String> getCodici() {
         HashSet<String> currentCodici = new HashSet<>();

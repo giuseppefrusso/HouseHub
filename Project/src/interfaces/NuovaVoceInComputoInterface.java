@@ -7,6 +7,8 @@ package interfaces;
 
 import java.awt.EventQueue;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Capitolato;
@@ -46,7 +48,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
                 if (!computo.getCodici().contains(v.getCodice())) {
                     Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
                     model.addRow(rowData);
-                } 
+                }
             }
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Capitolato vuoto", "Avviso", JOptionPane.WARNING_MESSAGE);
@@ -156,15 +158,32 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
+        Capitolato cap;
+        try {
+            cap = Capitolato.caricaCapitolato();
+        } catch (IOException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         int count = computo.getVociComputo().size();
         for (int i = 0; i < model.getRowCount(); i++) {
             if ((Boolean) model.getValueAt(i, 4)) {
                 count++;
                 String codice = (String) model.getValueAt(i, 0);
+
+                Voce vs = cap.getVoceSubappaltatore(codice);
+
+                if (vs == null) {
+                    JOptionPane.showMessageDialog(this, "Non c'è una voce sub-appaltatore corrispondente", "Errore", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 String descrizione = (String) model.getValueAt(i, 1);
                 String unitaDiMisura = (String) model.getValueAt(i, 2);
                 double prezzoUnitario = (Double) model.getValueAt(i, 3);
-                VoceComputo vc = new VoceComputo(count, codice, descrizione, unitaDiMisura, prezzoUnitario);
+                VoceComputo vc = new VoceComputo(count, codice, descrizione, unitaDiMisura, prezzoUnitario,
+                        vs.getDescrizione(), vs.getPrezzoUnitario());
                 computo.aggiungiVoce(vc);
             }
         }
@@ -188,7 +207,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
             dispose();
         });
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -218,7 +237,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        /*java.awt.EventQueue.invokeLater(new Runnable() {
+ /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new NuovaVoceInComputoInterface(new Computo("computo"), "progetto.hhp").setVisible(true);
             }

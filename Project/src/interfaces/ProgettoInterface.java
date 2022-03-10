@@ -89,8 +89,9 @@ public class ProgettoInterface extends javax.swing.JFrame {
         if (selectedComputo == null) {
             computoLabel.setText("");
         } else {
-            computoLabel.setText("Data: " + selectedComputo.getData() + 
-                    ", totale: " + Format.formatDouble(selectedComputo.getTotale()) + " €");
+            computoLabel.setText("<html>Data: " + selectedComputo.getData() + 
+                    "<br/>clienti: " + Format.formatDouble(selectedComputo.getTotale()) + " €<br/>" +
+                    "sub: "+Format.formatDouble(selectedComputo.getTotaleSubappaltatore()) + " €</html>");
         }
     }
 
