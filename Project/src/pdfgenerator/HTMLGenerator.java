@@ -29,7 +29,9 @@ public class HTMLGenerator {
             writer.write("<!doctype html>");
             writer.write("<html lang=\"it\">");
             
-            writer.write("<head><title>Computo metrico</title></head>");
+            writer.write("<head><title>Computo metrico</title>"
+                    + "<link href='style.css', rel='stylesheet' type='text/css'>"
+                    + "</head>");
             
             writer.write("<body>");
             
