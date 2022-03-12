@@ -151,7 +151,7 @@ public class PDFGenerator {
                     .setBold()
                     //.setBorder(new SolidBorder(ColorConstants.RED, 2))
                     .setBackgroundColor(ColorConstants.LIGHT_GRAY)
-                    .setFontColor(ColorConstants.RED);
+                    .setFontColor(ColorConstants.WHITE);
             //
 
             Double totale;
