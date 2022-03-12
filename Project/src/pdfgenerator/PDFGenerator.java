@@ -31,7 +31,7 @@ import utils.Format;
  */
 public class PDFGenerator {
 
-    private static String BACKGROUND_PDF = "background.pdf";
+    private static final String BACKGROUND_PDF = "background.pdf";
 
     public static void generatePDF(String fileProgetto, Computo computo, String PDFfilepath, boolean cliente) throws IOException, ClassNotFoundException, NullPointerException {
         //Load necessary files
