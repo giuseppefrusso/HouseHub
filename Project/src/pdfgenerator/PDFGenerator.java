@@ -9,10 +9,12 @@ import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.extgstate.PdfExtGState;
+import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.*;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
 import java.awt.Desktop;
 import java.io.File;
@@ -46,8 +48,13 @@ public class PDFGenerator {
             Cell cell;
             Text text;
 
+
+            //document.setMargins(20, 0, 0, 20);
+            //System.out.println("top " + document.getTopMargin()+ "left "+ document.getLeftMargin());
+            
             //Intestazione del computo metrico
-            paragraph = new Paragraph("COMPUTO METRICO").setBold().setTextAlignment(TextAlignment.CENTER);
+            paragraph = new Paragraph("COMPUTO METRICO").setBold().setTextAlignment(TextAlignment.CENTER).setMarginTop(20);
+            //paragraph.getAccessibilityProperties().setRole(StandardRoles.TITLE);
             document.add(paragraph);
 
             paragraph = new Paragraph();
