@@ -9,12 +9,11 @@ import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.extgstate.PdfExtGState;
-import com.itextpdf.kernel.pdf.tagging.StandardRoles;
 import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.*;
+import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
-import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
 import java.awt.Desktop;
 import java.io.File;
@@ -52,6 +51,7 @@ public class PDFGenerator {
             //document.setMargins(20, 0, 0, 20);
             //System.out.println("top " + document.getTopMargin()+ "left "+ document.getLeftMargin());
             
+            /*
             //Intestazione del computo metrico
             paragraph = new Paragraph("COMPUTO METRICO").setBold().setTextAlignment(TextAlignment.CENTER).setMarginTop(20);
             //paragraph.getAccessibilityProperties().setRole(StandardRoles.TITLE);
@@ -82,11 +82,20 @@ public class PDFGenerator {
             document.add(paragraph);
 
             document.add(new AreaBreak());
-
+            */
+            
             int numCols = 11;
             table = new Table(numCols);
-            table.setFontSize(8);
+            table.setFontSize(8)/*.setMarginTop(30)*/.setMarginLeft(10);
 
+            //Informazioni del cliente
+            Cell cellInfo = new Cell(1, 11);
+            cellInfo.add(new Paragraph(String.format("Cliente: %s %s, Indirizzo: %s, Tecnico: %s", 
+                    utente.getNome(), utente.getCognome(), utente.getIndirizzoCantiere(), utente.getTecnico())));
+            cellInfo.setVerticalAlignment(VerticalAlignment.MIDDLE);
+            cellInfo.setTextAlignment(TextAlignment.CENTER);
+            table.addHeaderCell(cellInfo);
+            
             //Intestazione della tabella
             cell = new Cell(2, 1);
             cell.add(new Paragraph("N° ord.\nTariffa"));
@@ -151,7 +160,11 @@ public class PDFGenerator {
                     .setBold()
                     //.setBorder(new SolidBorder(ColorConstants.RED, 2))
                     .setBackgroundColor(ColorConstants.LIGHT_GRAY)
-                    .setFontColor(ColorConstants.WHITE);
+                    .setFontColor(ColorConstants.BLACK)
+                    .setHeight(30);
+            
+            cellInfo.setBackgroundColor(ColorConstants.WHITE)
+                    .setBorder(Border.NO_BORDER);
             //
 
             Double totale;
@@ -262,7 +275,7 @@ public class PDFGenerator {
 
             document.add(table);
 
-            setBackground(pdf);
+            setBackground(pdf, document);
         }
 
         if (Desktop.isDesktopSupported()) {
@@ -270,7 +283,7 @@ public class PDFGenerator {
         }
     }
 
-    public static void setBackground(PdfDocument pdfDocument) throws FileNotFoundException, MalformedURLException, IOException {
+    public static void setBackground(PdfDocument pdfDocument, Document document) throws FileNotFoundException, MalformedURLException, IOException {
         /*PageSize pageSize = PageSize.A4;
         ImageData image = ImageDataFactory.create(IMAGE);
         PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
@@ -292,7 +305,7 @@ public class PDFGenerator {
                 PdfStream stream = page.newContentStreamBefore();
                 PdfCanvas canvas = new PdfCanvas(stream, page.getResources(), pdfDocument).
                         addXObject(backgroundXObject, 0, 0);
-                PdfExtGState state = new PdfExtGState().setFillOpacity(0.6f);
+                PdfExtGState state = new PdfExtGState().setFillOpacity(0.8f);
                 canvas.setExtGState(state);
             }
         }
@@ -307,8 +320,8 @@ public class PDFGenerator {
      */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         String filePath = "C:\\Users\\Pepito\\Desktop\\House Hub Manager\\";
-        String fileProgetto = filePath + "progetto.hhp";
-        String nomeComputo = "computo1";
+        String fileProgetto = filePath + "progetto_giuseppe.hhp";
+        String nomeComputo = "computo";
 
         Progetto p = Progetto.caricaProgetto(fileProgetto);
         Computo c = p.getListaComputi().get(nomeComputo);
