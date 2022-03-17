@@ -16,7 +16,7 @@ import utils.Format;
  *
  * @author Pepito
  */
-public class HTMLGenerator {
+public class HTMLGeneratorDONTUSE {
     
     public static void generateHTML(String fileProgetto, Computo computo, String HTMLfilepath, boolean cliente) throws IOException, FileNotFoundException, ClassNotFoundException {
         //Load necessary files
@@ -147,7 +147,7 @@ public class HTMLGenerator {
         Computo c = p.getListaComputi().get(nomeComputo);
         
         String fileHTML = filePath + nomeComputo + "_cliente.html";
-        HTMLGenerator.generateHTML(fileProgetto, c, fileHTML, true);
+        HTMLGeneratorDONTUSE.generateHTML(fileProgetto, c, fileHTML, true);
     }
     
 }
