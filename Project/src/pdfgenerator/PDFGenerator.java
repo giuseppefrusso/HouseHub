@@ -86,10 +86,14 @@ public class PDFGenerator {
             
             int numCols = 11;
             table = new Table(numCols);
-            table.setFontSize(8)/*.setMarginTop(30)*/.setMarginLeft(10);
+            table.setFontSize(8).setMarginLeft(10);
 
+            Cell whiteCell = new Cell(1, numCols);
+            whiteCell.setBorder(Border.NO_BORDER).setHeight(30);
+            table.addHeaderCell(whiteCell);
+            
             //Informazioni del cliente
-            Cell cellInfo = new Cell(1, 11);
+            Cell cellInfo = new Cell(1, numCols);
             cellInfo.add(new Paragraph(String.format("Cliente: %s %s, Indirizzo: %s, Tecnico: %s", 
                     utente.getNome(), utente.getCognome(), utente.getIndirizzoCantiere(), utente.getTecnico())));
             cellInfo.setVerticalAlignment(VerticalAlignment.MIDDLE);
@@ -100,71 +104,71 @@ public class PDFGenerator {
             cell = new Cell(2, 1);
             cell.add(new Paragraph("N° ord.\nTariffa"));
             cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(2, 1);
             cell.add(new Paragraph("Designazione dei lavori"));
             cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
             cell.setTextAlignment(TextAlignment.CENTER);
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 6);
             cell.add(new Paragraph("Dimensioni"));
             cell.setTextAlignment(TextAlignment.CENTER);
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(2, 1);
             cell.add(new Paragraph("Quantità"));
             cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 2);
             cell.add(new Paragraph("Importi"));
             cell.setTextAlignment(TextAlignment.CENTER);
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Un. mis."));
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Misuraz."));
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Par. ug."));
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Lung."));
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Larg."));
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("H/peso"));
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Unitario"));
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Compl."));
-            table.addHeaderCell(cell);
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             //Cambia impostazioni dell'header
             table.getHeader()
                     .setBold()
                     //.setBorder(new SolidBorder(ColorConstants.RED, 2))
-                    .setBackgroundColor(ColorConstants.LIGHT_GRAY)
-                    .setFontColor(ColorConstants.BLACK)
-                    .setHeight(30);
+                    .setFontColor(ColorConstants.BLACK);
             
             cellInfo.setBackgroundColor(ColorConstants.WHITE)
                     .setBorder(Border.NO_BORDER);
+            
+            whiteCell.setBackgroundColor(ColorConstants.WHITE, 0);
             //
 
             Double totale;
@@ -265,12 +269,19 @@ public class PDFGenerator {
                 table.addCell(cell);
             }
 
-            cell = new Cell(1, numCols - 1);
+            /*cell = new Cell(1, numCols - 1);
             cell.add(new Paragraph("TOTALE").setBold());
             cell.setTextAlignment(TextAlignment.RIGHT);
             table.addCell(cell);
             cell = new Cell(1, 1);
             cell.add(new Paragraph(Format.formatDouble(totale) + " €").setBold());
+            table.addCell(cell);*/
+            cell = new Cell(1, numCols);
+            cell.add(new Paragraph("TOTALE: " + Format.formatDouble(totale) + " €")
+                    .setFontSize(12))
+                    .setBold()
+                    .setBorder(Border.NO_BORDER)
+                    .setTextAlignment(TextAlignment.RIGHT);
             table.addCell(cell);
 
             document.add(table);
@@ -307,6 +318,11 @@ public class PDFGenerator {
                         addXObject(backgroundXObject, 0, 0);
                 PdfExtGState state = new PdfExtGState().setFillOpacity(0.8f);
                 canvas.setExtGState(state);
+                
+                document.showTextAligned(new Paragraph(String.format("%d", i))
+                        .setFontColor(ColorConstants.WHITE)
+                        .setBold(),
+                    570, 5, i, TextAlignment.RIGHT, VerticalAlignment.BOTTOM, 0);
             }
         }
 
