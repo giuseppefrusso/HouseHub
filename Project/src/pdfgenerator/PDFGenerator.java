@@ -94,7 +94,7 @@ public class PDFGenerator {
             
             //Informazioni del cliente
             Cell cellInfo = new Cell(1, numCols);
-            cellInfo.add(new Paragraph(String.format("Cliente: %s %s, Indirizzo: %s, Tecnico: %s", 
+            cellInfo.add(new Paragraph(String.format("Cliente: %s %s; Indirizzo: %s; Tecnico: %s", 
                     utente.getNome(), utente.getCognome(), utente.getIndirizzoCantiere(), utente.getTecnico())));
             cellInfo.setVerticalAlignment(VerticalAlignment.MIDDLE);
             cellInfo.setTextAlignment(TextAlignment.CENTER);
