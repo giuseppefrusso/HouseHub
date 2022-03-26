@@ -316,7 +316,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         EventQueue.invokeLater(() -> {
             new VoceComputoInterface(selectedVoce, computo, fileProgetto).setVisible(true);
-            dispose();
+            //dispose();
         });
     }
 

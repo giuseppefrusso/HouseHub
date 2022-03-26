@@ -26,6 +26,9 @@ public class VoceComputo extends Voce {
     private LinkedList<Double> altezze_pesi;
     
     private TreeSet<Integer> vediVoce;
+    private LinkedList<Double> lunghezzeVV;
+    private LinkedList<Double> larghezzeVV;
+    private LinkedList<Double> altezze_pesiVV;
     
     private String descrizioneSubappaltatore;
     private double prezzoUnitarioSubappaltatore;
@@ -42,6 +45,9 @@ public class VoceComputo extends Voce {
         altezze_pesi = new LinkedList<>();
         
         this.vediVoce = new TreeSet<>();
+        lunghezzeVV = new LinkedList<>();
+        larghezzeVV = new LinkedList<>();
+        altezze_pesiVV = new LinkedList<>();
         this.aggiungiDimensioni("default", 0, 0, 0, 0);
         
         this.descrizioneSubappaltatore = descrizioneSubappaltatore;
@@ -86,8 +92,13 @@ public class VoceComputo extends Voce {
             quantita += (parteUguale * lunghezza * larghezza * altezza_peso);
         }
 
+        int i = 0;
         for (int numProgr : vediVoce) {
-            quantita *= computo.getVociComputo().get(numProgr).getQuantita(computo);
+            double lunghezzaVV = lunghezzeVV.get(i) != 0 ? lunghezzeVV.get(i) : 1;
+            double larghezzaVV = larghezzeVV.get(i) != 0 ? larghezzeVV.get(i) : 1;
+            double altezza_pesoVV = altezze_pesiVV.get(i) != 0 ? altezze_pesiVV.get(i) : 1;
+            quantita += computo.getVociComputo().get(numProgr).getQuantita(computo) * lunghezzaVV * larghezzaVV * altezza_pesoVV;
+            i++;
         }
         return quantita;
         //this.prezzoComplessivo = this.quantita * getPrezzoUnitario();
@@ -211,10 +222,23 @@ public class VoceComputo extends Voce {
     
     public void aggiungiVediVoce(int numeroProgressivo) {
         vediVoce.add(numeroProgressivo);
+        lunghezzeVV.add(0.0);
+        larghezzeVV.add(0.0);
+        altezze_pesiVV.add(0.0);
         //calcolaQuantita();
     }
     
     public boolean rimuoviVediVoce(int numeroProgressivo) {
+        int index = 0;
+        for(Integer curr : vediVoce) {
+            if(curr == numeroProgressivo) 
+                break;
+            index++;
+        }
+        
+        lunghezzeVV.remove(index);
+        larghezzeVV.remove(index);
+        altezze_pesiVV.remove(index);
         return vediVoce.remove(numeroProgressivo);
     }
     

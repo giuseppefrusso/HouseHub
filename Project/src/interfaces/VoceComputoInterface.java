@@ -230,14 +230,14 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
             },
             new String [] {
-                "N°", "Unità di misura", "Quantità"
+                "N°", "Unità di misura", "Quantità", "Lunghezza", "Larghezza", "Altezza/peso"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -320,7 +320,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         }
 
         EventQueue.invokeLater(() -> {
-            new ComputoInterface().setVisible(true);
+            //new ComputoInterface().setVisible(true);
             dispose();
         });
     }//GEN-LAST:event_formWindowClosing

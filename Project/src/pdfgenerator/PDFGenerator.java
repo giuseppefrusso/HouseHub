@@ -258,14 +258,17 @@ public class PDFGenerator {
                 table.addCell(cell);
 
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph(Format.formatDouble(quantita)));
+                cell.add(new Paragraph(Format.formatDouble(quantita))).
+                        setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);
                 table.addCell(cell);
 
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph(Format.formatDouble(prezzoUnitario)));
+                cell.add(new Paragraph(Format.formatDouble(prezzoUnitario))).
+                        setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);
                 table.addCell(cell);
                 cell = new Cell(1, 1);
-                cell.add(new Paragraph(Format.formatDouble(prezzoComplessivo)));
+                cell.add(new Paragraph(Format.formatDouble(prezzoComplessivo))).
+                        setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);
                 table.addCell(cell);
             }
 
