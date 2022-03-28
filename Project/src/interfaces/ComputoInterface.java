@@ -178,7 +178,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.insets = new java.awt.Insets(69, 37, 0, 10);
+        gridBagConstraints.insets = new java.awt.Insets(0, 37, 37, 10);
         jPanel1.add(aggiungiButton, gridBagConstraints);
 
         gestisciVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -189,9 +189,9 @@ public class ComputoInterface extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(21, 37, 111, 0);
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.insets = new java.awt.Insets(0, 50, 13, 0);
         jPanel1.add(gestisciVoceButton, gridBagConstraints);
 
         exportForSub.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -202,11 +202,9 @@ public class ComputoInterface extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(29, 52, 15, 28);
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 41, 37, 18);
         jPanel1.add(exportForSub, gridBagConstraints);
 
         exportForClient.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -217,11 +215,10 @@ public class ComputoInterface extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(21, 53, 106, 0);
+        gridBagConstraints.insets = new java.awt.Insets(4, 41, 16, 0);
         jPanel1.add(exportForClient, gridBagConstraints);
 
         progettoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -235,7 +232,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(73, 51, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 51, 0, 0);
         jPanel1.add(progettoButton, gridBagConstraints);
 
         deleteButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -249,7 +246,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.insets = new java.awt.Insets(25, 0, 10, 20);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 16, 20);
         jPanel1.add(deleteButton, gridBagConstraints);
 
         upButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -260,9 +257,9 @@ public class ComputoInterface extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(70, 25, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(13, 25, 0, 0);
         jPanel1.add(upButton, gridBagConstraints);
 
         downButton.setFont(new java.awt.Font("Comic Sans MS", 0, 13)); // NOI18N
@@ -273,9 +270,9 @@ public class ComputoInterface extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(0, 25, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(2, 25, 12, 0);
         jPanel1.add(downButton, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -288,9 +285,9 @@ public class ComputoInterface extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 224, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
