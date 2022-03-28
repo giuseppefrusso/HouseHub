@@ -74,7 +74,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         int i = 0, lines;
         for (VoceComputo voce : computo.getVociComputo().values()) {
             Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(),
-                voce.getUnitaDiMisura(), voce.partiUgualiToString()+";  "+voce.vediVoceToString(computo), 
+                voce.getUnitaDiMisura(), voce.partiUgualiToString()+VoceComputo.SUPER_SEPARATOR+voce.vediVoceToString(computo), 
                 voce.lunghezzeToString()+";  "+voce.lunghezzeVVToString(), 
                 voce.larghezzeToString()+";  "+voce.larghezzeVVToString(), 
                 voce.altezzePesiToString()+";  "+voce.altezzePesiVVToString(), 

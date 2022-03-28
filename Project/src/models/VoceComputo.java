@@ -5,7 +5,6 @@
  */
 package models;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.StringJoiner;
 import java.util.TreeSet;
@@ -32,6 +31,8 @@ public class VoceComputo extends Voce {
 
     private String descrizioneSubappaltatore;
     private double prezzoUnitarioSubappaltatore;
+    
+    public static final String SUPER_SEPARATOR = ";                                                                                          ";
 
     public VoceComputo(int numeroProgressivo, String codice, String descrizione, String unitaDiMisura, double prezzoUnitario, String descrizioneSubappaltatore, double prezzoUnitarioSubappaltatore) {
         super(codice, descrizione, unitaDiMisura, prezzoUnitario);
@@ -283,7 +284,7 @@ public class VoceComputo extends Voce {
     }
 
     private String misurazioniToString() {
-        StringJoiner sb = new StringJoiner("\n", "", "");
+        StringJoiner sb = new StringJoiner(SUPER_SEPARATOR, "", "");
 
         for (int i = 0; i < misurazioni.size(); i++) {
             sb.add(misurazioni.get(i));
@@ -303,7 +304,7 @@ public class VoceComputo extends Voce {
     }
 
     public String partiUgualiToString() {
-        StringJoiner joiner = new StringJoiner(";  ", "", "");
+        StringJoiner joiner = new StringJoiner(SUPER_SEPARATOR, "", "");
 
         for (int i = 0; i < partiUguali.size(); i++) {
             joiner.add(misurazioni.get(i) + ": " + Format.formatDouble(partiUguali.get(i)));
@@ -346,7 +347,7 @@ public class VoceComputo extends Voce {
                     .append(Format.formatDouble(computo.getVociComputo().get(nP).getQuantita(computo)));
             count++;
             if (count != size) {
-                sb.append("\n");
+                sb.append(SUPER_SEPARATOR);
             }
         }
 

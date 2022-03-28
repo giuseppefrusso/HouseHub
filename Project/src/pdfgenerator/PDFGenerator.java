@@ -47,10 +47,8 @@ public class PDFGenerator {
             Cell cell;
             Text text;
 
-
             //document.setMargins(20, 0, 0, 20);
             //System.out.println("top " + document.getTopMargin()+ "left "+ document.getLeftMargin());
-            
             /*
             //Intestazione del computo metrico
             paragraph = new Paragraph("COMPUTO METRICO").setBold().setTextAlignment(TextAlignment.CENTER).setMarginTop(20);
@@ -82,24 +80,23 @@ public class PDFGenerator {
             document.add(paragraph);
 
             document.add(new AreaBreak());
-            */
-            
-            int numCols = 10;
+             */
+            int numCols = 11;
             table = new Table(numCols);
             table.setFontSize(8).setMarginLeft(10);
 
             Cell whiteCell = new Cell(1, numCols);
             whiteCell.setBorder(Border.NO_BORDER).setHeight(30);
             table.addHeaderCell(whiteCell);
-            
+
             //Informazioni del cliente
             Cell cellInfo = new Cell(1, numCols);
-            cellInfo.add(new Paragraph(String.format("Cliente: %s %s; Indirizzo: %s; Tecnico: %s", 
+            cellInfo.add(new Paragraph(String.format("Cliente: %s %s; Indirizzo: %s; Tecnico: %s",
                     utente.getNome(), utente.getCognome(), utente.getIndirizzoCantiere(), utente.getTecnico())));
             cellInfo.setVerticalAlignment(VerticalAlignment.MIDDLE);
             cellInfo.setTextAlignment(TextAlignment.CENTER);
             table.addHeaderCell(cellInfo);
-            
+
             //Intestazione della tabella
             cell = new Cell(2, 1);
             cell.add(new Paragraph("N° ord.\nTariffa"));
@@ -112,7 +109,7 @@ public class PDFGenerator {
             cell.setTextAlignment(TextAlignment.CENTER);
             table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
-            cell = new Cell(1, 5);
+            cell = new Cell(1, 6);
             cell.add(new Paragraph("Dimensioni"));
             cell.setTextAlignment(TextAlignment.CENTER);
             table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
@@ -129,6 +126,10 @@ public class PDFGenerator {
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Un. mis."));
+            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
+
+            cell = new Cell(1, 1);
+            cell.add(new Paragraph("Misurazioni"));
             table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
@@ -160,10 +161,10 @@ public class PDFGenerator {
                     .setBold()
                     //.setBorder(new SolidBorder(ColorConstants.RED, 2))
                     .setFontColor(ColorConstants.BLACK);
-            
+
             cellInfo.setBackgroundColor(ColorConstants.WHITE)
                     .setBorder(Border.NO_BORDER);
-            
+
             whiteCell.setBackgroundColor(ColorConstants.WHITE, 0);
             //
 
@@ -180,7 +181,9 @@ public class PDFGenerator {
                 String codice = vc.getCodice();
                 String descrizione;
                 Double prezzoUnitario, prezzoComplessivo, quantita = vc.getQuantita(computo);
-                
+
+                int rowspan = vc.getMisurazioni().size() + vc.getVediVoce().size();
+
                 if (cliente) {
                     descrizione = vc.getDescrizione();
                     prezzoUnitario = vc.getPrezzoUnitario();
@@ -191,7 +194,7 @@ public class PDFGenerator {
                     prezzoComplessivo = vc.getPrezzoComplessivoSubappaltatore(computo);
                 }
 
-                for (int i = 0; i < vc.getMisurazioni().size(); i++) {
+                /*for (int i = 0; i < vc.getMisurazioni().size(); i++) {
                     if(vc.controllaMisurazione(i))
                         descrizione = descrizione.concat("\n"+vc.getMisurazioni().get(i));
                 }
@@ -200,23 +203,22 @@ public class PDFGenerator {
                     VoceComputo vediVoce = computo.getVociComputo().get(numProgrVediVoce);
                     String vediVoceInfo = vediVoce.getUnitaDiMisura() + " " + vediVoce.getQuantita(computo);
                     descrizione = descrizione.concat("\nVedi voce n°" + numProgrVediVoce + " [" + vediVoceInfo + "]");
-                }
-
-                cell = new Cell(1, 1);
+                }*/
+                cell = new Cell(rowspan, 1);
                 cell.add(new Paragraph(numProgr.toString() + "\n" + codice));
                 cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
                 table.addCell(cell);
 
-                cell = new Cell(1, 1);
+                cell = new Cell(rowspan, 1);
                 cell.add(new Paragraph(descrizione));
                 //cell.setTextAlignment(TextAlignment.JUSTIFIED);
                 table.addCell(cell);
 
-                cell = new Cell(1, 1);
+                cell = new Cell(rowspan, 1);
                 cell.add(new Paragraph(vc.getUnitaDiMisura()));
                 table.addCell(cell);
 
-                String misurazioni = "", partiUguali = "", lunghezze = "", larghezze = "", altezze = "";
+                /*String misurazioni = "", partiUguali = "", lunghezze = "", larghezze = "", altezze = "";
                 if (vc.getMisurazioni().size() == 1 && vc.controllaMisurazione(0)) {
                     partiUguali = Format.formatDouble(vc.getPartiUguali().get(0));
                     lunghezze = vc.lunghezzeToString();
@@ -256,58 +258,75 @@ public class PDFGenerator {
                 table.addCell(cell);
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(altezze));
-                table.addCell(cell);
+                table.addCell(cell);*/
+                int i;
+                for (i = 0; i < vc.getMisurazioni().size(); i++) {
+                    if (i == 1) {
+                        showQuantitaAndPrezzo(table, quantita, prezzoUnitario, prezzoComplessivo, rowspan);
+                    }
 
-                /*for(int i = 0; i < vc.getMisurazioni().size(); i++) {
                     cell = new Cell(1, 1);
-                    cell.add(new Paragraph(vc.getMisurazioni().get(i)));
-                    
+                    cell.add(new Paragraph(vc.getMisurazioni().get(i).equalsIgnoreCase("default") ? "" : vc.getMisurazioni().get(i)));
+                    cell = setBorders(cell, i, rowspan);
+                    table.addCell(cell);
+
                     cell = new Cell(1, 1);
                     cell.add(new Paragraph(Format.formatDouble(vc.getPartiUguali().get(i))));
-                    
+                    cell = setBorders(cell, i, rowspan);
+                    table.addCell(cell);
+
                     cell = new Cell(1, 1);
                     cell.add(new Paragraph(Format.formatDouble(vc.getLunghezze().get(i))));
-                    
+                    cell = setBorders(cell, i, rowspan);
+                    table.addCell(cell);
+
                     cell = new Cell(1, 1);
                     cell.add(new Paragraph(Format.formatDouble(vc.getLarghezze().get(i))));
-                    
+                    cell = setBorders(cell, i, rowspan);
+                    table.addCell(cell);
+
                     cell = new Cell(1, 1);
                     cell.add(new Paragraph(Format.formatDouble(vc.getAltezze_pesi().get(i))));
+                    cell = setBorders(cell, i, rowspan);
+                    table.addCell(cell);
                 }
-                
-                int i = 0;
-                for(int np : vc.getVediVoce()) {
-                    cell = new Cell(1, 1);
-                    cell.add(new Paragraph("Vedi voce n°" + np + " [" + computo.getVociComputo().get(np) + "]"));
-                    
-                    cell = new Cell(1, 1);
-                    cell.add(new Paragraph(Format.formatDouble(computo.getVociComputo().get(np).getQuantita(computo))));
-                    
-                    cell = new Cell(1, 1);
-                    cell.add(new Paragraph(Format.formatDouble(vc.getLunghezzeVV().get(i))));
-                    
-                    cell = new Cell(1, 1);
-                    cell.add(new Paragraph(Format.formatDouble(vc.getLarghezzeVV().get(i))));
-                    
-                    cell = new Cell(1, 1);
-                    cell.add(new Paragraph(Format.formatDouble(vc.getAltezze_pesiVV().get(i))));
-                    
-                    i++;
-                }*/
-                
-                cell = new Cell(1, 1);
-                cell.add(new Paragraph(Format.formatDouble(quantita))).
-                        setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);
-                table.addCell(cell);
 
-                cell = new Cell(1, 1);
-                cell.add(new Paragraph(Format.formatDouble(prezzoUnitario))).
-                        setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);
-                table.addCell(cell);
-                cell = new Cell(1, 1);
-                cell.add(new Paragraph(Format.formatDouble(prezzoComplessivo))).
-                        setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);
-                table.addCell(cell);
+                if (i == 1) {
+                    showQuantitaAndPrezzo(table, quantita, prezzoUnitario, prezzoComplessivo, rowspan);
+                }
+
+                int j = 0;
+                for (int np : vc.getVediVoce()) {
+                    VoceComputo vv = computo.getVociComputo().get(np);
+
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph("Vedi voce n°" + np + " [" + vv.getUnitaDiMisura() + "]"));
+                    cell = setBorders(cell, rowspan-i+j, rowspan);
+                    table.addCell(cell);
+
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vv.getQuantita(computo))));
+                    cell = setBorders(cell, rowspan-i+j, rowspan);
+                    table.addCell(cell);
+
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getLunghezzeVV().get(j))));
+                    cell = setBorders(cell, rowspan-i+j, rowspan);
+                    table.addCell(cell);
+
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getLarghezzeVV().get(j))));
+                    cell = setBorders(cell, rowspan-i+j, rowspan);
+                    table.addCell(cell);
+
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getAltezze_pesiVV().get(j))));
+                    cell = setBorders(cell, rowspan-i+j, rowspan);
+                    table.addCell(cell);
+
+                    i++;
+                }
+
             }
 
             /*cell = new Cell(1, numCols - 1);
@@ -335,7 +354,35 @@ public class PDFGenerator {
         }
     }
 
-    public static void setBackground(PdfDocument pdfDocument, Document document) throws FileNotFoundException, MalformedURLException, IOException {
+    private static Cell setBorders(Cell cell, int i, int rowspan) {
+        if (i > 0) {
+            cell.setBorderTop(Border.NO_BORDER);
+        }
+
+        if (i < rowspan - 1) {
+            cell.setBorderBottom(Border.NO_BORDER);
+        }
+        
+        return cell;
+    }
+
+    private static void showQuantitaAndPrezzo(Table table, double quantita, double prezzoUnitario, double prezzoComplessivo, int rowspan) {
+        Cell cell = new Cell(rowspan, 1);
+        cell.add(new Paragraph(Format.formatDouble(quantita))).
+                setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);
+        table.addCell(cell);
+
+        cell = new Cell(rowspan, 1);
+        cell.add(new Paragraph(Format.formatDouble(prezzoUnitario))).
+                setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);
+        table.addCell(cell);
+        cell = new Cell(rowspan, 1);
+        cell.add(new Paragraph(Format.formatDouble(prezzoComplessivo))).
+                setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);
+        table.addCell(cell);
+    }
+
+    private static void setBackground(PdfDocument pdfDocument, Document document) throws FileNotFoundException, MalformedURLException, IOException {
         /*PageSize pageSize = PageSize.A4;
         ImageData image = ImageDataFactory.create(IMAGE);
         PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
@@ -359,11 +406,11 @@ public class PDFGenerator {
                         addXObject(backgroundXObject, 0, 0);
                 PdfExtGState state = new PdfExtGState().setFillOpacity(0.8f);
                 canvas.setExtGState(state);
-                
+
                 document.showTextAligned(new Paragraph(String.format("%d", i))
                         .setFontColor(ColorConstants.WHITE)
                         .setBold(),
-                    570, 5, i, TextAlignment.RIGHT, VerticalAlignment.BOTTOM, 0);
+                        570, 5, i, TextAlignment.RIGHT, VerticalAlignment.BOTTOM, 0);
             }
         }
 
