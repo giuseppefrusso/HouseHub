@@ -293,7 +293,7 @@ public class VoceComputo extends Voce {
     }
 
     private String dimensioneToString(LinkedList<Double> dimensione) {
-        StringJoiner sb = new StringJoiner(";  ", "", "");
+        StringJoiner sb = new StringJoiner("\n", "", "");
 
         for (int i = 0; i < dimensione.size(); i++) {
             sb.add(Format.formatDouble(dimensione.get(i)));
@@ -303,7 +303,7 @@ public class VoceComputo extends Voce {
     }
 
     public String partiUgualiToString() {
-        StringJoiner joiner = new StringJoiner(";  ", "", "");
+        StringJoiner joiner = new StringJoiner("\n", "", "");
 
         for (int i = 0; i < partiUguali.size(); i++) {
             joiner.add(misurazioni.get(i) + ": " + Format.formatDouble(partiUguali.get(i)));
@@ -315,25 +315,38 @@ public class VoceComputo extends Voce {
     public String lunghezzeToString() {
         return dimensioneToString(lunghezze);
     }
+    
+    public String lunghezzeVVToString() {
+        return dimensioneToString(lunghezzeVV);
+    }
 
     public String larghezzeToString() {
         return dimensioneToString(larghezze);
+    }
+    
+    public String larghezzeVVToString() {
+        return dimensioneToString(larghezzeVV);
     }
 
     public String altezzePesiToString() {
         return dimensioneToString(altezze_pesi);
     }
+    
+    public String altezzePesiVVToString() {
+        return dimensioneToString(altezze_pesiVV);
+    }
 
-    public String vediVoceToString() {
+    public String vediVoceToString(Computo computo) {
         StringBuffer sb = new StringBuffer();
 
         int count = 0;
         int size = vediVoce.size();
         for (int nP : vediVoce) {
-            sb.append(nP);
+            sb.append("Voce ").append(nP).append(": ")
+                    .append(Format.formatDouble(computo.getVociComputo().get(nP).getQuantita(computo)));
             count++;
             if (count != size) {
-                sb.append(", ");
+                sb.append("\n");
             }
         }
 

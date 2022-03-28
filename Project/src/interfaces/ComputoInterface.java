@@ -71,13 +71,24 @@ public class ComputoInterface extends javax.swing.JFrame {
     public static void refreshTable() {
         model.setRowCount(0);
 
+        int i = 0, lines;
         for (VoceComputo voce : computo.getVociComputo().values()) {
             Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(),
-                voce.getUnitaDiMisura(), voce.partiUgualiToString(), voce.lunghezzeToString(), voce.larghezzeToString(),
-                voce.altezzePesiToString(), voce.getQuantita(computo), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo(computo)};
+                voce.getUnitaDiMisura(), voce.partiUgualiToString()+";  "+voce.vediVoceToString(computo), 
+                voce.lunghezzeToString()+";  "+voce.lunghezzeVVToString(), 
+                voce.larghezzeToString()+";  "+voce.larghezzeVVToString(), 
+                voce.altezzePesiToString()+";  "+voce.altezzePesiVVToString(), 
+                voce.getQuantita(computo), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo(computo)};
 
             model.addRow(row);
+            
+            lines = voce.getMisurazioni().size()+voce.getVediVoce().size();
+            if(lines != 0)
+                table.setRowHeight(i, table.getRowHeight(i) * lines);
+            
+            i++;
         }
+        
     }
 
     /**
@@ -583,7 +594,7 @@ public class ComputoInterface extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton progettoButton;
-    private javax.swing.JTable table;
+    private static javax.swing.JTable table;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton upButton;
     // End of variables declaration//GEN-END:variables
