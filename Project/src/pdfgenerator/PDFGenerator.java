@@ -35,7 +35,7 @@ public class PDFGenerator {
     public static void generatePDF(String fileProgetto, Computo computo, String PDFfilepath, boolean cliente) throws IOException, ClassNotFoundException, NullPointerException {
         //Load necessary files
         Progetto progetto = Progetto.caricaProgetto(fileProgetto);
-        Capitolato capitolato = Capitolato.caricaCapitolato();
+        //Capitolato capitolato = Capitolato.caricaCapitolato();
         Cliente utente = progetto.getUtente();
         //
 
@@ -84,7 +84,7 @@ public class PDFGenerator {
             document.add(new AreaBreak());
             */
             
-            int numCols = 11;
+            int numCols = 10;
             table = new Table(numCols);
             table.setFontSize(8).setMarginLeft(10);
 
@@ -112,7 +112,7 @@ public class PDFGenerator {
             cell.setTextAlignment(TextAlignment.CENTER);
             table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
-            cell = new Cell(1, 6);
+            cell = new Cell(1, 5);
             cell.add(new Paragraph("Dimensioni"));
             cell.setTextAlignment(TextAlignment.CENTER);
             table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
@@ -129,10 +129,6 @@ public class PDFGenerator {
 
             cell = new Cell(1, 1);
             cell.add(new Paragraph("Un. mis."));
-            table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
-
-            cell = new Cell(1, 1);
-            cell.add(new Paragraph("Misuraz."));
             table.addHeaderCell(cell.setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
             cell = new Cell(1, 1);
@@ -184,7 +180,7 @@ public class PDFGenerator {
                 String codice = vc.getCodice();
                 String descrizione;
                 Double prezzoUnitario, prezzoComplessivo, quantita = vc.getQuantita(computo);
-
+                
                 if (cliente) {
                     descrizione = vc.getDescrizione();
                     prezzoUnitario = vc.getPrezzoUnitario();
@@ -195,10 +191,15 @@ public class PDFGenerator {
                     prezzoComplessivo = vc.getPrezzoComplessivoSubappaltatore(computo);
                 }
 
+                for (int i = 0; i < vc.getMisurazioni().size(); i++) {
+                    if(vc.controllaMisurazione(i))
+                        descrizione = descrizione.concat("\n"+vc.getMisurazioni().get(i));
+                }
+                
                 for (Integer numProgrVediVoce : vc.getVediVoce()) {
                     VoceComputo vediVoce = computo.getVociComputo().get(numProgrVediVoce);
                     String vediVoceInfo = vediVoce.getUnitaDiMisura() + " " + vediVoce.getQuantita(computo);
-                    descrizione = descrizione.concat("\n\nVedi voce n°" + numProgrVediVoce + " [" + vediVoceInfo + "]");
+                    descrizione = descrizione.concat("\nVedi voce n°" + numProgrVediVoce + " [" + vediVoceInfo + "]");
                 }
 
                 cell = new Cell(1, 1);
@@ -257,6 +258,43 @@ public class PDFGenerator {
                 cell.add(new Paragraph(altezze));
                 table.addCell(cell);
 
+                /*for(int i = 0; i < vc.getMisurazioni().size(); i++) {
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(vc.getMisurazioni().get(i)));
+                    
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getPartiUguali().get(i))));
+                    
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getLunghezze().get(i))));
+                    
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getLarghezze().get(i))));
+                    
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getAltezze_pesi().get(i))));
+                }
+                
+                int i = 0;
+                for(int np : vc.getVediVoce()) {
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph("Vedi voce n°" + np + " [" + computo.getVociComputo().get(np) + "]"));
+                    
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(computo.getVociComputo().get(np).getQuantita(computo))));
+                    
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getLunghezzeVV().get(i))));
+                    
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getLarghezzeVV().get(i))));
+                    
+                    cell = new Cell(1, 1);
+                    cell.add(new Paragraph(Format.formatDouble(vc.getAltezze_pesiVV().get(i))));
+                    
+                    i++;
+                }*/
+                
                 cell = new Cell(1, 1);
                 cell.add(new Paragraph(Format.formatDouble(quantita))).
                         setTextAlignment(TextAlignment.RIGHT).setVerticalAlignment(VerticalAlignment.BOTTOM);

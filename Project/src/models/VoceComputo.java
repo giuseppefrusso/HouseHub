@@ -293,7 +293,7 @@ public class VoceComputo extends Voce {
     }
 
     private String dimensioneToString(LinkedList<Double> dimensione) {
-        StringJoiner sb = new StringJoiner("\n", "", "");
+        StringJoiner sb = new StringJoiner(";  ", "", "");
 
         for (int i = 0; i < dimensione.size(); i++) {
             sb.add(Format.formatDouble(dimensione.get(i)));
@@ -303,7 +303,7 @@ public class VoceComputo extends Voce {
     }
 
     public String partiUgualiToString() {
-        StringJoiner joiner = new StringJoiner("\n", "", "");
+        StringJoiner joiner = new StringJoiner(";  ", "", "");
 
         for (int i = 0; i < partiUguali.size(); i++) {
             joiner.add(misurazioni.get(i) + ": " + Format.formatDouble(partiUguali.get(i)));
