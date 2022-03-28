@@ -157,7 +157,7 @@ public class NuovaVediVoceInComputoInterface extends javax.swing.JFrame {
         for (int i = 0; i < model.getRowCount(); i++) {
             if ((Boolean) model.getValueAt(i, 5)) {
                 int numProgr = (int) model.getValueAt(i, 0);
-                voce.aggiungiVediVoce(numProgr);
+                voce.aggiungiVediVoce(numProgr, 0, 0, 0);
             }
         }
 

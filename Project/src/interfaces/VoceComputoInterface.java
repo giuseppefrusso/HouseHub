@@ -58,13 +58,16 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         //String partiUguali = "";
         //String lunghezza = "";
 
+        int i = 0;
         for (int numVediVoce : voce.getVediVoce()) {
             VoceComputo vediVoce = computo.getVociComputo().get(numVediVoce);
-            Object[] rowData = {numVediVoce, vediVoce.getUnitaDiMisura(), vediVoce.getQuantita(computo)};
+            Object[] rowData = {numVediVoce, vediVoce.getUnitaDiMisura(), vediVoce.getQuantita(computo), 
+                voce.getLunghezzeVV().get(i), voce.getLarghezzeVV().get(i), voce.getAltezze_pesiVV().get(i)};
             voceModel.addRow(rowData);
+            i++;
         }
 
-        for (int i = 0; i < voce.getMisurazioni().size(); i++) {
+        for (i = 0; i < voce.getMisurazioni().size(); i++) {
 
             Object[] rowData = {voce.getMisurazioni().get(i), voce.getPartiUguali().get(i),
                 voce.getLunghezze().get(i), voce.getLarghezze().get(i), voce.getAltezze_pesi().get(i)};
@@ -237,7 +240,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
                 java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true, true
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -246,6 +249,11 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        voceTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                voceTableMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(voceTable);
@@ -263,7 +271,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 615, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 615, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -300,6 +308,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             p.salvaProgetto(fileProgetto);
 
             saved = true;
+            ComputoInterface.refreshTable();
         } catch (IOException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
@@ -310,7 +319,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             int choice = JOptionPane.showConfirmDialog(this, "Vuoi salvare prima di chiudere?");
             if (choice == JOptionPane.YES_OPTION) {
                 save();
-                
+
             } else if (choice == JOptionPane.CANCEL_OPTION) {
                 return;
             }
@@ -320,6 +329,7 @@ public class VoceComputoInterface extends javax.swing.JFrame {
         }
 
         EventQueue.invokeLater(() -> {
+            ComputoInterface.refreshTable();
             //new ComputoInterface().setVisible(true);
             dispose();
         });
@@ -428,6 +438,9 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
         String text;
         switch (selectedColumn) {
+            case 0:
+                text = "Inserisci 'misurazione'";
+                break;
             case 1:
                 text = "Inserisci 'parti uguali'";
                 break;
@@ -447,15 +460,22 @@ public class VoceComputoInterface extends javax.swing.JFrame {
 
         try {
             String nv = JOptionPane.showInputDialog(this, text);
-            
-            if(nv == null)
+
+            if (nv == null) {
                 return;
-            
-            Double newValue = new Double(nv);
-            
-            voce.setDimensione(selectedRow, selectedColumn, newValue);
+            }
+
+            if (selectedColumn == 0) {
+                voce.setMisurazione(selectedRow, nv);
+            } else {
+                Double newValue = new Double(nv);
+                voce.setDimensione(selectedRow, selectedColumn, newValue);
+            }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Inserire un numero corretto", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -469,6 +489,61 @@ public class VoceComputoInterface extends javax.swing.JFrame {
             modificaDimensione();
         }
     }//GEN-LAST:event_misurazioniTableMouseClicked
+
+    private void modificaDimensioneVediVoce() {
+        int selectedRow = voceTable.getSelectedRow(),
+                selectedColumn = voceTable.getSelectedColumn();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleziona un vedi voce", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String text;
+        switch (selectedColumn) {
+            case 3:
+                text = "Inserisci 'lunghezza'";
+                break;
+            case 4:
+                text = "Inserisci 'larghezza'";
+                break;
+            case 5:
+                text = "Inserisci 'altezza/peso'";
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Seleziona lunghezza, larghezza o altezza/peso", "Avviso", JOptionPane.WARNING_MESSAGE);
+                return;
+        }
+
+        try {
+            String nv = JOptionPane.showInputDialog(this, text);
+
+            if (nv == null) {
+                return;
+            }
+
+            Double newValue = new Double(nv);
+            
+            voce.setDimensioneVediVoce(selectedRow, selectedColumn-1, newValue);
+
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Inserire un numero corretto", "Avviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        refreshTables();
+        saved = false;
+    }
+
+    private void voceTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voceTableMouseClicked
+        if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+            evt.consume();
+            modificaDimensioneVediVoce();
+        }
+    }//GEN-LAST:event_voceTableMouseClicked
 
     /**
      * @param args the command line arguments

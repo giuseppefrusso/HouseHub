@@ -29,7 +29,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     private static Computo computo;
     private static String fileProgetto;
-    protected DefaultTableModel model;
+    protected static DefaultTableModel model;
 
     /**
      * Creates new form ComputoInterface
@@ -68,11 +68,11 @@ public class ComputoInterface extends javax.swing.JFrame {
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
 
-    private void refreshTable() {
+    public static void refreshTable() {
         model.setRowCount(0);
 
         for (VoceComputo voce : computo.getVociComputo().values()) {
-            Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(), voce.vediVoceToString(),
+            Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(),
                 voce.getUnitaDiMisura(), voce.partiUgualiToString(), voce.lunghezzeToString(), voce.larghezzeToString(),
                 voce.altezzePesiToString(), voce.getQuantita(computo), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo(computo)};
 
@@ -124,14 +124,14 @@ public class ComputoInterface extends javax.swing.JFrame {
 
             },
             new String [] {
-                "N°", "Codice", "Descrizione", "Vedi voce", "Unità di misura", "Parti uguali", "Lunghezza", "Larghezza", "Altezza/peso", "Quantità", "Prezzo unitario", "Prezzo complessivo"
+                "N°", "Codice", "Descrizione", "Unità di misura", "Parti uguali", "Lunghezza", "Larghezza", "Altezza/peso", "Quantità", "Prezzo unitario", "Prezzo complessivo"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -153,6 +153,10 @@ public class ComputoInterface extends javax.swing.JFrame {
         if (table.getColumnModel().getColumnCount() > 0) {
             table.getColumnModel().getColumn(0).setMinWidth(50);
             table.getColumnModel().getColumn(0).setMaxWidth(50);
+            table.getColumnModel().getColumn(1).setMaxWidth(1000);
+            table.getColumnModel().getColumn(5).setMaxWidth(50);
+            table.getColumnModel().getColumn(6).setMaxWidth(50);
+            table.getColumnModel().getColumn(7).setMaxWidth(50);
         }
 
         jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -275,20 +279,9 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 25, 12, 0);
         jPanel1.add(downButton, gridBagConstraints);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 560, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        jPanel2.add(jPanel1, java.awt.BorderLayout.PAGE_END);
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -575,7 +568,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ComputoInterface(new Computo("computo"), "C:\\Users\\Pepito\\Desktop\\progetto.hhp").setVisible(true);
+            new ComputoInterface(new Computo("cciccio"), "C:\\Users\\Pepito\\Desktop\\progetto.hhp").setVisible(true);
         });
     }
 

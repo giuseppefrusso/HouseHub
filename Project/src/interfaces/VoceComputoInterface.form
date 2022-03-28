@@ -30,7 +30,7 @@
           <Group type="102" alignment="0" attributes="0">
               <Component id="jPanel4" pref="285" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel2" min="-2" pref="615" max="-2" attributes="0"/>
+              <Component id="jPanel2" pref="615" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
           </Group>
@@ -278,9 +278,9 @@
                     <Column editable="false" title="N&#xb0;" type="java.lang.Integer"/>
                     <Column editable="false" title="Unit&#xe0; di misura" type="java.lang.String"/>
                     <Column editable="false" title="Quantit&#xe0;" type="java.lang.Double"/>
-                    <Column editable="true" title="Lunghezza" type="java.lang.Double"/>
-                    <Column editable="true" title="Larghezza" type="java.lang.Double"/>
-                    <Column editable="true" title="Altezza/peso" type="java.lang.Double"/>
+                    <Column editable="false" title="Lunghezza" type="java.lang.Double"/>
+                    <Column editable="false" title="Larghezza" type="java.lang.Double"/>
+                    <Column editable="false" title="Altezza/peso" type="java.lang.Double"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -321,6 +321,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="voceTableMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
