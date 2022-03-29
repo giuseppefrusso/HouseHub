@@ -5,6 +5,7 @@
  */
 package interfaces;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import pdfgenerator.PDFGenerator;
 
 import models.Computo;
 import models.VoceComputo;
+import utils.Format;
 
 /**
  *
@@ -43,8 +45,10 @@ public class ComputoInterface extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        computoLabel.setText("");
         model = (DefaultTableModel) table.getModel();
         refreshTable();
+        setComputoLabel();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
 
@@ -65,6 +69,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         model = (DefaultTableModel) table.getModel();
         refreshTable();
+        setComputoLabel();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
 
@@ -74,21 +79,22 @@ public class ComputoInterface extends javax.swing.JFrame {
         int i = 0, lines;
         for (VoceComputo voce : computo.getVociComputo().values()) {
             Object[] row = {voce.getNumeroProgressivo(), voce.getCodice(), voce.getDescrizione(),
-                voce.getUnitaDiMisura(), voce.partiUgualiToString()+VoceComputo.SUPER_SEPARATOR+voce.vediVoceToString(computo), 
-                voce.lunghezzeToString()+";  "+voce.lunghezzeVVToString(), 
-                voce.larghezzeToString()+";  "+voce.larghezzeVVToString(), 
-                voce.altezzePesiToString()+";  "+voce.altezzePesiVVToString(), 
+                voce.getUnitaDiMisura(), voce.partiUgualiToString() + VoceComputo.SUPER_SEPARATOR + voce.vediVoceToString(computo),
+                voce.lunghezzeToString() + ";  " + voce.lunghezzeVVToString(),
+                voce.larghezzeToString() + ";  " + voce.larghezzeVVToString(),
+                voce.altezzePesiToString() + ";  " + voce.altezzePesiVVToString(),
                 voce.getQuantita(computo), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo(computo)};
 
             model.addRow(row);
-            
-            lines = voce.getMisurazioni().size()+voce.getVediVoce().size();
-            if(lines != 0)
+
+            lines = voce.getMisurazioni().size() + voce.getVediVoce().size();
+            if (lines != 0) {
                 table.setRowHeight(i, table.getRowHeight(i) * lines);
-            
+            }
+
             i++;
         }
-        
+
     }
 
     /**
@@ -115,6 +121,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         deleteButton = new javax.swing.JButton();
         upButton = new javax.swing.JButton();
         downButton = new javax.swing.JButton();
+        computoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("House Hub");
@@ -290,6 +297,13 @@ public class ComputoInterface extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(2, 25, 12, 0);
         jPanel1.add(downButton, gridBagConstraints);
 
+        computoLabel.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 79, 0, 0);
+        jPanel1.add(computoLabel, gridBagConstraints);
+
         jPanel2.add(jPanel1, java.awt.BorderLayout.PAGE_END);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -400,10 +414,11 @@ public class ComputoInterface extends javax.swing.JFrame {
         }
 
         int selectedNumProgr = (int) model.getValueAt(selectedRow, 0);
-        
-        int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler eliminare la voce "+selectedNumProgr+"?");
-        if(choice == JOptionPane.NO_OPTION || choice == JOptionPane.CANCEL_OPTION)
+
+        int choice = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler eliminare la voce " + selectedNumProgr + "?");
+        if (choice == JOptionPane.NO_OPTION || choice == JOptionPane.CANCEL_OPTION) {
             return;
+        }
 
         for (VoceComputo c : computo.getVociComputo().values()) {
             if (selectedNumProgr >= c.getNumeroProgressivo()) {
@@ -550,6 +565,18 @@ public class ComputoInterface extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_formWindowClosing
 
+    private void setComputoLabel() {
+
+        if (computo == null) {
+            computoLabel.setText("");
+        } else {
+            /*computoLabel.setText("<html>Data: " + computo.getData()
+                    + "<br/>Cliente: " + Format.formatDouble(computo.getTotale()) + " €<br/>"
+                    + "Subapp.: " + Format.formatDouble(computo.getTotaleSubappaltatore()) + " €</html>");*/
+            computoLabel.setText("Cliente " + Format.formatDouble(computo.getTotale()) + "€" + "    Subapp. " + Format.formatDouble(computo.getTotaleSubappaltatore()) + "€");
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -585,6 +612,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aggiungiButton;
+    private javax.swing.JLabel computoLabel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton downButton;
     private javax.swing.JButton exportForClient;
