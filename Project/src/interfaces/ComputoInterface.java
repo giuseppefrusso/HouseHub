@@ -48,7 +48,6 @@ public class ComputoInterface extends javax.swing.JFrame {
         computoLabel.setText("");
         model = (DefaultTableModel) table.getModel();
         refreshTable();
-        setComputoLabel();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
 
@@ -69,7 +68,6 @@ public class ComputoInterface extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         model = (DefaultTableModel) table.getModel();
         refreshTable();
-        setComputoLabel();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
 
@@ -94,7 +92,8 @@ public class ComputoInterface extends javax.swing.JFrame {
 
             i++;
         }
-
+        
+        setComputoLabel();
     }
 
     /**
@@ -425,8 +424,8 @@ public class ComputoInterface extends javax.swing.JFrame {
                 continue;
             }
             for (int numProg : c.getVediVoce()) {
-                if (numProg == selectedNumProgr) {
-                    JOptionPane.showMessageDialog(this, "La voce " + c.getNumeroProgressivo() + " contiene un riferimento a questa voce", "Avviso", JOptionPane.WARNING_MESSAGE);
+                if (numProg >= selectedNumProgr) {
+                    JOptionPane.showMessageDialog(this, "La voce " + c.getNumeroProgressivo() + " contiene un riferimento alla voce "+numProg, "Avviso", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             }
@@ -565,7 +564,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_formWindowClosing
 
-    private void setComputoLabel() {
+    private static void setComputoLabel() {
 
         if (computo == null) {
             computoLabel.setText("");
@@ -612,7 +611,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aggiungiButton;
-    private javax.swing.JLabel computoLabel;
+    private static javax.swing.JLabel computoLabel;
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton downButton;
     private javax.swing.JButton exportForClient;
