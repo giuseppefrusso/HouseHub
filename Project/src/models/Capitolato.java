@@ -8,7 +8,8 @@ package models;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.TreeMap;
+import java.util.Map;
+import java.util.HashMap;
 import utils.Pickle;
 
 /**
@@ -17,12 +18,12 @@ import utils.Pickle;
  */
 public class Capitolato implements Serializable{
     
-    private TreeMap<String, Voce> capitolatoClienti, capitolatoSubappaltatori;
+    private Map<String, Voce> capitolatoClienti, capitolatoSubappaltatori;
     private static final String FILEPATH = System.getProperty("user.dir") + "/capitolato.hhc";
     
     public Capitolato() {
-        capitolatoClienti = new TreeMap<>();
-        capitolatoSubappaltatori = new TreeMap<>();
+        capitolatoClienti = new HashMap<>();
+        capitolatoSubappaltatori = new HashMap<>();
     }
     
     public Voce addVoceCliente(Voce voce) {
@@ -41,11 +42,11 @@ public class Capitolato implements Serializable{
         return capitolatoSubappaltatori.remove(codice);
     }
     
-    public TreeMap<String, Voce> getCapitolatoClienti() {
+    public Map<String, Voce> getCapitolatoClienti() {
         return capitolatoClienti;
     }
 
-    public TreeMap<String, Voce> getCapitolatoSubappaltatori() {
+    public Map<String, Voce> getCapitolatoSubappaltatori() {
         return capitolatoSubappaltatori;
     }
     
