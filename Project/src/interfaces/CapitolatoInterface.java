@@ -43,8 +43,12 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         clientiModel = initTableModel();
         subModel = initTableModel();
         //initCapitolati();
-        capitolato.addVoceCliente(voceCliente);
-        capitolato.addVoceSubappaltori(voceSubappaltatore);
+        try {
+            capitolato.addVoceCliente(voceCliente);
+            capitolato.addVoceSubappaltori(voceSubappaltatore);
+        } catch(ClassCastException ex) {
+            JOptionPane.showMessageDialog(this, "File del capitolato corrotto", "Avviso", JOptionPane.WARNING_MESSAGE);
+        }
         refreshTables();
         initComponents();
         this.setLocationRelativeTo(null);
@@ -64,6 +68,9 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             Object[] row = {voce.getCodice(), voce.getDescrizione(), voce.getUnitaDiMisura(), voce.getPrezzoUnitario()};
             subModel.addRow(row);
         }
+        
+        System.out.print("Ci sono " + clientiModel.getRowCount() + " voci nella tabella e ");
+        System.out.println(capitolato.getCapitolatoClienti().size() + " nel file.");
     }
 
     private void initCapitolati() {
@@ -71,7 +78,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             capitolato = Capitolato.caricaCapitolato();
             return;
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex.toString(), "File non trovato o corrotto", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "File non trovato o corrotto", "Avviso", JOptionPane.WARNING_MESSAGE);
             capitolato = new Capitolato();
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);

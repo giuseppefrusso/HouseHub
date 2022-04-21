@@ -148,6 +148,12 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 7, 0);
         jPanel1.add(misuraTextField, gridBagConstraints);
+
+        prezzoTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prezzoTextFieldActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 7;
@@ -184,6 +190,10 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
+        conferma();
+    }//GEN-LAST:event_confermaButtonActionPerformed
+
+    private void conferma() {
         Double prezzo;
         if (codiceTextField.getText().equals("") || descrizioneTextArea.getText().equals("") || misuraTextField.getText().equals("")
                 || prezzoTextField.getText().equals("")) {
@@ -222,8 +232,8 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
                 });
             }
         }
-    }//GEN-LAST:event_confermaButtonActionPerformed
-
+    }
+    
     private void indietroButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indietroButtonActionPerformed
         EventQueue.invokeLater(() -> {
             new CapitolatoInterface().setVisible(true);
@@ -238,6 +248,10 @@ public class NuovaVoceInCapitolatoInterface extends javax.swing.JFrame {
             dispose();
         });
     }//GEN-LAST:event_formWindowClosing
+
+    private void prezzoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prezzoTextFieldActionPerformed
+        conferma();
+    }//GEN-LAST:event_prezzoTextFieldActionPerformed
 
 
     /**
