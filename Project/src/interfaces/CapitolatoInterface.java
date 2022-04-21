@@ -55,15 +55,13 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         clientiModel.setRowCount(0);
         subModel.setRowCount(0);
 
-        for (String codice : capitolato.getCapitolatoClienti().keySet()) {
-            Voce voce = capitolato.getVoceCliente(codice);
-            Object[] row = {codice, voce.getDescrizione(), voce.getUnitaDiMisura(), voce.getPrezzoUnitario()};
+        for (Voce voce : capitolato.getCapitolatoClienti()) {
+            Object[] row = {voce.getCodice(), voce.getDescrizione(), voce.getUnitaDiMisura(), voce.getPrezzoUnitario()};
             clientiModel.addRow(row);
         }
 
-        for (String codice : capitolato.getCapitolatoSubappaltatori().keySet()) {
-            Voce voce = capitolato.getVoceSubappaltatore(codice);
-            Object[] row = {codice, voce.getDescrizione(), voce.getUnitaDiMisura(), voce.getPrezzoUnitario()};
+        for (Voce voce : capitolato.getCapitolatoSubappaltatori()) {
+            Object[] row = {voce.getCodice(), voce.getDescrizione(), voce.getUnitaDiMisura(), voce.getPrezzoUnitario()};
             subModel.addRow(row);
         }
     }
@@ -73,6 +71,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             capitolato = Capitolato.caricaCapitolato();
             return;
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.toString(), "File non trovato o corrotto", JOptionPane.WARNING_MESSAGE);
             capitolato = new Capitolato();
         } catch (ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
@@ -365,6 +364,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     private void gestisciVoce(boolean cliente) {
         int selectedRow;
+        int selectedCol;
 
         if (cliente) {
             selectedRow = clientiTable.getSelectedRow();
@@ -378,6 +378,66 @@ public class CapitolatoInterface extends javax.swing.JFrame {
             return;
         }
 
+        if (cliente) {
+            selectedCol = clientiTable.getSelectedColumn();
+
+        } else {
+            selectedCol = subTable.getSelectedColumn();
+        }
+        
+        switch(selectedCol) {
+            case 3:
+                gestisciPrezzo(selectedRow, cliente);
+                break;
+            case 1:
+                gestisciDescrizione(selectedRow, cliente);
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Seleziona descrizione o prezzo", "Avviso", JOptionPane.WARNING_MESSAGE);
+                break;
+        }
+    }
+    
+    private void gestisciDescrizione(int selectedRow, boolean cliente) {
+        String descrizione, nuovaDescrizione;
+        
+        if (cliente) {
+            descrizione = (String) clientiTable.getValueAt(selectedRow, 1);
+        } else {
+            descrizione = (String) subTable.getValueAt(selectedRow, 1);
+        }
+        
+        try {
+
+            if (cliente) {
+                nuovaDescrizione = (String) JOptionPane.showInputDialog(this, "Scegli nuova descrizione per clienti",
+                        "Descrizione", JOptionPane.QUESTION_MESSAGE, null, null, descrizione);
+
+            } else {
+                nuovaDescrizione = (String) JOptionPane.showInputDialog(this, "Scegli nuova descrizione per sub-appaltatori",
+                        "Descrizione", JOptionPane.QUESTION_MESSAGE, null, null, descrizione);
+            }
+
+        } catch (NullPointerException e){
+            return;
+        }
+        
+        Voce v;
+        if (cliente) {
+            v = capitolato.removeVoceCliente((String) clientiTable.getValueAt(selectedRow, 0));
+            v.setDescrizione(nuovaDescrizione);
+            capitolato.addVoceCliente(v);
+        } else {
+            v = capitolato.removeVoceSubappaltatori((String) subTable.getValueAt(selectedRow, 0));
+            v.setDescrizione(nuovaDescrizione);
+            capitolato.addVoceSubappaltori(v);
+        }
+
+        saved = false;
+        refreshTables();
+    }
+    
+    private void gestisciPrezzo(int selectedRow, boolean cliente) {
         double prezzo;
 
         if (cliente) {

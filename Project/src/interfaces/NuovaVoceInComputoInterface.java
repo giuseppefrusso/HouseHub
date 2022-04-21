@@ -43,7 +43,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     private void fillTableModel() {
         try {
             Capitolato c = Capitolato.caricaCapitolato();
-            for (Voce v : c.getCapitolatoClienti().values()) {
+            for (Voce v : c.getCapitolatoClienti()) {
                 //if (!computo.getCodici().contains(v.getCodice())) {
                     Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
                     model.addRow(rowData);
