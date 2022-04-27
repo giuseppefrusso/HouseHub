@@ -5,17 +5,23 @@
  */
 package interfaces;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Highlighter;
 
 import pdfgenerator.PDFGenerator;
 
@@ -32,6 +38,23 @@ public class ComputoInterface extends javax.swing.JFrame {
     private static Computo computo;
     private static String fileProgetto;
     protected static DefaultTableModel model;
+    protected static TableColumn col;
+
+    protected static DefaultTableCellRenderer r = new DefaultTableCellRenderer() {
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table,
+                Object value, boolean isSelected, boolean hasFocus,
+                int row, int column) {
+
+            Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
+                    row, column);
+            cell.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
+
+            return cell;
+        }
+
+    };
 
     /**
      * Creates new form ComputoInterface
@@ -47,6 +70,7 @@ public class ComputoInterface extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         computoLabel.setText("");
         model = (DefaultTableModel) table.getModel();
+
         refreshTable();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
@@ -67,6 +91,8 @@ public class ComputoInterface extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         model = (DefaultTableModel) table.getModel();
+
+        //table.setFont(new Font("Comic Sans MS", Font.PLAIN, 20));
         refreshTable();
         titleLabel.setText("Computo metrico: " + computo.getNome());
     }
@@ -84,6 +110,8 @@ public class ComputoInterface extends javax.swing.JFrame {
                 voce.getQuantita(computo), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo(computo)};
 
             model.addRow(row);
+            col = table.getColumnModel().getColumn(4);
+            col.setCellRenderer(r);
 
             lines = voce.getMisurazioni().size() + voce.getVediVoce().size();
             if (lines != 0) {
@@ -92,7 +120,7 @@ public class ComputoInterface extends javax.swing.JFrame {
 
             i++;
         }
-        
+
         setComputoLabel();
     }
 
@@ -171,6 +199,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             table.getColumnModel().getColumn(0).setMinWidth(50);
             table.getColumnModel().getColumn(0).setMaxWidth(50);
             table.getColumnModel().getColumn(1).setMaxWidth(1000);
+            table.getColumnModel().getColumn(4).setCellRenderer(null);
             table.getColumnModel().getColumn(5).setMaxWidth(50);
             table.getColumnModel().getColumn(6).setMaxWidth(50);
             table.getColumnModel().getColumn(7).setMaxWidth(50);
@@ -425,7 +454,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             }
             for (int numProg : c.getVediVoce()) {
                 if (numProg >= selectedNumProgr) {
-                    JOptionPane.showMessageDialog(this, "La voce " + c.getNumeroProgressivo() + " contiene un riferimento alla voce "+numProg, "Avviso", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "La voce " + c.getNumeroProgressivo() + " contiene un riferimento alla voce " + numProg, "Avviso", JOptionPane.WARNING_MESSAGE);
                     return;
                 }
             }
