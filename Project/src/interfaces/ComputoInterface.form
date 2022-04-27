@@ -104,9 +104,7 @@
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
-                      <Renderer editor="org.netbeans.modules.form.ComponentChooserEditor">
-                        <ComponentRef name="null"/>
-                      </Renderer>
+                      <Renderer/>
                     </Column>
                     <Column maxWidth="50" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
@@ -154,7 +152,7 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableMouseClicked"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="table.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="table.setDefaultRenderer(String.class, new BoldTableCellRenderer());&#xd;&#xa;table.setRowHeight(table.getRowHeight() + 20);"/>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
               </AuxValues>
             </Component>

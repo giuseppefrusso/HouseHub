@@ -37,10 +37,11 @@ public class ComputoInterface extends javax.swing.JFrame {
 
     private static Computo computo;
     private static String fileProgetto;
+    protected static int selectedRow = -1;
     protected static DefaultTableModel model;
-    protected static TableColumn col;
+    //protected static TableColumn col;
 
-    protected static DefaultTableCellRenderer r = new DefaultTableCellRenderer() {
+    protected static DefaultTableCellRenderer r = new DefaultTableCellRenderer() /*{
 
         @Override
         public Component getTableCellRendererComponent(JTable table,
@@ -54,7 +55,7 @@ public class ComputoInterface extends javax.swing.JFrame {
             return cell;
         }
 
-    };
+    }*/;
 
     /**
      * Creates new form ComputoInterface
@@ -110,8 +111,9 @@ public class ComputoInterface extends javax.swing.JFrame {
                 voce.getQuantita(computo), voce.getPrezzoUnitario(), voce.getPrezzoComplessivo(computo)};
 
             model.addRow(row);
-            col = table.getColumnModel().getColumn(4);
-            col.setCellRenderer(r);
+            
+            //col = table.getColumnModel().getColumn(4);
+            //col.setCellRenderer(r);
 
             lines = voce.getMisurazioni().size() + voce.getVediVoce().size();
             if (lines != 0) {
@@ -120,7 +122,9 @@ public class ComputoInterface extends javax.swing.JFrame {
 
             i++;
         }
-
+        
+        table.changeSelection(selectedRow, selectedRow, false, false);
+        
         setComputoLabel();
     }
 
@@ -137,7 +141,8 @@ public class ComputoInterface extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        table.setDefaultRenderer(String.class, new MultiLineTableCellRenderer());
+        table.setDefaultRenderer(String.class, new BoldTableCellRenderer());
+        table.setRowHeight(table.getRowHeight() + 20);
         titleLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         aggiungiButton = new javax.swing.JButton();
@@ -199,7 +204,6 @@ public class ComputoInterface extends javax.swing.JFrame {
             table.getColumnModel().getColumn(0).setMinWidth(50);
             table.getColumnModel().getColumn(0).setMaxWidth(50);
             table.getColumnModel().getColumn(1).setMaxWidth(1000);
-            table.getColumnModel().getColumn(4).setCellRenderer(null);
             table.getColumnModel().getColumn(5).setMaxWidth(50);
             table.getColumnModel().getColumn(6).setMaxWidth(50);
             table.getColumnModel().getColumn(7).setMaxWidth(50);
@@ -347,7 +351,7 @@ public class ComputoInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_aggiungiButtonActionPerformed
 
     private void gestisciVoce() {
-        int selectedRow = table.getSelectedRow();
+        selectedRow = table.getSelectedRow();
 
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Seleziona una voce del computo", "Avviso", JOptionPane.WARNING_MESSAGE);

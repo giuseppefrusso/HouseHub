@@ -6,6 +6,7 @@
 package interfaces;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -35,7 +36,9 @@ public class MultiLineTableCellRenderer extends JPanel implements TableCellRende
     private ArrayList<TextLayout> textLayoutList = new ArrayList<TextLayout>();
     private String text;
 
+    @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        
         /* Azzera il "buffer" dei TextLayout */
         textLayoutList.clear();
 
@@ -126,6 +129,8 @@ che risulti omogeneo rispetto a quello delle altre celle di table. */
             setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
             setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
         }
+        
+        
         return this;
     }
 
@@ -149,7 +154,7 @@ nostra cella. Qui noi usiamo i valori precomputati nel metodo getTableCellRender
         }
     }
 
-    private void drawText(String vaue, Graphics2D g) {
+    private void drawText(String value, Graphics2D g) {
         g.setPaint(getForeground());
 
         /* Ogni TextLayout contenuto in textLayoutList rappresenta una linea di
