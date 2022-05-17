@@ -5,8 +5,11 @@
  */
 package interfaces;
 
+import com.opencsv.exceptions.CsvException;
 import java.awt.EventQueue;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -75,20 +78,24 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
     private void initCapitolati() {
         try {
-            capitolato = Capitolato.caricaCapitolato();
+            capitolato = new Capitolato();
+            capitolato.caricaCapitolato();
+            //Capitolato c = Capitolato.caricaCapitolato();
+            
             return;
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "File non trovato o corrotto", "Avviso", JOptionPane.WARNING_MESSAGE);
             capitolato = new Capitolato();
-        } catch (ClassNotFoundException ex) {
+            dispose();
+        } catch (InterruptedException | ClassNotFoundException | CsvException | ParseException  ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        try {
+        /*try {
             capitolato.salvaCapitolato();
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
-        }
+        }*/
     }
 
     private DefaultTableModel initTableModel() {
@@ -177,6 +184,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         addVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         addVoceButton.setText("Aggiungi nuova voce");
+        addVoceButton.setEnabled(false);
         addVoceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addVoceButtonActionPerformed(evt);
@@ -188,6 +196,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         deleteVoceButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         deleteVoceButton.setText("Elimina voce");
+        deleteVoceButton.setEnabled(false);
         deleteVoceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteVoceButtonActionPerformed(evt);
@@ -199,6 +208,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
 
         salvaCapitolatoButton.setFont(new java.awt.Font("Comic Sans MS", 0, 14)); // NOI18N
         salvaCapitolatoButton.setText("Salva");
+        salvaCapitolatoButton.setEnabled(false);
         salvaCapitolatoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 salvaCapitolatoButtonActionPerformed(evt);
@@ -273,8 +283,8 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         try {
             capitolato.salvaCapitolato();
             saved = true;
-            capitolato = Capitolato.caricaCapitolato();
-        } catch (IOException | ClassNotFoundException ex) {
+            capitolato.caricaCapitolato();
+        } catch (InterruptedException | IOException | ClassNotFoundException | CsvException | ParseException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }

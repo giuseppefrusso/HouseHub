@@ -5,8 +5,11 @@
  */
 package interfaces;
 
+import com.opencsv.exceptions.CsvException;
 import java.awt.EventQueue;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import models.Capitolato;
@@ -42,7 +45,10 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
 
     private void fillTableModel() {
         try {
-            Capitolato c = Capitolato.caricaCapitolato();
+            Capitolato c = new Capitolato();
+            c.caricaCapitolato();
+            //Capitolato c = Capitolato.caricaCapitolato();
+            
             for (Voce v : c.getCapitolatoClienti()) {
                 //if (!computo.getCodici().contains(v.getCodice())) {
                     Object[] rowData = {v.getCodice(), v.getDescrizione(), v.getUnitaDiMisura(), v.getPrezzoUnitario(), false};
@@ -52,7 +58,7 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Capitolato vuoto", "Avviso", JOptionPane.WARNING_MESSAGE);
             backToComputoInterface();
-        } catch (ClassNotFoundException ex) {
+        } catch (InterruptedException | ClassNotFoundException | CsvException | ParseException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -157,10 +163,10 @@ public class NuovaVoceInComputoInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void confermaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confermaButtonActionPerformed
-        Capitolato cap;
+        Capitolato cap = new Capitolato();
         try {
-            cap = Capitolato.caricaCapitolato();
-        } catch (IOException | ClassNotFoundException ex) {
+            cap.caricaCapitolato();
+        } catch (InterruptedException | IOException | ClassNotFoundException | CsvException | ParseException ex) {
             JOptionPane.showMessageDialog(this, ex.toString(), "Errore", JOptionPane.ERROR_MESSAGE);
             return;
         }
