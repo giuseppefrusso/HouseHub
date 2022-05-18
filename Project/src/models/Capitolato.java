@@ -45,7 +45,7 @@ public class Capitolato implements Serializable {
         return capitolatoClienti.put(LocalDateTime.now(), voce);
     }
 
-    public Voce addVoceSubappaltori(Voce voce) {
+    public Voce addVoceSubappaltatori(Voce voce) {
         return capitolatoSubappaltatori.put(LocalDateTime.now(), voce);
     }
 
@@ -64,6 +64,26 @@ public class Capitolato implements Serializable {
             Voce v = capitolatoSubappaltatori.get(key);
             if (v.getCodice().equalsIgnoreCase(codice)) {
                 return capitolatoSubappaltatori.remove(key);
+            }
+        }
+        return null;
+    }
+    
+    public Voce modifyVoceCliente(Voce newValue) {
+        for (LocalDateTime key : capitolatoClienti.keySet()) {
+            Voce v = capitolatoClienti.get(key);
+            if (v.getCodice().equalsIgnoreCase(newValue.getCodice())) {
+                return capitolatoClienti.put(key, newValue);
+            }
+        }
+        return null;
+    }
+
+    public Voce modifyVoceSubappaltatori(Voce newValue) {
+        for (LocalDateTime key : capitolatoSubappaltatori.keySet()) {
+            Voce v = capitolatoSubappaltatori.get(key);
+            if (v.getCodice().equalsIgnoreCase(newValue.getCodice())) {
+                return capitolatoSubappaltatori.put(key, newValue);
             }
         }
         return null;

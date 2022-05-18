@@ -48,7 +48,7 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         //initCapitolati();
         try {
             capitolato.addVoceCliente(voceCliente);
-            capitolato.addVoceSubappaltori(voceSubappaltatore);
+            capitolato.addVoceSubappaltatori(voceSubappaltatore);
         } catch(ClassCastException ex) {
             JOptionPane.showMessageDialog(this, "File del capitolato corrotto", "Avviso", JOptionPane.WARNING_MESSAGE);
         }
@@ -441,13 +441,13 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         
         Voce v;
         if (cliente) {
-            v = capitolato.removeVoceCliente((String) clientiTable.getValueAt(selectedRow, 0));
+            v = capitolato.getVoceCliente((String) clientiTable.getValueAt(selectedRow, 0));
             v.setDescrizione(nuovaDescrizione);
-            capitolato.addVoceCliente(v);
+            capitolato.modifyVoceCliente(v);
         } else {
-            v = capitolato.removeVoceSubappaltatori((String) subTable.getValueAt(selectedRow, 0));
+            v = capitolato.getVoceSubappaltatore((String) subTable.getValueAt(selectedRow, 0));
             v.setDescrizione(nuovaDescrizione);
-            capitolato.addVoceSubappaltori(v);
+            capitolato.modifyVoceSubappaltatori(v);
         }
 
         saved = false;
@@ -484,13 +484,13 @@ public class CapitolatoInterface extends javax.swing.JFrame {
         
         Voce v;
         if (cliente) {
-            v = capitolato.removeVoceCliente((String) clientiTable.getValueAt(selectedRow, 0));
+            v = capitolato.getVoceCliente((String) clientiTable.getValueAt(selectedRow, 0));
             v.setPrezzoUnitario(nuovoPrezzo);
-            capitolato.addVoceCliente(v);
+            capitolato.modifyVoceCliente(v);
         } else {
-            v = capitolato.removeVoceSubappaltatori((String) subTable.getValueAt(selectedRow, 0));
+            v = capitolato.getVoceSubappaltatore((String) subTable.getValueAt(selectedRow, 0));
             v.setPrezzoUnitario(nuovoPrezzo);
-            capitolato.addVoceSubappaltori(v);
+            capitolato.modifyVoceSubappaltatori(v);
         }
 
         saved = false;
